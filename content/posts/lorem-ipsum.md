@@ -321,7 +321,7 @@ function initChart(el, chart) {
 
 {{< echartbox title="Airplane Seats" width="30%" citeOverride="[example from here](https://echarts.apache.org/examples/en/editor.html?c=geo-seatmap-flight)">}}
 function initChart(el, myChart) {
-$.get('/assets/geo/flight-seats.svg', function (svg) {
+$.get('/test/assets/geo/flight-seats.svg', function (svg) {
   echarts.registerMap('flight-seats', { svg: svg });
   const takenSeatNames = ['26E', '26D', '26C', '25D', '23C', '21A', '20F'];
   option = {
