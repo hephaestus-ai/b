@@ -9,7 +9,7 @@ draft: true
 Hello, hello.
 
 {{< plotbox
-      data="econ/gdp3d"
+      data="test/econ/gdp3d"
       layout="plotlayouts/dark"
       title="World GDP Surface"
       caption="Illustrative 3-D demo"

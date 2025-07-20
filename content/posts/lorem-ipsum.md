@@ -216,7 +216,7 @@ Donec non ultrices nibh, a mollis enim. Etiam eu mauris eros. Suspendisse eu dig
 Proin finibus, ex nec vestibulum tincidunt, risus risus pharetra diam, nec egestas dui nulla rutrum eros. Integer egestas massa ut dui efficitur cursus. Aliquam tincidunt enim neque, eu consectetur sapien viverra vel. Nullam purus justo, tincidunt id dolor sed, auctor blandit dui. Donec nec justo enim. Donec lobortis mollis justo in rhoncus. Nulla facilisi. Duis tincidunt vitae erat sollicitudin aliquet. Proin fringilla, ligula eget tempus pellentesque, mi sem viverra arcu, vel sollicitudin ipsum augue a risus. Cras rutrum, mi nec egestas egestas, metus mauris dictum eros, sit amet dapibus augue odio ac erat. Phasellus eget diam ultricies, rutrum nisl eu, molestie nisl.
 
 {{< chartbox
-      data="gdp/world"
+      data="test/gdp/world"
       type="bar"
       title="World GDP"
       caption="Source: World Bank"
