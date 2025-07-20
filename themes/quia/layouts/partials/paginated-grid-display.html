@@ -1,0 +1,101 @@
+{{/*
+Partial: grid-display.html
+Renders a paginated grid of pages.
+@context {dict} . - A dictionary containing:
+  - context {page} - The calling page's context.
+  - paginator {paginator} - The page's paginator object.
+*/}}
+
+{{ $page := .context }}
+{{ $paginator := .paginator }}
+
+{{/* --- Get parameters from the calling page's front matter --- */}}
+{{ $maxCols := $page.Params.max_cols | default 3 }}
+{{ $showBorder := $page.Params.item_border | default true }}
+{{ $item_height := $page.Params.item_height | default "24em" }}
+{{ $truncateSummaryAfter := $page.Params.truncate_summary_after | default 240 }}
+{{ $plainifySummary := $page.Params.plainify_summary | default true }}
+{{ $enableLayoutAlternation := $page.Params.enable_layout_alternation | default false }}
+
+{{/* Calculated values */}}
+{{ $twoThridsColsFloored := int (math.Max 1.0 (math.Floor (div (mul (float $maxCols) 2) 3))) }}
+{{ $oneThridsColsFloored := int (math.Max 1.0 (math.Floor (div (mul (float $maxCols) 1) 3))) }}
+{{ $baseDir := $page.Site.Params.baseDir | default "content" }}
+
+<style>
+  /* --- Grid Container --- */
+  .grid-container {
+    display: grid;
+    grid-template-columns: repeat({{ $maxCols }}, 1fr);
+    gap: 1.5em;
+    margin: 1.6em auto;
+    padding: 0;
+  }
+  /* --- Grid Item (Card) --- */
+  .grid-item {
+    background-color: var(--bg);
+    {{ if $showBorder }}
+      border: 1px solid var(--border);
+    {{ else }}
+      border: none;
+    {{ end }}
+    border-radius: 6px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: row;
+    text-decoration: none;
+    color: var(--fg);
+    height: {{ $item_height }};
+  }
+  .grid-item.reverse-order {
+    flex-direction: row-reverse;
+  }
+  .grid-item img {
+    height: 100%;
+    object-fit: cover;
+    border-radius: 6px;
+  }
+  .grid-item .content-padding {
+    padding: 1em;
+  }
+  .thumbnail-padding {
+    margin: auto;
+    height: 90%;
+    padding: 1em;
+  }
+  /* Add the rest of your CSS here (typography, pagination, etc.) */
+  /* --- Media Queries --- */
+  @media (max-width: 1500px) {
+    .grid-container { grid-template-columns: repeat({{ $twoThridsColsFloored }}, 1fr); }
+  }
+  @media (max-width: 1200px) {
+    .grid-container { grid-template-columns: repeat({{ $oneThridsColsFloored }}, 1fr); }
+  }
+  @media (max-width: 900px) {
+    .grid-container { grid-template-columns: 1fr; }
+  }
+</style>
+
+{{ if gt $paginator.TotalPages 1 }}
+    <nav class="pagination" role="navigation" aria-label="Pagination Navigation">
+      {{ partial "pagination.html" $page }} {{/* CORRECTED: Pass the page context (.) */}}
+    </nav>
+{{ end }}
+  
+<div class="grid-container">
+   {{ range $index, $page := $paginator.Pages }}
+	{{ partial "grid-item.html" (dict 
+	  "page" $page 
+	  "index" $index 
+	  "enableLayoutAlternation" $enableLayoutAlternation 
+	  "plainifySummary" $plainifySummary 
+	  "truncateSummaryAfter" $truncateSummaryAfter
+	) }}
+  {{ end }}
+</div>
+
+{{ if gt $paginator.TotalPages 1 }}
+    <nav class="pagination" role="navigation" aria-label="Pagination Navigation">
+        {{ partial "pagination.html" $page }}
+    </nav>
+{{ end }}

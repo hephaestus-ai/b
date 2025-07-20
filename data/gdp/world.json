@@ -1,0 +1,10 @@
+{
+  "labels": ["1990", "2000", "2010", "2020"],
+  "datasets": [
+    {
+      "label": "World GDP ($T)",
+      "data": [22, 33, 55, 84],
+      "backgroundColor": "rgba(90, 160, 255, 0.5)"
+    }
+  ]
+}

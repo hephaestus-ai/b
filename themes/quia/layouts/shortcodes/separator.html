@@ -1,0 +1,10 @@
+{{ $text := .Get "text" | default "" }}
+{{ $size := .Get "size" | default "0.8em" }}
+{{ $opacity := .Get "opacity" | default "1" }}
+{{ $margin := .Get "margin" | default "0em" }}
+
+<div style="text-align: center; margin: {{ $margin }}; margin-left: 0.8em; padding: 0.5em; max-width: 42em;">
+  <span style="display: inline-block; font-size: {{ $size }}; opacity: {{ $opacity }};">
+    {{ $text }}
+  </span>
+</div>

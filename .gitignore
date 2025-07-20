@@ -1,0 +1,37 @@
+# Hugo generated files
+/public/
+/resources/
+/data/cache/
+
+# Hugo executable and related files (if you're not using a pre-built binary)
+#hugo
+#hugo.exe
+#hugo.darwin
+#hugo.linux
+#hugo.windows
+
+# Node modules
+/node_modules/
+/package-lock.json
+/yarn.lock
+
+# Editor and OS generated files
+.DS_Store
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+Thumbs.db
+ehthumbs.db
+.sass-cache/
+.project
+.directory
+
+# Local environment variables (if you have them)
+.env
+.env.*
+
+# Backup files
+*.bak
+*.swp
+*~

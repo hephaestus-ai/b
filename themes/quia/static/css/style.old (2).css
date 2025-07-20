@@ -1,0 +1,402 @@
+/* TODO changes: 
+   dark mode
+ */
+
+.explanation { background: #f0f0f0; padding: 1ex; }
+
+/* a lot of the left and right margins are based on the golden ratio (to the
+   line height 1em) */
+
+html {
+    overflow-y: scroll;
+    height: 100vh;
+}
+
+body { 
+         
+     /*background-attachment: fixed; */ /* too annoying */
+     background-image: url(../../media/because.png);
+     background-position: top left;
+     background-repeat: no-repeat;
+	 background-size: 93px 93px;
+     
+     margin: 0em;
+     margin-left: 6em;
+     margin-right: 19.7em;
+     text-align: justify;
+     /* Sadly URW Palladio L looks like shit on current Linuces in Xft,
+      * even though it looks fine in GhostScript. FreeSerif is much better. */
+     font-family: FreeSerif, Palatino, serif; /* TODO explore new fonts */
+     line-height: 155%; /* 135% */
+     
+     min-height:100%;
+     position:relative;
+
+}
+
+/* Q.E.D. symbol */
+body::after{
+  content:"";
+  position:absolute;
+  right:-19.7rem;
+  bottom:0;
+  width:64px;
+  height:64px;
+  background:url(../../media/qed.jpeg) no-repeat bottom right/64px 64px;
+  pointer-events:none;        /* makes it “untouchable” */
+}
+
+.content {      
+    padding-top: 3.5em; /* make into golden ratio? */
+    padding-bottom: 4.65em;
+}
+
+/* override the normal margin widths of these elements so they don't look funny
+   with the paragraph indents */
+
+/* start header and footer */
+/* do not display these when not mobile */
+.header {
+    display: none;
+}
+.footer {
+    position: absolute;
+    left: 0 ; right: 0; bottom: 0; 
+    bottom: 0px;
+    width: 100%;
+    height: 2.25em;
+    text-align: center;
+    margin-left: 6em;
+
+}
+
+.nav-item {
+      display: inline;
+      letter-spacing: 3px;
+      font-size: 14px;
+}
+
+.bottomnav-menu {
+    display: inline;
+    color: #888;
+    border-top: 1px solid #e3e3e3;
+    padding-left: 2.5em;
+    padding-right: 2.5em;
+    padding-top: 1em;
+
+}
+
+.bottomnav-menu a {
+  text-align: right;
+  text-decoration: none;
+  line-height: 100%;
+  color: #4aa;
+  /*display: block;*/
+  /*padding: 0.2em 0;*/
+  position: relative;
+}
+   
+.bottomnav-menu a:hover {
+  color: #4aa;
+
+}
+   
+.spacer {
+  color: #444;
+  font-size: 16px;
+}
+
+/* end header and footer */
+
+ul, ol, dir { -moz-padding-start: 3.24em; }
+blockquote { margin: 1em 3.24em; }
+
+.pre-div {
+    padding-left: 0.5em;
+    padding-right: 0.5em;
+
+
+}
+
+pre { 
+     background-color: #f0f0f0;
+     border: 1px solid #e3e3e3;
+     padding: 0.5em;
+     max-width: 65em;  /* the slight misalignment to me is visually "interesting" */
+     white-space: pre-wrap;
+     white-space: -moz-pre-wrap; 
+     white-space: -pre-wrap;      
+     white-space: -o-pre-wrap;    
+     word-wrap: break-word;
+     display: flex;
+     min-width: 400px;
+}
+
+p { 
+      /* hanging indent for paragraphs */
+      /* text-indent: -1.62em; margin-left: 1.62em; */
+      padding-bottom: 0.25em;
+      padding-top: 0.25em;
+      margin-left: 0.8em;
+      min-width: 200px;
+}
+
+p, ul, ol, menu, dir {
+      margin-top: 0.5em; margin-bottom: 0.5em;
+      max-width: 42em;
+      padding-left: 0.5em;
+      padding-right: 0.5em;
+}
+
+ul, ol {
+   list-style: circle;
+   margin-left: 3.5em;
+}
+
+.bottomnav-menu { /* TODO should move this; refactor to component specific CSS */
+	margin-left: 0em;
+}
+
+
+h1, h2, h3 {
+      /* I like Palatino better anyway: font-family: "Arial Narrow", helvetica, sans-serif; */
+      font-weight: normal;
+      font-variant: small-caps;
+      color: #4aa;
+
+      border-bottom: 1px solid #e3e3e3;
+      /* this contrasts badly with the background logo: background-color: #fafafa; */
+      padding-right: 0.1em;
+      padding-left: 1.25em; /* looks more visually interesting to me on mobile */
+
+      margin-right: -2em; 
+      margin-bottom: 0.25em;
+      margin-top: 0.25em;
+      
+      text-align: right;
+}
+
+h1 { letter-spacing: 6px; padding-bottom: 6px; font-size: 22px; }
+h2 { letter-spacing: 6px; padding-bottom: 6px; font-size: 18px; }
+h3 { letter-spacing: 4px; padding-bottom: 4px; font-size: 16px; }
+
+h4, h5, h6 {}
+
+h4, h5, h6 { letter-spacing: 3px; padding-bottom: 3px; font-size: 14px; }
+
+code {
+    line-height: 120%; /* 135% */
+    overflow-wrap: break-word;
+}
+
+
+/* begin side navigation css */
+.menu-title {
+    margin-right: 0.5em;
+}
+
+.menu-title-top {
+    margin-left: 4em;
+    margin-right: 0.5em;
+}
+
+.sidenav {
+  height: 100%;
+  width: 12em;
+  position: fixed;
+  z-index: 1;
+  top: 1.85em;
+  right: 0;
+  overflow-x: hidden; /* Disable horizontal scroll */
+  /*display: flex;
+  align-items: center;*/
+  
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+    
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: right;
+  /*align-items: center;*/
+  align-items: flex-start;
+
+}
+
+.wrapper {
+    list-style-type: none;
+    border-right: 1px solid #e3e3e3;
+    margin-right: 1em;
+    margin-top: 1.2em;
+    padding-bottom: 2.5em;
+    padding-top: 0.5em;
+}
+
+.sidenav a {
+  text-align: right;
+  text-decoration: none;
+  line-height: 100%;
+  color: #444;
+  /*display: block;*/
+  /*padding: 0.2em 0;*/
+  position: relative;
+}
+
+.option {
+  text-align: right;
+  list-style-type: none;
+  font-size: 16px; /*16px or 1em*/
+}
+
+.toc {
+  font-size: 12px;  
+}
+
+.sidenav a:hover {
+  color: #4aa;
+}
+/* end side navigation css */
+
+/* being fancy effects */
+/* fade in effect */
+.sidenav a::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 0.05em;
+  background-color: #aaa;
+  opacity: 0;
+  transition: opacity 300ms, transform 300ms;
+}
+
+/* slide in effect */
+.sidenav a:hover::after,
+.sidenav a:focus::after {
+  opacity: 1;
+  transform: translate3d(0, 0.2em, 0);
+}
+
+.sidenav li, a {
+  overflow: hidden;
+}
+.sidenav li, a::after {
+  opacity 1;
+  transform: translate3d(-100%, 0, 0);
+}
+.sidenav li, a:hover::after,
+.sidenav li, a:focus::after{
+  transform: translate3d(0, 0, 0);
+}
+/* end fancy effects */
+
+/* start images https://www.tutorialspoint.com/how-to-create-a-responsive-image-grid-with-html-and-css */
+figure {
+  float: right;
+  margin: 0px 0px 0px 2em;
+  /*padding: 0.2em;
+  padding-top: 2em;
+  /* border: 1px solid #e3e3e3; */
+}
+
+.selfie {
+  margin-top: 30px;
+  /* border: 1px solid #e3e3e3; */
+}
+
+img {
+    max-width: 100%;
+
+}
+
+/* end images */
+
+
+.main {
+  margin-left: 140px; /* Same width as the sidebar + left position in px */
+  font-size: 28px; /* Increased text to enable scrolling */
+  padding: 0px 10px;
+}
+
+
+
+/* being mobile css */
+@media only screen and (max-width: 800px) { /* 991.98px */
+  /*html {overflow-y: auto;}*/
+    
+    .sidenav {
+    display: none;
+  }
+  
+  /* display header and footer when mobile */
+  
+  .header {
+    display: inline-block;
+    width: 100%;
+   }
+   
+   .topnav {
+       height: 4em;
+       text-align: center;
+       margin-left: 1.75em;
+   }
+   
+   .footer  {
+       display: block;
+       margin-left: 0em;
+   }
+   .topnav-menu {
+      list-style-type: none;
+      display: inline-block;
+   }
+   
+.topnav a {
+  text-align: right;
+  text-decoration: none;
+  line-height: 100%;
+  color: #4aa;
+  /*display: block;*/
+  /*padding: 0.2em 0;*/
+  position: relative;
+}
+   
+.topnav a:hover {
+  color: #4aa;
+
+}
+
+/* add special effects to header later, maybe */
+  
+  body { margin-left: 1em; margin-right: 1em; margin-top: 0em; }
+  h1, h2, h3 { margin-right: -40px }
+  h4, h5, h6 {}
+  
+  body {
+      margin-right: 3.5em;
+      margin-left: 1em;
+      /*margin-top: 0em;*/
+  }   
+  
+figure {
+  margin: 2em;
+  /* padding: 0.2em;
+  border: 1px solid #e3e3e3;*/
+}
+
+img {
+    max-width: 95%; 
+}
+
+}
+
+/*
+@media screen and (max-height: 450px) {
+  .sidenav {padding-top: 15px;}
+  .sidenav a {font-size: 18px;}
+}
+*/
+/* end mobile css */

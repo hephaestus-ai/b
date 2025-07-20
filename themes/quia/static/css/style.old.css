@@ -1,0 +1,164 @@
+/* pending changes: 
+   D color headings?
+   D move logo to upper left-hand corner?
+   - move logo back to background?  otherwise darken?
+ */
+
+.explanation { background: #f0f0f0; padding: 1ex; }
+
+/* a lot of the left and right margins are based on the golden ratio (to the
+   line height 1em) */
+
+body { 
+     background-attachment: fixed; 
+     /*background-image: URL(http://canonical.org/~kragen/kjlogobgsmall.png); */
+     background-position: top left;
+     background-repeat: no-repeat;
+     padding-top: 2em;
+     margin-left: 7.48em; /* TODO round numbers? */
+     margin-right: 14.96em;
+     text-align: justify;
+     /* Sadly URW Palladio L looks like shit on current Linuces in Xft,
+      * even though it looks fine in GhostScript. FreeSerif is much better. */
+     font-family: FreeSerif, Palatino, serif; /* TODO explore new fonts */
+     line-height: 155%; /* 135% */
+}
+
+/* override the normal margin widths of these elements so they don't look funny
+   with the paragraph indents */
+
+ul, ol, menu, dir { -moz-padding-start: 3.24em; }
+blockquote { margin: 1em 3.24em; }
+
+.pre-div {
+    padding-left: 0.5em;
+    padding-right: 0.5em;
+}
+
+pre { 
+     background-color: #f0f0f0;
+     border: 1px solid #e3e3e3;
+     padding: 0.5em;
+     max-width: 65em;  /* the slight misalignment to me is visually "interesting" */
+     white-space: pre-wrap;
+     white-space: -moz-pre-wrap; 
+     white-space: -pre-wrap;      
+     white-space: -o-pre-wrap;    
+     word-wrap: break-word;
+}
+
+p { 
+      /* text-indent: 1.62em; /* normal indent */
+      /* text-indent: -1.62em; margin-left: 1.62em; /* hanging indent for paragraphs */
+}
+
+p, menu, dir {
+      margin-top: 0.5em; margin-bottom: 0.5em;
+      max-width: 50em;
+      padding-left: 0.5em;
+      padding-right: 0.5em;
+}
+
+ul ol {
+    margin-top: 0.5em; margin-bottom: 0.5em;
+    max-width: 50em;
+    padding-left: 80px;
+}
+
+/* pretty headers following the design of 
+http://www.rotten.com/library/conspiracy/al-qaeda-and-the-assassins/missing-link/ 
+ */
+
+h1, h2, h3, h4, h5, h6 {
+      /* I like Palatino better anyway: font-family: "Arial Narrow", helvetica, sans-serif; */
+      font-weight: normal;
+      font-variant: small-caps;
+      color: #4aa;
+      border-bottom: 1px solid #e3e3e3;
+      /* this contrasts badly with the background logo: background-color: #fafafa; */
+      text-align: right;
+      padding-right: 0.1em;
+      padding-left: 1.25em; /* looks more visually interesting to me on mobile */
+
+      margin-right: -30px; 
+      margin-bottom: 0.25em;
+      margin-top: 0.25em;
+}
+
+h1 { letter-spacing: 6px; padding-bottom: 6px; font-size: 22px; }
+h2 { letter-spacing: 6px; padding-bottom: 6px; font-size: 18px; }
+h3 { letter-spacing: 4px; padding-bottom: 4px; font-size: 16px; }
+h4 { letter-spacing: 3px; padding-bottom: 3px; font-size: 14px; }
+
+code {
+    line-height: 120%; /* 135% */
+    overflow-wrap: break-word;
+}
+
+/* On small-screen devices like phones, my normal margins are far too
+   generous, leaving almost no space for the text.
+ */
+@media all and (max-width : 30em) {
+    body { margin-left: 1em; margin-right: 1em }
+    h1, h2, h3, h4, h5, h6 { margin-right: -40px }
+}
+
+/*
+.sidenav {
+  top: 50px;
+  right: 10px;
+  background: none;
+  overflow-x: hidden;
+  padding: 8px 0;
+}*/
+
+/* TODO yeah sidenav totally busted */
+
+.sidenav {
+  height: 100%;
+  width: 7.48em;
+  position: fixed;
+  z-index: 1;
+  /*top: 0;*/
+  right: 20px;
+  overflow-x: hidden; /* Disable horizontal scroll */
+  padding-top: 120px;
+  /*display: flex;
+  align-items: center;*/
+}
+
+.sidenav a {
+   /* padding: 6px 8px 6px 16px; */ 
+  /*padding: 1px 10px 1px 1px;*/
+  text-align: right;
+  /*border-bottom: 1px solid #e3e3e3;*/
+  text-decoration: none;
+  line-height: 135%;
+  font-size: 16px; /*16px or 1em*/
+  color: black;
+  display: block;
+  
+  /*top: 50%;                         
+  transform: translate(0, -50%)*/
+
+
+}
+
+
+.sidenav a:hover {
+  color: #4aa;
+}
+
+.main {
+  margin-left: 140px; /* Same width as the sidebar + left position in px */
+  font-size: 28px; /* Increased text to enable scrolling */
+  padding: 0px 10px;
+}
+
+/*
+@media screen and (max-height: 450px) {
+  .sidenav {padding-top: 15px;}
+  .sidenav a {font-size: 18px;}
+}
+*/
+

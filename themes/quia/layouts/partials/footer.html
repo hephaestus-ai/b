@@ -1,0 +1,152 @@
+
+<div class="footer">
+<!-- <section>
+   <h4 id="date"> {{ .Date.Format "Mon Jan 2, 2006" }} </h4>
+  <h5 id="wordcount"> {{ .WordCount }} Words </h5> 
+</section>-->
+
+<ul class="bottomnav-menu">
+<li class="nav-item">Copyright © 2025</li>
+<li class="nav-item spacer"> • </li>
+<li class="nav-item"><a href="/terms/index.html" class="nav-link text-uppercase font-weight-bold">Terms</a></li>
+<li class="nav-item spacer"> • </li>
+<li class="nav-item"><a href="/privacy/index.html" class="nav-link text-uppercase font-weight-bold">Privacy</a></li>
+<li class="nav-item spacer"> • </li>
+<li class="nav-item"><a href="#top">Top⮅</a></li>
+
+</ul>
+
+</div>
+
+<script>
+(function () {
+  //console.log("TOC folding script loaded.");
+  const toc = document.querySelector('.toc-scroll');
+  if (!toc) return;
+  //console.log(".toc-scroll found");
+
+  /* 1. Add caret buttons to every <li> that contains a sub-<ol> */
+  toc.querySelectorAll('li').forEach((li) => { // Removed idx, it wasn't used
+    // Look for a direct child <ol> within the current <li>
+    const sub = li.querySelector(':scope > ol'); // Changed from ul to ol
+    console.log("0");
+    if (!sub) return;
+    console.log("1");
+
+    li.classList.add('has-children');
+
+    /* make a small button that comes before the link */
+    const btn = document.createElement('button');
+    btn.className = 'toc-caret';
+    btn.setAttribute('aria-label', 'Toggle section');
+    btn.setAttribute('aria-expanded', 'false');
+    btn.innerText = '+';
+
+    /* insert button before the link */
+    const firstLink = li.querySelector(':scope > a');
+    if (firstLink) { // Ensure there's a link to insert before
+      li.insertBefore(btn, firstLink);
+    } else {
+      // Fallback if no link (e.g., if a list item only contains a sub-list)
+      li.prepend(btn);
+    }
+
+
+    /* 2. toggle open / closed */
+    function toggle() {
+      const open = li.classList.toggle('open');
+      btn.setAttribute('aria-expanded', String(open));
+    }
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      toggle();
+    });
+    btn.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggle(); }
+    });
+  });
+
+  // Use a more robust selector for the active link if location.hash is empty
+  const activeLinkSelector = location.hash ? 'a[href="' + location.hash + '"]' : 'a[aria-current="page"]';
+  const active = toc.querySelector(activeLinkSelector);
+
+  if (active) {
+    let li = active.parentElement;
+    while (li && li.matches('li')) {
+      li.classList.add('open');
+      const caret = li.querySelector(':scope > .toc-caret');
+      if (caret) caret.setAttribute('aria-expanded', 'true');
+      li = li.parentElement.closest('li'); // Ensures we climb up to the closest parent <li>
+    }
+  }
+})();
+</script>
+
+
+<script>/* TODO move. for the table of contents shortcode */
+document.addEventListener('DOMContentLoaded', () => {
+  document.querySelectorAll('.post-toc').forEach(toc => {
+    /* give every LI with a child UL a caret */
+    toc.querySelectorAll('li').forEach(li => {
+      const sub = li.querySelector(':scope > ul, :scope > ol');
+      const link = li.querySelector(':scope > a');
+
+      /* make/insert caret */
+      const caret = document.createElement('button');
+      caret.className = 'post-toc__toggle';
+      caret.type = 'button';
+      caret.setAttribute('aria-expanded', 'false');
+      caret.textContent = '+';              /* your “looks good” arrow */
+      li.prepend(caret);
+
+      if (!sub) {              /* leaf node – hide caret but keep spacing */
+        caret.setAttribute('data-leaf', 'true');
+        return;
+      }
+
+      /* start collapsed */
+      sub.hidden = true;
+
+      caret.addEventListener('click', () => {
+        const open = caret.getAttribute('aria-expanded') === 'true';
+        caret.setAttribute('aria-expanded', !open);
+        sub.hidden = open;
+      });
+
+      /* also expand caret branch if its link matches current hash */
+      if (location.hash && link?.hash === location.hash) {
+        caret.click();
+      }
+    });
+  });
+});
+</script>
+
+<!-- page dark mode stuff -->
+<script>
+(() => {
+  const root = document.documentElement;
+  const favicon = document.getElementById('favicon');
+
+  // helper to flip theme + favicon
+  const setDark = on => {
+    root.classList.toggle('dark', on);
+    if (favicon) favicon.href = on ? '/media/favicon-dark.png'
+                                   : '/media/favicon.png';
+    localStorage.setItem('theme', on ? 'dark' : 'light');
+  };
+
+  // click delegation — one listener covers every button
+  document.addEventListener('click', e => {
+    if (e.target.closest('[data-theme-toggle]')) {
+      setDark(!root.classList.contains('dark'));
+    }
+  });
+})();
+</script>
+
+<script src='{{ "/js/lightbox.js" | relURL }}'></script>
+<!-- TODO remove if loads doesn't have tippy -->
+<script src='{{ "/js/hovercard.js" | relURL }}'></script>
+
+

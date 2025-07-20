@@ -1,0 +1,19 @@
+{{/*  Usage
+      {{< columns gap="2em" class="my-layout" >}}
+        {{< column >}} … {{< /column >}}
+        {{< column >}} … {{< /column >}}
+        …
+      {{< /columns >}}
+*/}}
+
+{{ $gap   := default "2em"   (.Get "gap") }}
+{{ $class := default ""      (.Get "class") }}
+
+<style>
+.columns-{{ .Ordinal }}           {display:flex;flex-wrap:wrap;gap:{{ $gap }};}
+.columns-{{ .Ordinal }} .column   {flex:1 1 0;min-width:200px;}
+</style>
+
+<div class="columns-{{ .Ordinal }} {{ $class | htmlEscape }}">
+  {{ .Inner }}
+</div>

@@ -1,0 +1,100 @@
+{{ $page := .page }}
+{{ $index := .index }}
+{{ $enableLayoutAlternation := .enableLayoutAlternation }}
+{{ $plainifySummary := .plainifySummary }}
+{{ $truncateSummaryAfter := .truncateSummaryAfter }}
+
+<div class="grid-item {{ if and $enableLayoutAlternation (mod (add $index 2) 2) }}reverse-order{{ end }}" style="display: flex;">
+  {{ $thumbnailExists := false }}
+  {{ $imageSrc := "" }}
+  {{ $imageAlt := "" }}
+
+  {{ if $page.Params.thumbnail }}
+    {{ $baseDir := default "content" (default $page.Site.Params.base_dir $page.Params.base_dir) }}
+
+    {{/* --- Strategy 1: External Image alongside content file (e.g., in content/posts/post-name/image.png) --- */}}
+    {{ $potentialImagePath := path.Join $page.File.Dir $page.Params.thumbnail }}
+    {{ if fileExists (path.Join $baseDir $potentialImagePath) }}
+      {{ $imageSrc = $potentialImagePath | relURL }}
+      {{ $imageAlt = $page.Title }} {{/* Fallback alt text */}}
+      {{ if $page.Params.thumbnail_alt }} {{/* Optional custom alt text */}}
+        {{ $imageAlt = $page.Params.thumbnail_alt }}
+      {{ end }}
+      {{ $thumbnailExists = true }}
+
+    {{ else }}
+      {{/* --- Strategy 2: Page Bundle Image (e.g., image in same folder as index.md) --- */}}
+      {{/* Determine the actual path/name for GetMatch based on whether .Params.thumbnail is a string or an object */}}
+      {{ $resourceMatch := "" }}
+      {{ if reflect.IsMap $page.Params.thumbnail }} {{/* Check if it's a map/object */}}
+        {{ $resourceMatch = $page.Params.thumbnail.src }}
+      {{ else }} {{/* Assume it's a string */}}
+        {{ $resourceMatch = $page.Params.thumbnail }}
+      {{ end }}
+
+      {{ if $page.Resources.GetMatch $resourceMatch }}
+        {{ with $page.Resources.GetMatch $resourceMatch }}
+          {{ $resizedThumbnail := .Resize "300x180" }} {{/* Optimized size for grid item */}}
+          {{ $imageSrc = $resizedThumbnail.RelPermalink }}
+          {{ $imageAlt = .Title }} {{/* Fallback alt text */}}
+          {{ if $page.Params.thumbnail_alt }} {{/* Use $page.Params to access params of the current page in the loop */}}
+            {{ $imageAlt = $page.Params.thumbnail_alt }}
+          {{ end }}
+          {{ $thumbnailExists = true }}
+        {{ end }}
+      {{ end }} {{/* End if .Resources.GetMatch */}}
+
+    {{ end }} {{/* End if fileExists (path.Join $baseDir $potentialImagePath) */}}
+
+  {{ end }} {{/* End if .Params.thumbnail */}}
+
+  <div class="content-padding" style="display: flex; flex-direction: column; justify-content: space-between;">
+    <h3><a href="{{ $page.RelPermalink }}" style="text-decoration: none; color: inherit;">{{ $page.Title }}</a></h3>
+    {{ if $page.Summary }}
+      {{ $processedSummary := $page.Summary }}
+      {{ if $plainifySummary }}
+        {{ $processedSummary = $processedSummary | plainify }}
+      {{ end }}
+      <p>{{ $processedSummary | truncate $truncateSummaryAfter }}</p>
+    {{ end }}
+    <p style="margin-top: auto;"><a href="{{ $page.RelPermalink }}" style="text-decoration: none; color: inherit;">Read More...</a></p>
+  </div>
+
+  {{ if $imageSrc }}
+    <div class="thumbnail-padding">
+      <a href="{{ $page.RelPermalink }}" style="text-decoration: none; color: inherit;">
+        {{ if $thumbnailExists }}
+          <img src="{{ $imageSrc }}" alt="{{ $imageAlt }}">
+        {{ end }}
+      </a>
+    </div>
+  {{ end }}
+</div>
+
+<!-- 
+    <div class="grid-item {{ if and $enableLayoutAlternation (mod (add $index 2) 2) }}reverse-order{{ end }}">
+      {{ $imageSrc := "" }}
+      {{ $imageAlt := "" }}
+      {{ if $page.Params.thumbnail }}
+        {{ with $page.Resources.GetMatch $page.Params.thumbnail }}
+          {{ $imageSrc = .RelPermalink }}
+          {{ $imageAlt = .Title }}
+        {{ end }}
+      {{ end }}
+
+      <div class="content-padding" style="display: flex; flex-direction: column; justify-content: space-between;">
+        <div>
+            <h3><a href="{{ $page.RelPermalink }}">{{ $page.Title }}</a></h3>
+            {{ $summary := cond $plainifySummary ($page.Summary | plainify) $page.Summary }}
+            <p>{{ $summary | truncate $truncateSummaryAfter }}</p>
+        </div>
+        <p style="margin-top: auto;"><a href="{{ $page.RelPermalink }}">Read More...</a></p>
+      </div>
+
+      {{ if $imageSrc }}
+      <div class="thumbnail-padding">
+        <a href="{{ $page.RelPermalink }}"><img src="{{ $imageSrc }}" alt="{{ $imageAlt }}"></a>
+      </div>
+      {{ end }}
+    </div>
+    -->

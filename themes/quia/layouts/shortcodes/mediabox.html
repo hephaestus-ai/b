@@ -1,0 +1,213 @@
+{{/* -----------------------------------------------------------------
+      Multi-purpose media/info block
+      Params:
+        type          = note | image | video | chart | anything
+        title         = visible label (“World GDP”, “Box 3: Euler’s Identity”)
+        id            = override the auto-generated anchor id
+        src           = path/URL for image, video, chart thumbnail, etc.
+        caption       = optional caption below the content
+        align         = right | left | center | inline   (default: right)
+        width         = any CSS width / max-width         (default: 40%)
+        class         = extra CSS classes
+        clear         = true  → clears previous floats before this box
+        layout        = editorial | right-sidecar | left-sidecar
+                        | top-banner | bottom-banner    (default: editorial)
+        border        = true | false                    (default: true)
+        titleUnderline = true | false                    (default: true)
+        greyBg        = true | false                    (default: false)
+        reverse       = true | false                    (default: false)
+        fullscreen    = true | false                    (default: false)
+        mobileFull    = true | false                    (default: true)
+        marginBottom  = any CSS length  → extra margin-bottom (optional)
+
+        cite          = reference to a citation in the page header
+        citeStyle   = text | apa | chicago | mla        (default: text)
+        citeOverride  = supply a [markdown](link). overrides cite and citeStyle
+        source      = same as citeOverride
+------------------------------------------------------------------ */}}
+
+{{/* --- Parameter Processing --- */}}
+{{ $type          := .Get "type"          | default "note" }}
+{{ $align         := .Get "align"         | default "right" }}
+{{ $width         := .Get "width"         | default "40%" }}
+{{ $layout        := .Get "layout"        | default "editorial" }}
+{{ $fullscreen    := .Get "fullscreen"    | default false }}
+{{ $mobileFull    := ne (.Get "mobileFull") "false" }}
+{{ $marginBottom  := .Get "marginBottom" }}
+
+{{ $border          := ne (.Get "border")          "false" }}
+{{ $titleUnderline := ne (.Get "titleUnderline") "false" }}
+{{ $greyBg          := eq (.Get "greyBg")          "true"  }}
+{{ $reverse         := eq (.Get "reverse")         "true"  }}
+
+{{ $n := add 1 (or ($.Page.Scratch.Get "mediaboxcounter") 0) }}
+{{ $.Page.Scratch.Set "mediaboxcounter" $n }}
+{{ $id          := .Get "id"    | default (printf "box-%d" $n) }}
+
+{{/* Change 1: If title is empty, do not render any title at all */}}
+{{ $title_param := .Get "title" }}
+{{ $title_text := "" }}
+{{ if $title_param }}
+    {{ $title_text = $title_param }}
+{{ else }}
+    {{ $title_text = printf "Box %d" $n }}
+{{ end }}
+
+
+{{ $class := printf "mediabox mediabox-%s mediabox-layout-%s align-%s %s" $type $layout $align (.Get "class") }}
+{{ if not $border }}            {{ $class = printf "%s mediabox-no-border"          $class }}{{ end }}
+{{ if not $titleUnderline }} {{ $class = printf "%s mediabox-no-title-underline" $class }}{{ end }}
+{{ if $greyBg }}              {{ $class = printf "%s mediabox-grey-background"    $class }}{{ end }}
+{{ if $reverse }}             {{ $class = printf "%s mediabox-reverse"            $class }}{{ end }}
+{{ if $mobileFull }}          {{ $class = printf "%s mediabox-mobile-full"        $class }}{{ end }}
+
+{{/* --- Content Elements --- */}}
+
+{{ $titlePart   := "" }}
+{{ if $title_param }} {{/* Only create titlePart if title_param is provided */}}
+    {{ $titlePart   = printf `<figcaption class="mediabox-title">%s</figcaption>` $title_text }}
+{{ end }}
+
+{{ $contentPart := "" }}
+{{ $expandBtn   := "" }}
+
+{{ if (gt (len .Inner) 0) }}
+  {{ $contentPart = .Inner | markdownify }}
+{{ else }}
+  {{ with .Get "src" }}
+    {{ $src := . }}
+    {{/* Change 2: If src points to a directory, grab a random image/media item */}}
+	{{ if (strings.HasSuffix $src "/") }}
+		{{ $dir_path    := printf "content/%s" (trim $src "/") }}
+		{{ $files       := readDir $dir_path }}
+		{{ $media_files := slice }}
+
+		{{ range $files }}
+			{{ $ext := lower (path.Ext .Name) }}
+			{{ if in (slice ".jpg" ".jpeg" ".png" ".gif" ".webp" ".mp4" ".webm") $ext }}
+				{{ $media_files = $media_files | append (printf "%s%s" $src .Name) }}
+			{{ end }}
+		{{ end }}
+
+		{{ if len $media_files }}
+			{{ $json    := $media_files | jsonify | htmlEscape }}
+			{{ $div     := printf `<div class="random-media" data-srcs='%s' data-alt='%s'></div>` $json $title_text }}
+			{{ $script  := "" }}
+
+			{{ if not (isset $.Page.Scratch "randomMediaScript") }}
+				{{ $.Page.Scratch.Set "randomMediaScript" true }}
+				{{ $script = `<script>
+					document.addEventListener('DOMContentLoaded',function(){
+					  document.querySelectorAll('.random-media').forEach(function(box){
+						const list = JSON.parse(decodeURIComponent(box.dataset.srcs||'[]'));
+						if(!list.length) return;
+						const pick = list[Math.floor(Math.random()*list.length)];
+						const ext  = pick.split('.').pop().toLowerCase();
+						const alt  = box.dataset.alt || '';
+						if(['jpg','jpeg','png','gif','webp'].includes(ext)){
+						  box.innerHTML = '<img loading="lazy" src=\"'+pick+'\" alt=\"'+alt+'\">';
+						} else if(['mp4','webm'].includes(ext)){
+						  box.innerHTML = '<video controls src=\"'+pick+'\"></video>';
+						}
+					  });
+					});
+					</script>` }}
+			{{ end }}
+
+			{{ $contentPart = printf "%s%s" $div $script | safeHTML }}
+		{{ else }}
+			{{ $contentPart = printf `<p>No media found in directory: %s</p>` $src | safeHTML }}
+		{{ end }}
+	{{ else }}
+		{{ if and (eq $type "image") $src }}
+			{{ $contentPart = printf `<img loading="lazy" src="%s" alt="%s">` $src $title_text }}
+		{{ else if and (eq $type "video") $src }}
+			{{ $contentPart = printf `<video controls src="%s"></video>` $src }}
+		{{ else if and (eq $type "chart") $src }}
+			{{ $contentPart = printf `<img loading="lazy" src="%s" alt="%s">` $src $title_text }}
+		{{ end }}
+	{{ end }}
+  {{ end }}
+{{ end }}
+
+{{ if $fullscreen }}
+  {{ $expandBtn = `<button class="mediabox-expand" aria-label="Show full screen" onclick="mediaboxExpand(this)">⤢</button>` }}
+{{ end }}
+
+{{ $contentPart = printf `<div class="mediabox-content">%s%s</div>` $contentPart $expandBtn }}
+
+{{ $captionPart := "" }}
+{{ with .Get "caption" }}
+  {{ $captionPart = printf `<figcaption class="mediabox-caption">%s</figcaption>` (. | markdownify) }}
+{{ end }}
+
+{{/* ---------- citation handling ---------- */}}
+{{/* grab params (if any) */}}
+{{ $citeRef    := .Get "cite" }}
+{{ $citeStyle  := .Get "citeStyle" | default "text" | lower }}
+{{ $overrideMD := .Get "citeOverride" }}
+
+{{/* if citeOverride is supplied, use it verbatim */}}
+{{ $citePart := "" }}
+{{ with $overrideMD }}
+  {{ $sourceHTML := . | markdownify }}
+  {{ $sourceHTML = replace $sourceHTML `<a href` `<a target="_blank" rel="noopener" href` }}
+  {{ $citePart = printf `<div class="mediabox-citation">%s</div>` $sourceHTML }}
+{{ end }}
+
+{{/* otherwise, look up the citation map by key and run the formatter */}}
+{{ if and (eq $citePart "") $citeRef }}
+  {{ $cites := $.Page.Params.citations }}
+  {{ $entry := index $cites $citeRef }}
+  {{ if $entry }}
+    {{ $rendered := partial "citation.html" (dict "cite" $entry "style" $citeStyle) }}
+    {{ $citePart = printf `<div class="mediabox-citation">%s</div>` $rendered }}
+  {{ else }}
+    {{ $citePart = printf `<div class=\"mediabox-citation\">[missing citation: %s]</div>` $citeRef }}
+  {{ end }}
+{{ end }}
+
+{{/* --- Style Attribute Construction --- */}}
+{{ $style := printf "max-width:%s;" $width }}
+{{ if and (eq $captionPart "") (eq $citePart "") }}
+  {{ $style = printf "%spadding-bottom:0.5em;" $style }}
+{{ end }}
+{{ with $marginBottom }}
+  {{ $style = printf "%s margin-bottom:%s;" $style . }}
+{{ end }}
+
+{{ if eq (.Get "clear") "true" }}<div style="clear:both;"></div>{{ end }}
+<figure id="{{ $id }}"
+         class="{{ $class | safeHTMLAttr }}"
+         style="{{ $style | safeCSS }}">
+  {{ if eq $layout "top-banner" }}
+    {{ $titlePart   | safeHTML }}
+    {{ $captionPart | safeHTML }}
+    {{ $contentPart | safeHTML }}
+    {{ $citePart  | safeHTML }}
+  {{ else if eq $layout "bottom-banner" }}
+    {{ $contentPart | safeHTML }}
+    {{ $titlePart   | safeHTML }}
+    {{ $captionPart | safeHTML }}
+    {{ $citePart  | safeHTML }}
+  {{ else if eq $layout "right-sidecar" }}
+    {{ $contentPart | safeHTML }}
+    <div class="mediabox-text-wrapper">
+      {{ $titlePart   | safeHTML }}
+      {{ $captionPart | safeHTML }}
+      {{ $citePart  | safeHTML }}
+    </div>
+  {{ else if eq $layout "left-sidecar" }}
+    <div class="mediabox-text-wrapper">
+      {{ $titlePart   | safeHTML }}
+      {{ $captionPart | safeHTML }}
+      {{ $citePart  | safeHTML }}
+    </div>
+    {{ $contentPart | safeHTML }}
+  {{ else }}
+    {{ $titlePart   | safeHTML }}
+    {{ $contentPart | safeHTML }}
+    {{ $captionPart | safeHTML }}
+    {{ $citePart  | safeHTML }}
+  {{ end }}
+</figure>

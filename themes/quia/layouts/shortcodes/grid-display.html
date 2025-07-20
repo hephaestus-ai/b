@@ -1,0 +1,319 @@
+{{/*
+Shortcode: grid-display.html
+Renders a NON-PAGINATED grid of pages.
+Sources pages by filtering, from a data file, or from a section.
+*/}}
+
+{{/* --- Determine page source --- */}}
+{{ $pages := slice }}
+{{ if .IsNamedParams }}
+  {{/* Method 1: Filter by a front matter parameter (e.g., featured: true) */}}
+  {{ with .Get "filter_by" }}
+    {{ $key := . }}
+    {{ $val := $.Get "filter_value" | default true }}
+    {{ $pages = where site.RegularPages.ByPublishDate.Reverse "Params" $key $val }}
+  {{/* Method 2: Load from a data file (e.g., data/my_list.yaml) */}}
+  {{ else with .Get "data_file" }}
+    {{ with index site.Data . }}
+      {{ range . }}
+        {{ with site.GetPage . }}
+          {{ $pages = $pages | append . }}
+        {{ end }}
+      {{ end }}
+    {{ end }}
+  {{/* Method 3 (Fallback): Load all pages from a section */}}
+  {{ else with .Get "section" }}
+    {{ $pages = where site.RegularPages "Section" . }}
+  {{ end }}
+{{ end }}
+
+{{/* --- Get display parameters from the shortcode call --- */}}
+{{ $maxCols := .Get "max_cols" | default 3 }}
+{{ $twoThridsColsFloored := int (math.Max 1.0 (math.Floor (div (mul (float $maxCols) 2) 3))) }}
+{{ $oneThridsColsFloored := int (math.Max 1.0 (math.Floor (div (mul (float $maxCols) 1) 3))) }}
+{{ $showBorder := .Get "item_border" | default true }}
+{{ $pageHeight := .Get "item_height" | default "24em" }}
+{{ $truncateSummaryAfter := .Get "truncate_summary_after" | default 240 }}
+{{ $plainifySummary := .Get "plainify_summary" | default true }}
+{{ $enableLayoutAlternation := .Get "enable_layout_alternation" | default false }}
+{{ $layoutOption := .Get "layout_option" | default "editorial" }}
+{{ $sectionHeader := .Get "header" }}
+
+<style>
+  .content h1, .content h2, .content h3 {
+  }
+
+  /* --- Grid Container --- */
+  .grid-container {
+    display: grid;
+    grid-template-columns: repeat({{ $maxCols }}, 1fr);
+    gap: 1.5em;
+    margin: 1.6em auto; /* Center the container horizontally */
+    padding: 0em;
+  }
+
+  /* --- Individual Grid Item (Card) --- */
+  .grid-item {
+    background-color: var(--bg);
+    {{ if $showBorder }}
+    border: 1px solid var(--border);
+    {{ else }}
+    border: none;
+    {{ end }}
+    border-radius: 6px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: row;
+    text-decoration: none;
+    color: var(--fg); /* Using theme variable for text color */
+    height:{{$pageHeight}};
+  }
+  
+  .grid-item.reverse-order {
+    flex-direction: row-reverse; /* Reverses the order of children */
+  }
+
+  /* --- Image within Grid Item --- */
+  .grid-item img {
+    height: 100%;
+    object-fit: cover;
+    border-bottom: 1px solid var(--border); /* Using theme variable for border */
+    border-radius: 6px;
+  }
+
+  /* --- Content Area within Grid Item --- */
+  .grid-item .content-padding {
+    padding: 1em;
+  }
+  
+  .thumbnail-padding {
+    margin: auto;
+    height: 90%;
+    padding: 1em;
+  }
+
+  .grid-item h3 {
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+    margin-right: 0em;
+    font-size: 1.2em;
+    line-height: 1.3;
+    color: var(--link); /* Ensure heading color matches foreground */
+  }
+
+  .grid-item p {
+    font-size: 0.9em;
+    color: var(--fg-muted); /* Using theme variable for muted text */
+    margin-bottom: 0;
+    line-height: 1.4;
+  }
+
+  /* --- Links within Grid Items --- */
+  .grid-item a {
+    color: var(--link); /* Apply link color to the entire card link */
+    text-decoration: none; /* Keep the card as a whole without an underline */
+  }
+
+  .grid-item a:hover {
+    color: var(--link-hover);
+  }
+
+  .grid-item a:visited {
+    color: var(--link-visited);
+  }
+
+  /* --- Pagination Styles (Refined) --- */
+  .pagination {
+    text-align: center;
+    margin: 1em auto; /* Adjust margin as needed */
+    padding: 0 1.25em;
+    max-width: 1200px; /* Aligns with your grid container width */
+  }
+
+  .pagination ul {
+    list-style: none;
+    font-size: 18px;
+    padding: 0;
+    margin: 0;
+    display: inline-block; /* Centers the ul itself */
+    /* Add some spacing between the list of buttons and the navigation itself */
+    white-space: nowrap; /* Prevent wrapping of pagination items on small screens too early */
+  }
+
+  .pagination li {
+    display: inline-block; /* Use inline-block for better spacing control */
+    margin: 0; /* Slightly reduce spacing between buttons */
+    vertical-align: middle; /* Ensures consistent alignment if button sizes vary */
+  }
+
+  .pagination a,
+  .pagination span {
+    display: inline-flex; /* Use flexbox for centering text within buttons */
+    align-items: center; /* Vertically center content */
+    justify-content: center; /* Horizontally center content */
+    min-width: 0.5em; /* Give buttons a minimum width for consistent sizing */
+    height: 0.5em; /* Give buttons a consistent height */
+    padding: 0.5em 0.15em; /* Adjusted padding, less horizontal as min-width takes over */
+    /* border: 1px solid var(--border); /* Use your theme's border color */
+    /* border-radius: 6px; /* Slightly rounded corners for a softer look, or 0 for sharp */
+    text-decoration: none;
+    font-size: 0.9em; /* Adjust font size if needed */
+    font-weight: 500; /* Make numbers a bit bolder */
+    transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease; /* Smooth transitions */
+    box-sizing: border-box; /* Include padding and border in the element's total width and height */
+  }
+
+  /* Default state for non-active links */
+  .pagination a {
+    color: var(--link); /* Link color for non-active pages */
+    background-color: var(--bg); /* Your default background color */
+    border-color: var(--border); /* Your default border color */
+  }
+
+  /* Hover state for links */
+  .pagination a:hover {
+    background-color: var(--bg-alt); /* A slightly different background on hover */
+    color: var(--link-hover);
+    border-color: var(--link-hover); /* Or a slightly darker border */
+  }
+
+  /* Visited state (optional, can be same as normal link) */
+  .pagination a:visited {
+    color: var(--link-visited); /* If you have a specific visited link color */
+  }
+
+  /* Active page (current page) */
+  .pagination .page-item.active .page-link,
+  .pagination .page-item.active span { /* Ensure span for active page is styled */
+    background-color: var(--primary); /* Use a primary accent color for active */
+    color: var(--primary-fg); /* Text color for the primary accent background */
+    border-color: var(--primary); /* Border color matching primary */
+    cursor: default; /* Indicate it's not clickable */
+  }
+
+  /* Disabled items (Previous/Next when at start/end) */
+  .pagination .page-item.disabled .page-link,
+  .pagination .page-item.disabled span { /* Target span for disabled as well */
+    color: var(--fg-muted); /* Muted text color for disabled */
+    background-color: var(--bg); /* Keep the background consistent */
+    border-color: var(--border); /* Keep the border consistent */
+    pointer-events: none; /* Prevent click events */
+    opacity: 0.6; /* Optionally make them slightly transparent */
+  }
+
+  /* --- New Layout Specific Styles --- */
+  .grid-wrapper-sidecar {
+    display: flex;
+    gap: 2em; /* Space between content and grid */
+    align-items: flex-start; /* Align items to the top */
+    padding: 1.6em 0; /* Add some top/bottom padding */
+  }
+
+  .grid-wrapper-sidecar.left-half-sidecar {
+    flex-direction: row;
+  }
+
+  .grid-wrapper-sidecar.right-half-sidecar {
+    flex-direction: row-reverse; /* Swap order for right-sidecar */
+  }
+
+  .sidecar-content {
+    flex: 1; /* Takes up one part of the available space */
+    padding-right: 1em; /* Spacing for left sidecar */
+  }
+
+  .grid-wrapper-sidecar.right-half-sidecar .sidecar-content {
+    padding-right: 0;
+    padding-left: 1em; /* Spacing for right sidecar */
+  }
+
+  .sidecar-grid {
+    flex: 2; /* Takes up two parts of the available space (e.g., 66%) */
+  }
+
+  /* --- New Section Header Style --- */
+  .grid-section-header {
+    text-align: center; /* Center the header */
+    padding-bottom: 0.28em; 
+    color: var(--fg); /* Use your foreground color */
+    font-size: 2em; /* Adjust size as needed */
+  }
+
+  @media (max-width: 1500px) {
+    .grid-container {
+      grid-template-columns: repeat({{ $twoThridsColsFloored }}, 1fr);
+    }
+    
+    body {padding-left:6em;}
+    .content {
+      margin-right: -7.5em;
+    }
+    .grid-wrapper-sidecar { /* Stack sidecar content on smaller screens */
+        flex-direction: column !important;
+    }
+    .sidecar-content {
+        padding-right: 0;
+        padding-left: 0;
+    }
+  }
+  
+  @media (max-width: 1200px) {
+    .grid-container {
+      grid-template-columns: repeat({{ $oneThridsColsFloored }}, 1fr);
+    }
+  }
+
+  @media (max-width: 900px) {
+    body {
+      margin-left: 3.5em;
+      padding: 0;
+    }
+    .grid-container {
+      grid-template-columns: 1fr;
+    }
+    .content {
+      margin-right: 0em;
+    }
+    #main {
+      margin-left:0em;
+    }
+  }
+</style>
+
+{{/* --- Render optional section header --- */}}
+{{ if $sectionHeader }}
+  <h2 class="grid-section-header">{{ $sectionHeader }}</h2>
+{{ end }}
+{{/* --- Conditional rendering based on layout_option --- */}}
+{{ if eq $layoutOption "editorial" }}
+  <div class="grid-container">
+    {{ range $index, $page := $pages }}
+      {{ partial "grid-item.html" (dict 
+        "page" $page 
+        "index" $index 
+        "enableLayoutAlternation" $enableLayoutAlternation 
+        "plainifySummary" $plainifySummary 
+        "truncateSummaryAfter" $truncateSummaryAfter
+      ) }}
+    {{ end }}
+  </div>
+{{ else if or (eq $layoutOption "left-half-sidecar") (eq $layoutOption "right-half-sidecar") }}
+  <div class="grid-wrapper-sidecar {{ $layoutOption }}">
+    <div class="sidecar-content" style="margin-top:2.7em">
+      {{ .Inner | markdownify }} {{/* This will render the content between the shortcode tags */}}
+    </div>
+    <div class="sidecar-grid">
+      <div class="grid-container">
+        {{ range $index, $page := $pages }}
+          {{ partial "grid-item.html" (dict 
+            "page" $page 
+            "index" $index 
+            "enableLayoutAlternation" $enableLayoutAlternation 
+            "plainifySummary" $plainifySummary 
+            "truncateSummaryAfter" $truncateSummaryAfter
+          ) }}
+        {{ end }}
+      </div>
+    </div>
+  </div>
+{{ end }}

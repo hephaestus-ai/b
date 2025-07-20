@@ -1,0 +1,148 @@
+{{/* ────────────────────────────────────────────────────────────────
+  graphbox — Graphviz in a mediabox shell                v1.1
+  Params
+    file        = path to a DOT file in /assets or /static  (optional)
+                  – uses readFile (so allow in config)
+    engine      = dot | neato | circo | fdp | sfdp | twopi (default "dot")
+    height      = CSS height of container   (default "400px")
+
+  Mediabox extras:
+    title, id, align, width, class, caption, source,
+    layout, border, titleUnderline, greyBg, reverse, clear,
+    mobileFull, marginBottom   ← NEW
+──────────────────────────────────────────────────────────────── */}}
+
+{{/* ── grab DOT source ─────────────────────────────────────────── */}}
+{{ $dot := trim .Inner "\n\r\t " }}
+{{ if eq $dot "" }}
+  {{ $filePath := .Get "file" }}
+  {{ if eq $filePath "" }}
+    {{ errorf "graphbox: supply DOT code inside shortcode or with file=\"path\"" }}
+  {{ end }}
+  {{ $dot = readFile $filePath | default "" }}
+  {{ if eq $dot "" }}
+    {{ errorf "graphbox: file %q not found or empty" $filePath }}
+  {{ end }}
+{{ end }}
+
+{{/* ── parameters ─────────────────────────────────────────────── */}}
+{{ $engine        := .Get "engine" | default "dot" }}
+
+{{ $type          := "graph" }}
+{{ $align         := .Get "align"         | default "right" }}
+{{ $width         := .Get "width"         | default "45%" }}
+{{ $height        := .Get "height" | default "0%" }}
+{{ $layoutBox     := .Get "layout"        | default "editorial" }}
+{{ $mobileFull    := ne (.Get "mobileFull") "false" }}
+{{ $marginBottom  := .Get "marginBottom" }}
+
+{{ $border         := ne (.Get "border")         "false" }}
+{{ $titleUnderline := ne (.Get "titleUnderline") "false" }}
+{{ $greyBg         := eq (.Get "greyBg")         "true"  }}
+{{ $reverse        := eq (.Get "reverse")        "true"  }}
+
+{{ $n := add 1 (or ($.Page.Scratch.Get "mediaboxcounter") 0) }}
+{{ $.Page.Scratch.Set "mediaboxcounter" $n }}
+{{ $id         := .Get "id"    | default (printf "box-%d" $n) }}
+{{ $titleText  := .Get "title" | default (printf "Graph %d" $n) }}
+{{ $divId      := printf "%s-graph" $id }}
+
+{{/* ── class list ------------------------------------------------ */}}
+{{ $class := printf "mediabox mediabox-%s mediabox-layout-%s align-%s %s" $type $layoutBox $align (.Get "class") }}
+{{ if not $border }}         {{ $class = printf "%s mediabox-no-border"          $class }}{{ end }}
+{{ if not $titleUnderline }} {{ $class = printf "%s mediabox-no-title-underline" $class }}{{ end }}
+{{ if $greyBg }}             {{ $class = printf "%s mediabox-grey-background"    $class }}{{ end }}
+{{ if $reverse }}            {{ $class = printf "%s mediabox-reverse"            $class }}{{ end }}
+{{ if $mobileFull }}         {{ $class = printf "%s mediabox-mobile-full"        $class }}{{ end }}
+
+{{/* ── figure parts --------------------------------------------- */}}
+{{ $titlePart := printf `<figcaption class="mediabox-title">%s</figcaption>` $titleText }}
+
+{{ $contentPart := printf `<div class="mediabox-content"><div id="%s" style="width:100%%;display:flex;justify-content:center;text-align:center;"></div></div>` $divId }}
+
+{{ $captionPart := "" }}
+{{ with .Get "caption" }}
+  {{ $captionPart = printf `<figcaption class="mediabox-caption">%s</figcaption>` (. | markdownify) }}
+{{ end }}
+
+{{/* ---------- citation handling ---------- */}}
+{{/* grab params (if any) */}}
+{{ $citeRef    := .Get "cite" }}
+{{ $citeStyle  := .Get "citeStyle" | default "text" | lower }}
+{{ $overrideMD := .Get "citeOverride" }}
+
+{{/* if citeOverride is supplied, use it verbatim */}}
+{{ $citePart := "" }}
+{{ with $overrideMD }}
+  {{ $sourceHTML := . | markdownify }}
+  {{ $sourceHTML = replace $sourceHTML `<a href` `<a target="_blank" rel="noopener" href` }}
+  {{ $citePart = printf `<div class="mediabox-citation">%s</div>` $sourceHTML }}
+{{ end }}
+
+{{/* otherwise, look up the citation map by key and run the formatter */}}
+{{ if and (eq $citePart "") $citeRef }}
+  {{ $cites := $.Page.Params.citations }}
+  {{ $entry := index $cites $citeRef }}
+  {{ if $entry }}
+    {{ $rendered := partial "citation.html" (dict "cite" $entry "style" $citeStyle) }}
+    {{ $citePart = printf `<div class="mediabox-citation">%s</div>` $rendered }}
+  {{ else }}
+    {{ $citePart = printf `<div class=\"mediabox-citation\">[missing citation: %s]</div>` $citeRef }}
+  {{ end }}
+{{ end }}
+
+{{/* ── style string --------------------------------------------- */}}
+{{ $style := printf "max-width:%s;;" $width }}
+{{ if and (eq $captionPart "") (eq $citePart "") }}
+  {{ $style = printf "%spadding-bottom:0.5em;" $style }}
+{{ end }}
+{{ with $marginBottom }}
+  {{ $style = printf "%s margin-bottom:%s;" $style . }}
+{{ end }}
+
+{{/* ── render figure -------------------------------------------- */}}
+{{ if eq (.Get "clear") "true" }}<div style="clear:both;"></div>{{ end }}
+<figure id="{{ $id }}"
+        class="{{ $class | safeHTMLAttr }}"
+        style="{{ $style | safeCSS }}">
+  {{ if eq $layoutBox "top-banner" }}
+    {{ $titlePart   | safeHTML }}{{ $captionPart | safeHTML }}
+    {{ $contentPart | safeHTML }}{{ $citePart  | safeHTML }}
+  {{ else if eq $layoutBox "bottom-banner" }}
+    {{ $contentPart | safeHTML }}{{ $titlePart   | safeHTML }}
+    {{ $captionPart | safeHTML }}{{ $citePart  | safeHTML }}
+  {{ else if eq $layoutBox "right-sidecar" }}
+    {{ $contentPart | safeHTML }}
+    <div class="mediabox-text-wrapper">
+      {{ $titlePart   | safeHTML }}{{ $captionPart | safeHTML }}{{ $citePart | safeHTML }}
+    </div>
+  {{ else if eq $layoutBox "left-sidecar" }}
+    <div class="mediabox-text-wrapper">
+      {{ $titlePart   | safeHTML }}{{ $captionPart | safeHTML }}{{ $citePart | safeHTML }}
+    </div>
+    {{ $contentPart | safeHTML }}
+  {{ else }}
+    {{ $titlePart   | safeHTML }}{{ $contentPart | safeHTML }}
+    {{ $captionPart | safeHTML }}{{ $citePart | safeHTML }}
+  {{ end }}
+</figure>
+
+{{/* ── inline Viz.js bootstrap ---------------------------------- */}}
+<script>
+(() => {
+  const dot  = {{ $dot | jsonify | safeJS }};
+  const host = document.getElementById("{{ $divId }}");
+  if (!host || typeof Viz === "undefined") return;
+
+  (async () => {
+    try {
+      const viz = new Viz();
+      const svg = await viz.renderString(dot, { engine: "{{ $engine }}" });
+      host.innerHTML = svg;
+    } catch (err) {
+      host.textContent = "Graphviz error: " + err.message;
+      console.error(err);
+    }
+  })();
+})();
+</script>

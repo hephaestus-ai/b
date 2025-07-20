@@ -1,0 +1,12 @@
+{{/* {{< toc >}}  – self-contained, namespaced, foldable  */}}
+
+{{- $toc := .Page.TableOfContents -}}
+{{- if gt (len $toc) 0 }}
+<div class="post-toc" id="postToc-{{ .Page.File.UniqueID }}">
+  <h2 class="post-toc__title">Table of contents</h2>
+
+  <div class="post-toc__list">
+    {{ $toc }}
+  </div>
+</div>
+{{- end }}

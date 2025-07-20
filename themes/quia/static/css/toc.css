@@ -1,0 +1,166 @@
+/* ----- Container -------------------------------------------------------- */
+.post-toc {
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--bg);
+  padding: 1em;
+  margin-top: 1.25em;
+  margin-bottom: 1.25em;
+  margin-left: 1.3em;
+  margin-right: 0.5em;
+  font-size: 0.95em;
+  color: var(--fg);                /* same base body color */
+
+
+      max-width: 42.25em;
+
+}
+
+/* title row */
+.post-toc__title {
+  margin: 0 0 .6em 0;
+  margin-left: 2em;
+  margin-right: 2em;
+  padding-right: 1.82em;
+  font-size: 1.05em;
+  text-align: right;               /* mirrors side-nav alignment */
+  color: var(--fg);
+}
+
+/* scrollbox */
+.post-toc__list {
+  overflow-y: auto;
+  /*max-height: 60vh;*/
+  padding-right: 0.5em;
+  scrollbar-width: thin;
+  scrollbar-color: var(--border) transparent;
+}
+
+.post-toc__list::-webkit-scrollbar       { width: 6px; }
+.post-toc__list::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+
+/* ----- List hierarchy ----- */
+nav {
+  margin-left: 2.25em;
+}
+
+.post-toc__list ul,
+.post-toc__list ol {
+  margin-left:1.4em;
+}
+
+.post-toc__list li {
+  margin: .25em 0;
+  gap: .25em;
+  align-items: baseline;
+}
+
+.post-toc__list li a {
+  overflow: hidden;
+}
+
+/* depth styling */
+.post-toc__list > ul  > li, .post-toc__list > ol  > li { font-weight: 600; }
+.post-toc__list > ul  > li > ul > li, .post-toc__list > ol  > li > ol > li { font-weight: 500; font-size: .93em; }
+.post-toc__list > ul  > li > ul > li > ul > li, .post-toc__list > ol  > li > ol > li > ol > li { font-weight: 400; font-size: .87em; opacity: .85; }
+
+
+/* generic list reset */
+.post-toc__list ul,
+.post-toc__list ol{
+	list-style-type: decimal;
+}
+
+/* link appearance */
+.post-toc__list a {
+  text-decoration: none;
+  color: var(--fg);
+  position: relative;
+  line-height: 1.4;
+}
+
+/* hover underline (same “fade-in” you use) */
+.post-toc__list a::after {
+  content:'';
+  position:absolute;
+  bottom:0;
+  left:0;
+  width:100%;
+  height:0.05em;
+  background: var(--accent);
+  opacity:0;
+  transform:translate3d(-100%,0,0);
+  transition: opacity 300ms, transform 300ms;
+}
+.post-toc__list a:hover::after,
+.post-toc__list a:focus::after {
+  opacity:1;
+  transform:translate3d(0,0,0);
+}
+/*.post-toc__list li, a { 
+  overflow:hidden;
+ }*/
+ 
+.post-toc__list a:hover {
+  color: var(--link);
+}
+
+
+/* caret button */
+.post-toc__toggle {
+  background:none;
+  border:0;
+  cursor:pointer;
+  font:inherit;
+  color:var(--fg);
+  padding:0;
+  margin-right:.25em;
+  line-height:1;
+  transform:rotate(0deg);
+  transition:transform .2s ease;
+}
+.post-toc__toggle[aria-expanded="true"] { transform:rotate(45deg); }
+.post-toc__toggle[data-leaf="true"]     { visibility:hidden; }
+
+/* caret color on open (match side-nav hover) */
+.post-toc__toggle[aria-expanded="true"] { color: var(--link); }
+
+/* OPTIONAL: accent border at right edge to echo nav separator 
+.post-toc { border-right: 2px solid var(--accent); } */
+
+
+/* alternative css to turn a + into a -
+.post-toc__toggle {
+  background: none;
+  border: 0;
+  cursor: pointer;
+  font: inherit;
+  color: var(--fg);
+  padding: 0;
+  margin-right: .25em;
+  line-height: 1;
+  transform: none;
+  transition: none; 
+
+  position: relative;
+  width: 1em;
+  text-align: center;
+}
+
+
+.post-toc__toggle::before {
+  content: '+';
+  display: inline-block;
+  font-weight: bold;
+  transition: content 0.2s ease;
+}
+
+.post-toc__toggle[aria-expanded="true"]::before {
+  content: '-';
+  color: var(--link);
+}
+
+.post-toc__toggle[data-leaf="true"] {
+  visibility: hidden;
+} */

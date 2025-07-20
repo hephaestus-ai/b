@@ -1,0 +1,17 @@
+{{- $style := .Page.Params.citation_style | lower | default "text" -}}
+{{- $map   := .Page.Params.citations -}}
+
+{{- if $map -}}
+<ol class="hc-bibliography">
+  {{- range $map -}}
+    {{- $formatted := partial "citation.html" (dict "cite" . "style" $style) -}}
+    {{- $doi  := .doi -}}
+    {{- $link := .link | default (cond $doi (print "https://doi.org/" $doi) nil) -}}
+
+    <li>
+      {{ $formatted | safeHTML }}
+      {{- with $link }} <a href="{{ . | safeURL }}" target="_blank" rel="noopener">[link]</a>{{ end -}}
+    </li>
+  {{- end -}}
+</ol>
+{{- end -}}

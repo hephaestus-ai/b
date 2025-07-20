@@ -1,0 +1,103 @@
+/* --- Hovercard Trigger --- */
+.hc-trigger {
+  cursor: pointer;
+  outline: none;
+  background: var(--ex-bg, #f0f0f0);
+  color: var(--fg, #111);
+  border: 1px solid var(--border, #e3e3e3);
+  padding: 0 0.25em;
+  border-radius: 0.25em;
+  transition: background 0.15s, border 0.15s;
+}
+
+.hc-trigger:hover,
+.hc-trigger:focus {
+  background: var(--accent, #8882);
+}
+
+/* Style for the "pinned" state */
+.hc-trigger.hc-locked {
+  border-width: 1px;
+  border-color: var(--accent, #888);
+}
+
+/* --- Tippy.js Card Styling --- */
+.tippy-box {
+  background: var(--ex-bg, #f0f0f0);
+  color: var(--fg, #111);
+  border: 1px solid var(--border, #e3e3e3);
+  border-radius: 6px !important;
+
+}
+
+/* Card Arrow */
+.tippy-arrow {
+  color: var(--ex-bg, #f0f0f0);
+}
+.tippy-box[data-placement^='top'] > .tippy-arrow::before {
+  border-top-color: var(--border, #e3e3e3);
+  border-width: 8px 8px 0;
+  bottom: -8px;
+}
+.tippy-box[data-placement^='bottom'] > .tippy-arrow::before {
+  border-bottom-color: var(--border, #e3e3e3);
+}
+
+/* Card Content Area */
+.tippy-content {
+  padding: 0; /* Remove default padding */
+}
+
+.hc-card-content {
+  padding: 0.8rem 1rem;
+  overflow: auto;
+}
+
+/* Custom Scrollbar */
+.hc-card-content {
+  scrollbar-width: thin;
+  scrollbar-color: var(--accent, #888) var(--ex-bg, #f0f0f0);
+}
+.hc-card-content::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+.hc-card-content::-webkit-scrollbar-thumb {
+  background: var(--accent, #888);
+  border-radius: 4px;
+}
+.hc-card-content::-webkit-scrollbar-track {
+  background: var(--ex-bg, #f0f0f0);
+}
+
+/* -- Close (×) button shown when card is pinned -- */
+
+.tippy-box {
+  position: relative; /* required for absolute .hc-close */
+  pointer-events: auto; /* ensure clicks inside the card work */
+}
+
+.tippy-content {
+  position: relative; /* allow button stacking */
+  z-index: 1;
+}
+
+.hc-close {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  z-index: 10; /* ensure it's above all content */
+  width: 22px;
+  height: 22px;
+  line-height: 20px;
+  text-align: center;
+  border: none;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--fg, #111);
+  font-size: 18px;
+  cursor: pointer;
+}
+.hc-close:hover {
+  background: var(--accent, #8882);
+}

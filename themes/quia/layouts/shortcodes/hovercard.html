@@ -1,0 +1,67 @@
+{{/*  Params  */}}
+{{ if and (.Get "key") (.Get "cite") }}
+  {{ warnf "⚠️ Both 'key' and 'cite' provided in hovercard shortcode — using 'key'" }}
+{{ end }}
+{{ $key := .Get "key" | default (.Get "cite") }}
+{{ $citations := .Page.Params.citations | default dict }}
+{{ $fallback := site.Data.citations | default dict }}
+{{ $cite := index $citations $key | default (index $fallback $key) }} {{/*  Overwrites the cite param passed in. kind of confusing but whatever  */}}
+
+{{ $text := .Get "text" | default "[hover]" }}
+{{ $maxW := .Get "maxW" | default "320px" }}
+{{ $maxH := .Get "maxH" | default "240px" }}
+
+{{/*  1. Load citation and style  */}}
+
+{{ $style := .Get "style" | default (.Page.Params.citation_style | lower | default "text") | lower }}
+
+{{/*  2. Extract fields */}}
+{{ $author := $cite.author }}
+{{ $title := $cite.title }}
+{{ $journal := $cite.journal }}
+{{ $volume := $cite.volume }}
+{{ $number := $cite.number }}
+{{ $pages := $cite.pages }}
+{{ $year := $cite.year }}
+{{ $publisher := $cite.publisher }}
+{{ $fallback := $cite.text }}
+{{ $author    := delimit (slice $cite.author) "" }}
+{{ $title     := delimit (slice $cite.title) "" }}
+{{ $journal   := delimit (slice $cite.journal) "" }}
+{{ $volume    := delimit (slice $cite.volume) "" }}
+{{ $number    := delimit (slice $cite.number) "" }}
+{{ $pages     := delimit (slice $cite.pages) "" }}
+{{ $year      := delimit (slice $cite.year) "" }}
+{{ $publisher := delimit (slice $cite.publisher) "" }}
+{{ $fallback  := delimit (slice $cite.text) "" }}
+
+{{ $doi := $cite.doi | default "" }}
+{{ $link := $cite.link | default (cond (ne $doi "") (print "https://doi.org/" $doi) nil) }}
+
+{{/*  3. Format citation */}}
+{{ $formatted := "" }}
+
+{{- $style := .Get "citeStyle" | default (.Page.Params.citation_style | lower | default "text") | lower -}}
+{{- $formatted := partial "citation.html" (dict "cite" $cite "style" $style) -}}
+
+{{ $output := cond (ne $formatted "") $formatted $fallback | default "[missing citation]" }}
+
+<span class="hc-wrap">
+  <span class="hc-trigger" tabindex="0">{{ $text | markdownify | safeHTML }}</span>
+
+  <template class="hc-content">
+    <div style="max-width:{{ $maxW }};max-height:{{ $maxH }};">
+	{{- with .Inner }}
+      {{ . | markdownify }}
+    {{- end }}
+	{{ if $cite }}
+	  <div style="border-top: 1px solid var(--border); color: var(--fg-muted-bright);">
+	  {{ $output | safeHTML }}
+	  {{ if $link }}
+		<small><a href="{{ $link | safeURL }}" target="_blank" rel="noopener">[link]</a></small>
+	  {{ end }}
+	  </div>
+	{{ end }}
+	</div>
+  </template>
+</span>

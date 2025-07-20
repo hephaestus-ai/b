@@ -1,0 +1,104 @@
+{{/*
+  TODO FIXME does not display nested block-level shortcodes. Might not work with inline shortcodes.
+  Shortcode for creating flexible multi-column layouts with configurable options.
+
+  Usage:
+  {{< column_layout
+    columns="2"             // Number of columns (e.g., "2", "3", "4")
+    gap="2em"               // Gap between columns (CSS value, e.g., "1em", "20px")
+    min_width="200px"       // Minimum column width before wrapping (CSS value)
+    wrap_breakpoint="768px" // Breakpoint for stacking columns vertically (CSS value)
+    delimiter="---COLUMNBREAK---" // The string used to separate column content. Defaults to "---COLUMNBREAK---".
+    autofill="false"        // If "true", will ensure 'columns' count is met.
+                            // If fewer delimited sections are found, the last section is duplicated.
+                            // If more sections are found than 'columns', extra sections are ignored.
+    class="my-custom-class" // Optional: Add custom CSS classes to the layout container
+  >}}
+    // Content for the first column
+    ---COLUMNBREAK--- (or whatever your 'delimiter' parameter is set to)
+    // Content for the second column
+    ---COLUMNBREAK---
+    // ... more column content ...
+  {{< /column_layout >}}
+
+  Content for each column should be placed within the shortcode's inner content,
+  separated by the specified delimiter.
+*/}}
+
+{{ $targetColumns := int (default "2" (.Get "columns")) }}
+{{ $gap := default "2em" (.Get "gap") }}
+{{ $minWidth := default "200px" (.Get "min_width") }}
+{{ $wrapBreakpoint := default "768px" (.Get "wrap_breakpoint") }}
+{{ $customClass := default "" (.Get "class") }}
+{{ $delimiter := default "---COLUMNBREAK---" (.Get "delimiter") }}
+{{ $autofill := default false (.Get "autofill") | eq "true" }} {{/* NEW: autowrap as autofill */}}
+
+<style>
+.column-layout-{{ .Ordinal }} {
+  display: flex;
+  gap: {{ $gap }};
+  flex-wrap: wrap;
+}
+
+.column-layout-{{ .Ordinal }} .column {
+  flex: 1;
+  min-width: {{ $minWidth }};
+}
+
+/* Distribute space for specific column counts based on $targetColumns */
+{{ if eq $targetColumns 2 }}
+  .column-layout-{{ .Ordinal }} .column {
+    flex-basis: calc(50% - ({{ $gap }} / 2));
+  }
+{{ else if eq $targetColumns 3 }}
+  .column-layout-{{ .Ordinal }} .column {
+    flex-basis: calc(33.333% - (2 * {{ $gap }} / 3));
+  }
+{{ else if eq $targetColumns 4 }}
+  .column-layout-{{ .Ordinal }} .column {
+    flex-basis: calc(25% - (3 * {{ $gap }} / 4));
+  }
+{{ else if gt $targetColumns 4 }}
+  /* Fallback for more than 4 columns or dynamic calculation */
+  .column-layout-{{ .Ordinal }} .column {
+    flex-basis: calc((100% / {{ $targetColumns }}) - ((({{ $targetColumns }} - 1) * {{ $gap }}) / {{ $targetColumns }}));
+  }
+{{ end }}
+
+
+@media (max-width: {{ $wrapBreakpoint }}) {
+  .column-layout-{{ .Ordinal }} {
+    flex-direction: column;
+  }
+  .column-layout-{{ .Ordinal }} .column {
+    flex-basis: auto; /* Reset flex-basis when stacked */
+  }
+}
+</style>
+
+<div class="column-layout-{{ .Ordinal }} {{ $customClass }}">
+  {{ $providedContent := split (.Inner) $delimiter }}
+  {{ $numProvided := len $providedContent }}
+
+  {{ range $i, $element := seq $targetColumns }}
+    <div class="column">
+      {{ $contentToRender := "" }}
+      {{ if lt $i $numProvided }}
+        {{ $contentToRender = index $providedContent $i }}
+      {{ else if $autofill }}
+        {{/* If autofill is true and we've run out of provided content,
+             duplicate the last available content block. */}}
+        {{ if gt $numProvided 0 }}
+          {{ $contentToRender = index $providedContent (sub $numProvided 1) }}
+        {{ else }}
+          {{/* No content provided at all, render an empty string */}}
+          {{ $contentToRender = "" }}
+        {{ end }}
+      {{ end }}
+	{{ $.Page.RenderString
+		 (dict "display" "block" "markup" "markdown" "unsafe" true)
+		 (printf "\n%s\n" $contentToRender) }}
+
+    </div>
+  {{ end }}
+</div>

@@ -1,0 +1,299 @@
+/* --- core box --- */
+.mediabox{ /* change name to .mediabox-editorial-layout */
+  position:relative;
+  margin:1em 0em 0.5em 1em;        /* right-float default spacing */
+  padding:0.75em 1em 0em 1em;
+  background:var(--bg);
+  border:1px solid var(--border);
+  border-radius:6px;
+  font-size:0.9em;
+  line-height:1.5;
+  color:var(--fg);
+}
+.mediabox-title{
+	text-align: left;
+  font-weight:normal;
+  font-variant: small-caps;
+  letter-spacing: 3px;
+  margin:0em 0em 0.75em 0em; /* 0em 1.75em 0.75em 1.75em; */
+  padding-bottom: 0.25em;
+  padding-left: 0.1em;
+  padding-right: 0.1em;
+  border-bottom: 1px solid var(--border);
+}
+.mediabox-content img,
+.mediabox-content video{
+  max-width:100%;
+  height:auto;
+  display:block;
+  margin:0 auto;
+  
+}
+.mediabox-caption{
+  padding-top:0.75em;
+  padding-bottom: 0.75em;
+  padding-left: 0.1em;
+  padding-right: 0.1em;
+  font-size:0.95em;
+  color:var(--fg-muted);
+  text-align:left;
+  border-top: 1px solid var(--border);
+}
+.mediabox-source, .mediabox-citation {
+  padding-top:0.5em;
+  padding-bottom: 0.5em;
+  font-size:0.8em;
+  color:var(--fg-muted-bright);
+  text-align:right;
+    border-top: 1px solid var(--border);
+}
+
+/* --- alignment helpers --- */
+.align-right{ float:right; margin-bottom: 0.5em;}
+.align-left { float:left;  margin:1em;   margin-left: 1.25em; margin-bottom: 0.5em;}
+.align-center,.align-inline{ float:none; margin:1em auto; margin-bottom: 0.5em;}
+
+.align-left.mediabox::before{
+  left:auto;
+  right:24px;
+}
+
+/* --- responsive collapse --- */
+@media (max-width:800px){
+  .mediabox{
+    float:none !important;
+    max-width:100% !important;
+    margin:0.5em 0.5em 0.5em 1.5em !important;
+	
+  }
+  .mediabox::before{display:none;}
+}
+
+
+/* --- Optional Modifiers --- */
+.mediabox-no-border {
+  border: none;
+  border-radius: 0px;
+  padding: 0.25em;
+}
+
+.mediabox-no-title-underline .mediabox-title {
+  border-bottom: none;
+}
+
+.mediabox-grey-background {
+  background: var(--ex-bg); /* Or use a CSS variable like var(--bg-alt) */
+}
+
+
+/* --- Layouts --- */
+
+/* Sidecar Layouts (horizontal split) */
+.mediabox-layout-right-sidecar,
+.mediabox-layout-left-sidecar {
+  display: flex;
+  align-items: flex-start;
+  gap: 1.25em;
+}
+
+.mediabox-layout-right-sidecar .mediabox-content,
+.mediabox-layout-left-sidecar .mediabox-content {
+  flex: 1 1 55%; /* Image takes up slightly more space */
+  margin: 0;
+}
+
+.mediabox-layout-right-sidecar .mediabox-text-wrapper,
+.mediabox-layout-left-sidecar .mediabox-text-wrapper {
+  flex: 1 1 45%;
+}
+
+/* Banner Layouts (vertical stack) */
+.mediabox-layout-top-banner .mediabox-content {
+  margin-top: 0.75em;
+}
+
+.mediabox-layout-bottom-banner .mediabox-title {
+  margin-top: 0.75em;
+}
+
+
+/* --- Reverse Order Option --- */
+.mediabox-reverse.mediabox-layout-right-sidecar,
+.mediabox-reverse.mediabox-layout-left-sidecar {
+  flex-direction: row-reverse;
+}
+
+/* For vertical layouts, we need to add flex display to enable reversing */
+.mediabox-reverse.mediabox-layout-editorial,
+.mediabox-reverse.mediabox-layout-top-banner,
+.mediabox-reverse.mediabox-layout-bottom-banner {
+  display: flex;
+  flex-direction: column-reverse;
+}
+
+/* Ensure reversed elements have correct spacing */
+.mediabox-reverse.mediabox-layout-editorial .mediabox-caption,
+.mediabox-reverse.mediabox-layout-bottom-banner .mediabox-caption {
+    padding-top: 0;
+    padding-bottom: 0.75em;
+}
+
+/* -- mobile -- */
+
+/* Mobile “fill the row” helper for the mediabox */
+@media (max-width: 800px) {
+  .mediabox-mobile-full {
+    max-width: 100% !important;
+	
+    float: none !important;      /* cancels left/right floats */
+    margin-left: 1.5em !important;   /* optional, depends on your layout */
+  }
+}
+
+/* -- begin mermaidbox css -- */
+
+/* Mermaid SVGs should never dictate their own size */
+.mermaid svg {
+  width: 100% !important;
+  height: auto !important;   /* preserve aspect-ratio */
+  display: block !important;
+  margin: auto !important;  
+}
+
+/* ─── Force full-contrast text inside diagrams ─────────────────── */
+.mermaid text,
+.mermaid .edgeLabel text,
+.mermaid .actor tspan,
+.mermaid .messageText,
+.mermaid .noteText,
+.mermaid .loopText,
+.mermaid .signalText {
+  font-family: FreeSerif, Palatino, serif;
+  /*font-variant: small-caps;*/
+  /*letter-spacing: 2px;
+  font-size:11pt;*/
+  fill: var(--fg) !important;
+  fill-opacity: 1 !important;
+}
+
+/* ─── Lines, arrows, lifelines, activation bars ────────────────── */
+.mermaid path,
+.mermaid line,
+.mermaid .messageLine0,
+.mermaid .messageLine1 {
+  fill: var(--pre-bg) !important;
+  stroke: var(--border) !important;
+  stroke-opacity: 1 !important;
+}
+
+/* ─── Node / note boxes ─────────────────────────────────────────── */
+.mermaid rect,
+.mermaid polygon,
+.mermaid circle {
+  fill: var(--pre-bg) !important;      /* box fill */
+  stroke: var(--border) !important;   /* box outline */
+}
+
+
+
+/* graphbox */
+.graph > polygon,                       /* first <polygon> under the <g class="graph"> */
+.graph polygon[stroke="transparent"] {  /* same thing, attribute-based */
+  stroke: none !important;
+  fill: none !important;
+}
+
+/* 2️⃣  Style only the real node polygons / edge arrows */
+.graph .node   polygon {                /* node rectangles */
+  stroke: var(--border) !important;
+  fill:   var(--bg)     !important;     /* or white, transparent, etc. */
+}
+
+.graph .edge   path,
+.graph .edge   polygon {                /* arrows & edge decorations */
+  stroke: var(--border) !important;
+  fill:   var(--bg)     !important;
+}
+
+.node text, .node title {
+  fill: var(--fg-muted) !important;
+}
+
+
+
+
+/* -- lightbox -- */
+
+/* make .mediabox-content the containing block for absolute children */
+.mediabox-content { position: relative; }
+
+.mediabox-expand {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  z-index: 5;
+  padding: 4px 6px;
+  border: none;
+  border-radius: 4px;
+  background: rgba(0,0,0,.65);
+  color: #fff;
+  font: 700 1rem/1 system-ui;
+  cursor: pointer;
+  transition: background .2s;
+}
+
+.mediabox-expand:hover,
+.mediabox-expand:focus-visible {
+  background: rgba(0,0,0,.85);
+}
+
+/* ─── Core overlay ─────────────────────────────────────────────── */
+#mediabox-overlay{
+  position:fixed;inset:0;
+  display:grid;place-items:center;
+  background:#000;     /* fully opaque so any layout shift is invisible */
+  opacity:0;visibility:hidden;
+  transition:opacity .25s ease;
+  z-index:2147483647;
+}
+#mediabox-overlay.open{opacity:1;visibility:visible;}
+
+/* ─── Close button ─────────────────────────────────────────────── */
+#mediabox-close{
+  position:absolute;top:16px;right:16px;
+  width:48px;height:48px;line-height:44px;
+  font:700 2rem/1 sans-serif;color:#fff;
+  border:none;border-radius:50%;
+  background:rgba(0,0,0,.6);cursor:pointer;
+}
+#mediabox-close:hover,
+#mediabox-close:focus-visible{background:rgba(0,0,0,.85);}
+
+/* ─── Viewport and media ───────────────────────────────────────── */
+#mediabox-viewport{
+  /* give the media a little breathing-room so the × isn’t on top of it */
+  padding:2rem;                               /* tweak to taste          */
+  max-width:100dvw; max-height:100dvh;        /* “dynamic” viewport      */
+  display:flex; align-items:center; justify-content:center;
+  overflow:hidden;
+  
+}
+
+#mediabox-viewport img,
+#mediabox-viewport video{
+  /* Make the box *itself* track the viewport, then let object-fit do the scaling */
+  width:100%;
+  height:100%;
+  object-fit:contain;     /* always fully visible on first open            */
+  user-select:none;
+  cursor:zoom-in;         /* changes to grab/grabbing when you zoom        */
+}
+#mediabox-viewport video{ background:#000; }  /* just in case            */
+
+/* ─── FIXME Prevent layout shift when scrollbar disappears ───────────── */
+:root.mediabox-lock-scroll{
+  overflow:hidden;
+  /* compensate width */
+  margin-right:var(--sbw,0px);
+  
+}

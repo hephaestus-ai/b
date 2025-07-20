@@ -1,0 +1,45 @@
+{{- /*
+  Accepts a single citation map and a style string.
+  Returns the formatted citation string.
+*/ -}}
+
+{{- $cite  := .cite  -}}
+{{- $style := .style | lower -}}
+
+{{- $author    := $cite.author | default "" -}}
+{{- $title     := $cite.title  | default "" -}}
+{{- $journal   := $cite.journal| default "" -}}
+{{- $volume    := $cite.volume | default "" -}}
+{{- $number    := $cite.number | default "" -}}
+{{- $pages     := $cite.pages  | default "" -}}
+{{- $year      := $cite.year   | default "" -}}
+{{- $publisher := $cite.publisher | default "" -}}
+{{- $text      := $cite.text   | default "" -}}
+
+{{- $formatted := "" -}}
+
+{{- /* APA */ -}}
+{{- if eq $style "apa" -}}
+  {{- if and $author $year $title $publisher -}}
+    {{- $formatted = printf "%s (%s). <em>%s</em>. %s." $author $year $title $publisher -}}
+  {{- else if and $author $year $title $journal $volume $number $pages -}}
+    {{- $formatted = printf "%s (%s). %s. <em>%s</em>, %s(%s), %s." $author $year $title $journal $volume $number $pages -}}
+  {{- end -}}
+{{- /* MLA */ -}}
+{{- else if eq $style "mla" -}}
+  {{- if and $author $title $journal $volume $number $year $pages -}}
+    {{- $formatted = printf "%s. \"%s.\" <em>%s</em> %s.%s (%s): %s." $author $title $journal $volume $number $year $pages -}}
+  {{- else if and $author $year $title $publisher -}}
+    {{- $formatted = printf "%s. <em>%s</em>. %s, %s." $author $title $publisher $year -}}
+  {{- end -}}
+{{- /* Chicago */ -}}
+{{- else if eq $style "chicago" -}}
+  {{- if and $author $title $journal $volume $number $year $pages -}}
+    {{- $formatted = printf "%s. \"%s.\" <em>%s</em> %s, no. %s (%s): %s." $author $title $journal $volume $number $year $pages -}}
+  {{- else if and $author $title $publisher $year -}}
+    {{- $formatted = printf "%s. <em>%s</em>. %s, %s." $author $title $publisher $year -}}
+  {{- end -}}
+{{- end -}}
+
+{{- $output := cond (ne $formatted "") $formatted $text | default "[missing citation]" -}}
+{{- return $output -}}

@@ -1,0 +1,21 @@
+{
+  "data": [
+    {
+      "type": "surface",
+      "z": [
+        [15, 20, 25, 30],
+        [25, 30, 35, 40],
+        [35, 40, 45, 50],
+        [45, 50, 55, 60]
+      ]
+    }
+  ],
+  "layout": {
+    "title": "Global Surface",
+    "scene": {
+      "zaxis": { "title": "GDP ($T)" }
+    },
+    "paper_bgcolor": "rgba(0,0,0,0)",
+    "font": { "color": "var(--fg)" }
+  }
+}

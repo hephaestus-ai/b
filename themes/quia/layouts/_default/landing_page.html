@@ -1,0 +1,55 @@
+
+{{ define "main" }}
+
+<style>
+  #main {
+  overflow: auto;
+  
+
+  margin-left:5em;
+  margin-right: -7em;
+  }
+  
+
+
+#content h1, #content h2, #content h3 { 
+  margin-right: 0.25em;
+  margin-left: 0.25em;
+  color: var(--fg);
+      padding-right: 1.3em
+	  
+}
+
+article {
+
+
+  margin: 2.5em auto 0;
+
+  
+}
+
+  @media (max-width: 900px) {
+	
+	#main {
+	  margin-left:1.5em;
+	}
+	
+	.content ul, .content ol {
+	  margin-left: 2em;
+	}
+	
+	article {
+	  padding: 0.25em 1.25em 1em 1.25em;
+	}
+	
+  }
+  
+</style>
+
+<section id="main">
+ 
+    <article id="content">
+        {{ .Content }}
+    </article>
+</section>
+{{ end }}

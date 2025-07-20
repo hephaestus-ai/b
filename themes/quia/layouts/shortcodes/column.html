@@ -1,0 +1,4 @@
+{{/* Simply render its body in block mode so even a single line gets <p>. */}}
+<div class="column">
+  {{ $.Page.RenderString (dict "display" "block" "markup" "markdown") (.Inner) }}
+</div>

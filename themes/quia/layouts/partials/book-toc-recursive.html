@@ -1,0 +1,115 @@
+{{ $base := .base }}
+{{ $globalShow := .show }}
+
+<ol class="book-toc">
+  {{ range .items }}
+    {{ $type := .type | default "chapter" }}
+    {{ $title := .title }}
+    {{ $path := .path | default "" }}
+	{{ $style := .style | default "default" }}
+    {{ $anchor := "" }}
+    {{ $page := "" }}
+	{{ $artwork := .artwork | default "" }}
+	{{ $localShow := .show_summary }}
+    {{ $explicitSummary := .summary }}
+
+    {{ if and (ne $path "") (in $path "#") }}
+      {{ $parts := split $path "#" }}
+      {{ $path = index $parts 0 }}
+      {{ $anchor = printf "#%s" (index $parts 1) }}
+    {{ end }}
+
+	{{ $fullpath := "" }}
+	{{ if $path }}
+      {{ $fullpath = printf "%s%s.md" $base $path }}
+    {{ end }}
+	
+	{{/*
+    {{ if ne $path "" }}
+      {{ $fullpath := printf "%s%s.md" $base $path }}
+      {{ $page = site.GetPage $fullpath }}
+    {{ end }}
+	*/}}
+	
+	{{/* Summary stuff */}}
+	{{ $explicitSummary := .summary }}
+	{{ $page := site.GetPage $fullpath }}
+
+	{{ $finalSummary := $explicitSummary }}
+	{{ with $page }}
+	  {{ with .Params.summary }}
+		{{ $finalSummary = . }}
+	  {{ end }}
+	{{ end }}
+
+	{{/* determine whether to show the summary */}}
+	{{ $hasAnySummary := $finalSummary }}
+	{{ $showSummary := false }}
+
+	{{ if eq $localShow false }}
+	  {{ $showSummary = false }}
+	{{ else if eq $localShow true }}
+	  {{ $showSummary = true }}
+	{{ else if $hasAnySummary }}
+	  {{ $showSummary = true }}
+	{{ else if $globalShow }}
+	  {{ $showSummary = true }}
+	{{ end }}
+
+
+    <li class="{{ $type }}">
+      {{ if and (ne $path "") $page }}
+
+	  
+        <a href="{{ $page.RelPermalink }}{{ $anchor }}">
+		  {{ if eq $style "default" }}
+            <span class="toc-title toc-{{ $type }}">{{ $title }}</span>
+		  {{ else if eq $style "h1" }}
+		    <h1 class="toc-title toc-{{ $type }}">{{ $title }}</h1>
+		  {{ else if eq $style "h2" }}
+		    <h2 class="toc-title toc-{{ $type }}">{{ $title }}</h2>
+		  {{ else if eq $style "h3" }}
+		    <h3 class="toc-title toc-{{ $type }}">{{ $title }}</h3>
+		  {{ else if eq $style "h4" }}
+		    <h4 class="toc-title toc-{{ $type }}">{{ $title }}</h4>
+		  {{ end }}
+        </a>
+      {{ else }}
+          {{ if eq $style "default" }}
+            <span class="toc-title toc-{{ $type }}">{{ $title }}</span>
+		  {{ else if eq $style "h1" }}
+		    <h1 class="toc-title toc-{{ $type }}">{{ $title }}</h1>
+		  {{ else if eq $style "h2" }}
+		    <h2 class="toc-title toc-{{ $type }}">{{ $title }}</h2>
+		  {{ else if eq $style "h3" }}
+		    <h3 class="toc-title toc-{{ $type }}">{{ $title }}</h3>
+		  {{ else if eq $style "h4" }}
+		    <h4 class="toc-title toc-{{ $type }}">{{ $title }}</h4>
+		  {{ end }}
+      {{ end }}
+	  
+
+	  {{ if and $showSummary $finalSummary }}
+        <p class="toc-summary toc-summary-{{ $type }}">{{ $finalSummary }}</p>
+      {{ end }}
+
+      <div class="toc-content"> 
+      {{ with .children }}
+      <div class="toc-children">
+        {{ partial "book-toc-recursive.html" (dict "items" . "base" $base) }}
+      </div>
+      {{ end }}
+	  
+	  {{ with .artwork }}
+		<div class="book-artwork book-artwork-inner">
+		  <div>
+			<img src="{{ . | relURL }}" alt="Book artwork">
+		  </div>
+		</div>
+	  {{ end }}
+	   </div>
+    </li>
+  {{ end }}
+</ol>
+
+

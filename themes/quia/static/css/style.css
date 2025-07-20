@@ -1,0 +1,777 @@
+/* TODO changes: 
+   
+ */
+
+@media (prefers-reduced-motion: no-preference) {
+  /* --------------------------------------------------
+     2) Transition any property that uses your vars
+     -------------------------------------------------- */
+  html, body,
+  .explanation, pre,
+  h1, h2, h3, h4, h5, h6,
+  .footer, .bottomnav-menu, .bottomnav-menu a, .wrapper,
+  .sidenav a, .post-toc, button.post-toc__toggle, button.toc-caret, #TableOfContents ol li a, #TableOfContents ol li ol li a,
+  .mediabox, figcaption, .mediabox svg, .mermaid  {
+    transition:
+      background-color 0.4s ease,
+      color            0.4s ease,
+      border-color     0.4s ease;
+  }
+}
+
+
+:root {
+  /* Core colours */
+  --bg: #F8F0E3;
+  --bg-dark: #eee;
+  --fg: #111;
+  --fg-muted-bright: #444;
+  --fg-muted: #666;
+
+  /* Containers */
+  --ex-bg: #eee;
+  --pre-bg: #ddd;
+
+  /* Borders */
+  --border: #c9c9c9;
+
+  /* Nav & footer bg */
+  --nav-bg: #fff;
+  --footer-bg: #F8F0E3;
+
+  /* Links */
+  --link: #099;
+  --link-hover: #005fa3;
+  --link-visited: #663399;
+
+  /* Accents (e.g. .spacer, underline) */
+  --accent: #888;
+
+  /* logo images */
+  --bg-image: url(../../media/because.png);
+  --qed-image: url(../../media/qed.png);
+  --qed-image-path: ../../media/qed.png
+}
+
+.dark {
+  --bg: #181818; /* 242424 or 181818 */
+    --bg-dark: #111;
+  --fg: #eee;
+  --fg-muted-bright: #c9c9c9;
+  --fg-muted: #aaa;
+
+  --ex-bg: #333;
+  --pre-bg: #333;
+
+  --border: #555;
+
+  --nav-bg: #181818;
+  --footer-bg: #181818;
+
+  --link: #6cf;
+  --link-hover: #005fa3;
+  --link-visited: #8D55cc;
+
+  --accent: #aaa;
+
+  /* logo images */
+  --bg-image: url(../../media/because_dark.png);
+  --qed-image: url(../../media/qed_dark.png);
+  --qed-image-path: ../../media/qed_dark.png
+}
+
+
+.explanation {
+  background: var(--ex-bg);
+  padding: 1ex;
+}
+
+/* a lot of the left and right margins are based on the golden ratio (to the
+   line height 1em) */
+
+html {
+  overflow-y: scroll;
+  height: 100vh;
+}
+
+/*
+@font-face {
+  font-family: 'Klingon';
+  src: url('/fonts/kapiqad.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}*/
+/*
+@font-face {
+  font-family: 'Palatino';
+  src: url('/fonts/palr45w.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}*/
+
+body {
+  /*background-image: var(--bg-image);
+  background-position: top left;
+  background-repeat: no-repeat;
+  background-size: 93px 93px;*/
+  margin: 0;
+  padding-left: 6em; /* margin-left: 6em /* breaks mathjax for quirky reasons. hopefully left padding doesn't break things like right padding does */
+  margin-right: 19.7em;
+  text-align: justify;
+     /* Sadly URW Palladio L looks like shit on current Linuces in Xft,
+      * even though it looks fine in GhostScript. FreeSerif is much better. */
+   font-family: FreeSerif, Palatino, serif;  /* TODO explore new fonts */
+  font-family: "EB Garamond", serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+  line-height: 165%; /* 135% */
+  min-height: 100%;
+  position: relative;
+
+  background-color: var(--bg);
+  color: var(--fg);
+}
+
+
+.logo-link {
+  /* Position the logo absolutely relative to the body */
+  position: absolute;
+  top: 0; /* Align to the top of the body */
+  left: 100px; /* Align to the very left edge of the body element, which includes its margin */
+
+  /* To account for the 6em margin-left on the body, shift the logo right */
+  transform: translateX(-6em); /* Move it left by the body's margin-left */
+
+  display: block;
+  width: 93px;
+  height: 93px;
+  z-index: 10; /* Ensure it's above other content if needed */
+}
+
+.site-logo {
+  background-image: var(--bg-image);
+  background-position: top left;
+  background-repeat: no-repeat;
+  background-size: 93px 93px;
+  width: 93px; /* Ensure these are set for the div */
+  height: 93px; /* Ensure these are set for the div */
+  display: block;
+}
+
+/* Q.E.D. symbol */
+body::after{
+  content:"";
+  position:absolute;
+  right:-19.7rem;
+  bottom:0;
+  width:64px;
+  height:64px;
+  background-image: var(--qed-image);
+  background-repeat: no-repeat;
+  background-position: bottom right;
+  background-size: 64px 64px;
+  /*background:url(../../media/qed.jpeg) no-repeat bottom right/64px 64px; /* var(--qed-image) */
+  pointer-events:none;        /* makes it “untouchable” */
+}
+
+.content {      
+    padding-top: 3.5em; /* make into golden ratio? */
+    padding-bottom: 4.65em;
+
+}
+
+/* override the normal margin widths of these elements so they don't look funny
+   with the paragraph indents */
+
+/* start header and footer */
+/* do not display these when not mobile */
+.header {
+    display: none;
+}
+.footer {
+    position: absolute;
+    left: 0;
+	right: 0;
+	bottom: 0; 
+    bottom: 0px;
+    width: 100%;
+    height: 2.25em;
+    text-align: center;
+    padding-left: 9.85em;
+    background-color: var(--footer-bg);
+}
+
+.nav-item {
+      display: inline;
+      letter-spacing: 3px;
+      font-size: 14px;
+}
+
+.bottomnav-menu {
+  display: inline-block;
+  color: var(--accent);
+  border-top: 1px solid var(--border);
+  padding-left: 2.5em;
+  padding-right: 2.5em;
+  padding-top: 0.5em;
+  margin-left: 0;
+}
+
+.bottomnav-menu a {
+  text-align: right;
+  text-decoration: none;
+  line-height: 100%;
+  color: var(--link);
+  /*display: block;*/
+  /*padding: 0.2em 0;*/
+  position: relative;
+}
+   
+.bottomnav-menu a:hover {
+  color: var(--link-hover);
+}
+   
+.spacer {
+  color: var(--fg-muted);
+  font-size: 16px;
+}
+
+/* end header and footer */
+
+ul, ol, dir {
+  -moz-padding-start: 3.24em;
+}
+blockquote {
+  margin: 1em 3.24em;
+}
+
+a {
+  color: var(--link);
+  text-decoration: none;
+}
+a:hover,
+a:focus {
+  color: var(--link-hover);
+}
+a:visited {
+  color: var(--link-visited);
+}
+
+
+p { 
+      /* hanging indent for paragraphs */
+      /* text-indent: -1.62em; margin-left: 1.62em; */
+      padding-bottom: 0.5em;
+      padding-top: 0.5em;
+      margin-left: 0.8em;
+      min-width: 200px;
+
+}
+
+p, ul, ol, menu, dir, mjx-container {
+      margin-top: 0em;
+	  margin-bottom: 0em;
+      max-width: 42em;
+      padding-left: 0.5em;
+      padding-right: 0.5em;
+	  letter-spacing: 1px;
+}
+
+.content ul, ol {
+   list-style: circle;
+   margin-left: 3.5em;
+   max-width: 39.25em;
+}
+
+
+
+.bottomnav-menu { /* TODO should move this; refactor to component specific CSS */
+	margin-left: 0em;
+}
+
+
+h1, h2, h3 {
+  font-weight: 400;
+  font-variant: small-caps;
+  color: var(--link);
+  border-bottom: 1px solid var(--border);
+  padding-right: 0.1em;
+  padding-left: 1.25em;
+  
+  margin-right: -2em;
+  margin-bottom: 0.25em;
+  margin-top: 0.25em;
+  text-align: right;
+  clear: both;
+}
+
+h1 {
+  letter-spacing: 6px;
+  padding-bottom: 6px;
+  font-size: 22px;
+}
+h2 {
+  letter-spacing: 6px;
+  padding-bottom: 6px;
+  font-size: 18px;
+}
+h3 {
+  letter-spacing: 4px;
+  padding-bottom: 4px;
+  font-size: 16px;
+}
+
+h4, h5, h6 {
+  letter-spacing: 3px;
+  padding-bottom: 3px;
+  font-size: 14px;
+}
+
+/* BEGIN tables */
+/* TODO this could be better with padding and margins etc. */
+
+table {
+  width: 100%;
+  max-width: 44.5em;
+  margin: 1em 0;
+  margin-left: 0.8em;
+  border-collapse: collapse;
+  border-spacing: 0;
+  font-size: 0.95em;
+}
+
+th, td {
+  padding: 0.5em 0.75em;
+  text-align: left;
+  vertical-align: top;
+  border-bottom: 1px solid var(--border);
+}
+
+th {
+  font-variant: small-caps;
+  letter-spacing: 1px;
+  color: var(--fg);
+  border-bottom: 2px solid var(--border);
+}
+
+td.numeric {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+tr:last-child td {
+  border-bottom: none;
+}
+
+
+
+
+/* END tables */
+
+/* BEGIN code blocks */
+.pre-div {
+    padding-left: 0.5em;
+    padding-right: 0.5em;
+
+
+}
+
+/* TODO clean this up */
+pre {
+  background-color: var(--pre-bg);
+  border: 1px solid var(--border);
+  padding: 0.5em;
+  white-space: pre-wrap;
+  white-space: -moz-pre-wrap;
+  white-space: -pre-wrap;
+  white-space: -o-pre-wrap;
+  word-wrap: break-word;
+  display: flex;
+}
+
+pre { /* tag for code blocks. not idea since other stuff might use pre */
+    padding-bottom: 0.5em;
+    padding-top: 0.5em;
+    margin-left: 1.5em;
+    margin-top: 0em;
+	margin-bottom: 0em;
+    max-width: 50.75em; /* why?? */
+    padding-left: 0.5em;
+    padding-right: 0.5em;
+	
+    border-radius: 6px;
+	
+	overflow-x: auto;
+	white-space: pre; /* important: disables wrap */
+	
+}
+
+@-moz-document url-prefix() {
+  pre {
+    /*border-radius: 0px; */
+	scrollbar-width: thin; /* makes scrollbar on code blocks look alright on ff */
+  }
+}
+
+
+/* WebKit-based browsers */
+pre::-webkit-scrollbar {
+  height: 6px;
+}
+
+pre::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+pre::-webkit-scrollbar-thumb {
+  background-color: #bbb;
+  border-radius: 3px;
+}
+
+code {
+	
+    line-height: 150%; /* 135% */
+
+}
+/* END code blocks */
+
+/* begin side navigation css */
+.menu-title {
+    margin-right: 0.5em;
+	margin-left: 7em;
+}
+
+.menu-title-top {
+    margin-left: 12em; /* ~8.6em */
+    margin-right: 0.5em;
+}
+
+.sidenav {
+	/*background-color: var(--bg-dark);
+	border-left: 1px solid var(--border);
+	width: 15em;*/
+  width: 16em;
+  height: 100%;
+
+  position: fixed;
+  z-index: 1;
+  padding-top: 1.85em;
+  right: 0;
+  overflow-x: hidden; /* Disable horizontal scroll */
+  /*display: flex;
+  align-items: center;*/
+  
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+    
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: right;
+  /*align-items: center;*/
+  align-items: flex-start;
+
+}
+
+.wrapper {
+  list-style-type: none;
+  border-right: 1px solid var(--border);
+  margin-right: 1em;
+  margin-top: 1.2em;
+  padding-bottom: 2.5em;
+  padding-top: 0.5em;
+  
+  
+}
+
+.wrapper  ul, .wrapper ol {
+	padding-left: 0.5em;
+}
+
+.sidenav a {
+  text-align: right;
+  text-decoration: none;
+  line-height: 100%;
+  color: var(--fg);
+  position: relative;
+}
+
+.option {
+  text-align: right;
+  list-style-type: none;
+  font-size: 16px; /*16px or 1em*/
+}
+
+.toc {
+  font-size: 15px;  
+}
+
+.sidenav a:hover {
+  color: var(--link);
+}
+
+.toc-scroll {
+  overflow-y: auto;
+  max-height: calc(85vh - 15em); /* adjust based on header/menu height */
+  scrollbar-gutter: stable;
+
+}
+
+/* pretty scrollbar */
+.toc-scroll::-webkit-scrollbar {
+  width: 7px;
+}
+.toc-scroll::-webkit-scrollbar-thumb {
+  background-color: #bbb;
+  border-radius: 3px;
+}
+.toc-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.toc-scroll::-webkit-scrollbar-button {
+  display: none;
+  height: 0;                      /* extra safety */
+}
+
+.toc-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: var(--fg-muted-bright) transparent;
+  
+}
+
+.toc-scroll ul, .toc-scroll ol {
+	margin-left: 4em;
+}
+
+.toc-scroll ul ul,
+.toc-scroll ol ol { 
+  display: none;
+  margin-left: 0em;
+}
+
+.toc-scroll li.open > ul, 
+.toc-scroll li.open > ol {
+  display: block;
+}
+
+.toc-scroll ul ul > li,
+.toc-scroll ol ol > li {
+
+	line-height: 155%;
+	padding-right: 0.35em;
+	font-size: 13px;
+
+}
+
+.toc-scroll ul ul > li a,
+.toc-scroll ol ol > li a {
+	color: var(--fg-muted-bright);
+}
+
+/* caret button */
+.toc-caret {
+  background: none;
+  border: 0;
+  cursor: pointer;
+  font-size: 11pt;
+  margin-right: 0.25em;
+  transform: rotate(0deg);
+  transition: transform 0.2s ease;
+}
+
+li.open > .toc-caret      { transform: rotate(45deg); }
+
+/* optional: nicer visuals */
+.toc-caret { color: var(--fg); }
+li.open > .toc-caret { color: var(--link); }
+
+
+
+
+
+
+/* being fancy effects */
+/* fade in effect */
+.sidenav a::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 0.05em;
+  background-color: var(--accent);
+  opacity: 0;
+  transition: opacity 300ms, transform 300ms;
+}
+.sidenav a:hover::after,
+.sidenav a:focus::after {
+  opacity: 1;
+  transform: translate3d(0, 0.2em, 0);
+}
+.sidenav li, a {
+  overflow: hidden;
+}
+.sidenav li, a::after {
+  opacity: 1;
+  transform: translate3d(-100%, 0, 0);
+}
+.sidenav li, a:hover::after,
+.sidenav li, a:focus::after {
+  transform: translate3d(0, 0, 0);
+}
+/* end fancy effects */
+
+/* end side navigation css */
+
+
+
+/* start images https://www.tutorialspoint.com/how-to-create-a-responsive-image-grid-with-html-and-css */
+figure {
+  float: right;
+  margin: 0px 0px 0px 2em;
+  /*padding: 0.2em;
+  padding-top: 2em;
+  /* border: 1px solid #e3e3e3; */
+}
+
+.selfie {
+  margin-top: 30px;
+  /* border: 1px solid #e3e3e3; */
+}
+
+img {
+    max-width: 100%;
+
+}
+
+/* end images */
+
+
+.main {
+  margin-left: 140px; /* Same width as the sidebar + left position in px */
+  font-size: 28px; /* Increased text to enable scrolling */
+  padding: 0px 10px;
+}
+
+
+
+/* being mobile css */
+@media only screen and (max-width: 900px) {
+  /*html {overflow-y: auto;}*/
+    
+    .sidenav {
+    display: none;
+  }
+  
+  .logo-link {
+    /* Reset left/transform for mobile */
+    left: 50%; /* Position the left edge at the horizontal center */
+    transform: translateX(-50%); /* Shift it left by half its own width to truly center it */
+
+    /* Ensure it's at the very top */
+    top: 3.25em; 
+	margin-left: 1.75em; /* centers it. i didn't do calcs for this, but it looks correct */
+  }
+  .site-logo {
+		
+  }
+  
+  body::after{
+	  content:"";
+	  position:absolute;
+	  right:-3.5rem;
+	  bottom:0;
+	  width:64px;
+	  height:64px;
+	  background-image: var(--qed-image);
+	  background-repeat: no-repeat;
+	  background-position: bottom right;
+	  background-size: 64px 64px;
+	  /*background:url(../../media/qed.jpeg) no-repeat bottom right/64px 64px; /* var(--qed-image) */
+	  pointer-events:none;        /* makes it “untouchable” */
+	}
+  
+  table {
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+  
+  /* display header and footer when mobile */
+  
+  .header {
+    display: inline-block;
+    width: 100%;
+	margin-left: 0.75em;
+   }
+   
+   .footer {
+	   padding-left: 0;
+   }
+   
+   .topnav {
+       height: 4em;
+       text-align: center;
+       margin-left: 1.75em;
+   }
+   
+  .footer {
+    display: block;
+    margin-left: 1.25em; /* (3.5 - 1) / 2 */
+    background-color: var(--footer-bg);
+  }
+
+  .topnav-menu {
+    list-style-type: none;
+    display: inline-block;
+  }
+
+  .topnav a {
+    text-align: right;
+    text-decoration: none;
+    line-height: 100%;
+    color: var(--link);
+    position: relative;
+	white-space: nowrap;
+  }
+
+  .topnav a:hover {
+    color: var(--link-hover);
+  }
+
+/* add special effects to header later, maybe */
+  
+  body { padding-left: 1em; margin-right: 1em; margin-top: 0em; }
+  h1, h2, h3 { margin-right: -40px }
+  h4, h5, h6 {}
+  
+  body {
+      margin-right: 3.5em;
+      margin-left: 1em;
+      /*margin-top: 0em;*/
+  }   
+  
+figure {
+  margin: 2em;
+  /* padding: 0.2em;
+  border: 1px solid #e3e3e3;*/
+}
+
+img {
+    max-width: 95%; 
+}
+
+}
+
+/*
+@media screen and (max-height: 450px) {
+  .sidenav {padding-top: 15px;}
+  .sidenav a {font-size: 18px;}
+}
+*/
+/* end mobile css */

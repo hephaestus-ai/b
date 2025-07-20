@@ -1,0 +1,28 @@
+{{ define "main" }}
+<h1>{{ .Title }}</h1>
+<section id="main" style="overflow: auto;">
+
+
+<article id="content" style="margin-top:1.6em;" >
+  {{ .Content | safeHTML }}
+</article>
+
+<div class="list_container" style="max-width:39.5em; margin: 1.6em 0em 1.6em 1.25em; padding:0.5em 2.5em 1em 0em;">
+
+<ol>
+{{ range .Pages.ByPublishDate.Reverse }}
+<li>
+    <a class="title" href="{{ .RelPermalink }}">{{ .Title }}</a>
+    <!--<a class="summary" href="{{ .RelPermalink }}">
+        <p>{{ .Summary }}</p>
+    </a>-->
+</li>
+{{ end }}
+</ol>
+
+</div>
+
+
+</section>
+
+{{ end }}

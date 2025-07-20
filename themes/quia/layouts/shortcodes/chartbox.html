@@ -1,0 +1,178 @@
+{{/* ────────────────────────────────────────────────────────────────
+   Chart.js box  •  v1.1
+   Params ─ identical to mediabox + a few chart-specific knobs
+     data            = required — path to JSON file in /data (dot- or slash-notation)
+     type            = override / default chart type  (bar | line | …)
+     options         = path to *options* JSON in /data  (optional)
+     height          = canvas height  (CSS, default 400px)
+   Mediabox params:
+     title, id, align, width, class, caption, source,
+     layout, border, titleUnderline, greyBg, reverse, clear,
+     mobileFull, marginBottom   ←  NEW
+------------------------------------------------------------------*/}}
+
+{{/* --- Pull chart data ------------------------------------------------ */}}
+{{ $dataPath := .Get "data" | default "" }}
+{{- if eq $dataPath "" -}}
+  {{ errorf "chartbox shortcode: param \"data\" is required" }}
+{{- end }}
+
+{{ $parts := split (replace $dataPath "/" ".") "." }}
+{{ $json := site.Data }}
+{{ range $parts }}{{ $json = index $json . }}{{ end }}
+{{ if not $json }}
+  {{ errorf "chartbox shortcode: no data found at %q" $dataPath }}
+{{ end }}
+
+{{/* Optional separate options blob */}}
+{{ $optPath := .Get "options" }}
+{{ $optBlob := dict }}
+{{ if $optPath }}
+  {{ $op := site.Data }}
+  {{ range (split (replace $optPath "/" ".") ".") }}{{ $op = index $op . }}{{ end }}
+  {{ $optBlob = $op }}
+{{ end }}
+
+{{/* --- Build final Chart.js config ----------------------------------- */}}
+{{ $cfg := dict }}
+{{ if and (isset $json "type") (isset $json "data") }}
+  {{ $cfg = $json }}
+{{ else }}
+  {{ $cfg = dict "type" (.Get "type" | default "bar") "data" $json }}
+{{ end }}
+{{ if $optBlob }}
+  {{ $cfg = merge $cfg (dict "options" $optBlob) }}
+{{ end }}
+
+{{/* --- Mediabox-style chrome ----------------------------------------- */}}
+{{ $type          := "chart" }}
+{{ $align         := .Get "align"         | default "right" }}
+{{ $width         := .Get "width"         | default "40%" }}
+{{ $layout        := .Get "layout"        | default "editorial" }}
+{{ $mobileFull    := ne (.Get "mobileFull") "false" }}
+{{ $marginBottom  := .Get "marginBottom" }}
+
+{{ $border         := ne (.Get "border")         "false" }}
+{{ $titleUnderline := ne (.Get "titleUnderline") "false" }}
+{{ $greyBg         := eq (.Get "greyBg")         "true"  }}
+{{ $reverse        := eq (.Get "reverse")        "true"  }}
+
+{{ $n := add 1 (or ($.Page.Scratch.Get "mediaboxcounter") 0) }}
+{{ $.Page.Scratch.Set "mediaboxcounter" $n }}
+{{ $id         := .Get "id"    | default (printf "box-%d" $n) }}
+{{ $title_text := .Get "title" | default (printf "Chart %d" $n) }}
+{{ $chartId    := printf "%s-canvas" $id }}
+
+{{ $class := printf "mediabox mediabox-%s mediabox-layout-%s align-%s %s" $type $layout $align (.Get "class") }}
+{{ if not $border }}         {{ $class = printf "%s mediabox-no-border"          $class }}{{ end }}
+{{ if not $titleUnderline }} {{ $class = printf "%s mediabox-no-title-underline" $class }}{{ end }}
+{{ if $greyBg }}             {{ $class = printf "%s mediabox-grey-background"    $class }}{{ end }}
+{{ if $reverse }}            {{ $class = printf "%s mediabox-reverse"            $class }}{{ end }}
+{{ if $mobileFull }}         {{ $class = printf "%s mediabox-mobile-full"        $class }}{{ end }}
+
+{{/* --- Assemble parts ------------------------------------------------- */}}
+{{ $titlePart := printf `<figcaption class="mediabox-title">%s</figcaption>` $title_text }}
+
+{{ $h := .Get "height" | default "400px" }}
+{{ $contentPart := printf `<div class="mediabox-content"><canvas id="%s" style="width:100%%;height:%s;" role="img" aria-label="%s"></canvas></div>` $chartId $h $title_text }}
+
+{{ $captionPart := "" }}
+{{ with .Get "caption" }}
+  {{ $captionPart = printf `<figcaption class="mediabox-caption">%s</figcaption>` (. | markdownify) }}
+{{ end }}
+
+{{/* ---------- citation handling ---------- */}}
+{{/* grab params (if any) */}}
+{{ $citeRef    := .Get "cite" }}
+{{ $citeStyle  := .Get "citeStyle" | default "text" | lower }}
+{{ $overrideMD := .Get "citeOverride" }}
+
+{{/* if citeOverride is supplied, use it verbatim */}}
+{{ $citePart := "" }}
+{{ with $overrideMD }}
+  {{ $sourceHTML := . | markdownify }}
+  {{ $sourceHTML = replace $sourceHTML `<a href` `<a target="_blank" rel="noopener" href` }}
+  {{ $citePart = printf `<div class="mediabox-citation">%s</div>` $sourceHTML }}
+{{ end }}
+
+{{/* otherwise, look up the citation map by key and run the formatter */}}
+{{ if and (eq $citePart "") $citeRef }}
+  {{ $cites := $.Page.Params.citations }}
+  {{ $entry := index $cites $citeRef }}
+  {{ if $entry }}
+    {{ $rendered := partial "citation.html" (dict "cite" $entry "style" $citeStyle) }}
+    {{ $citePart = printf `<div class="mediabox-citation">%s</div>` $rendered }}
+  {{ else }}
+    {{ $citePart = printf `<div class=\"mediabox-citation\">[missing citation: %s]</div>` $citeRef }}
+  {{ end }}
+{{ end }}
+
+{{/* --- Style Attribute Construction --- */}}
+{{ $style := printf "max-width:%s;" $width }}
+{{ if and (eq $captionPart "") (eq $citePart "") }}
+  {{ $style = printf "%spadding-bottom:0.5em;" $style }}
+{{ end }}
+{{ with $marginBottom }}
+  {{ $style = printf "%s margin-bottom:%s;" $style . }}
+{{ end }}
+
+{{/* --- Render figure -------------------------------------------------- */}}
+{{ if eq (.Get "clear") "true" }}<div style="clear:both;"></div>{{ end }}
+<figure id="{{ $id }}"
+        class="{{ $class | safeHTMLAttr }}"
+        style="{{ $style | safeCSS }}">
+  {{ if eq $layout "top-banner" }}
+    {{ $titlePart   | safeHTML }}
+    {{ $captionPart | safeHTML }}
+    {{ $contentPart | safeHTML }}
+    {{ $citePart  | safeHTML }}
+  {{ else if eq $layout "bottom-banner" }}
+    {{ $contentPart | safeHTML }}
+    {{ $titlePart   | safeHTML }}
+    {{ $captionPart | safeHTML }}
+    {{ $citePart  | safeHTML }}
+  {{ else if eq $layout "right-sidecar" }}
+    {{ $contentPart | safeHTML }}
+    <div class="mediabox-text-wrapper">
+      {{ $titlePart   | safeHTML }}
+      {{ $captionPart | safeHTML }}
+      {{ $citePart  | safeHTML }}
+    </div>
+  {{ else if eq $layout "left-sidecar" }}
+    <div class="mediabox-text-wrapper">
+      {{ $titlePart   | safeHTML }}
+      {{ $captionPart | safeHTML }}
+      {{ $citePart  | safeHTML }}
+    </div>
+    {{ $contentPart | safeHTML }}
+  {{ else }}
+    {{ $titlePart   | safeHTML }}
+    {{ $contentPart | safeHTML }}
+    {{ $captionPart | safeHTML }}
+    {{ $citePart  | safeHTML }}
+  {{ end }}
+</figure>
+
+{{/* --- Inline bootstrap (one per chart) ------------------------------ */}}
+<script>
+(() => {
+  const canvas = document.getElementById("{{ $chartId }}");
+  if (!canvas || typeof Chart === "undefined") return;
+
+  const cfgRaw = {{ $cfg | jsonify | safeJS }};
+  const cfg    = (typeof cfgRaw === "string") ? JSON.parse(cfgRaw) : cfgRaw;
+
+  // Ensure responsiveness
+  cfg.options = Object.assign({ responsive:true }, cfg.options || {});
+
+  const ctx   = canvas.getContext("2d");
+  const chart = new Chart(ctx, cfg);
+
+  // Debounced resize handler
+  let t;
+  window.addEventListener("resize", () => {
+    clearTimeout(t);
+    t = setTimeout(() => chart.resize(), 250);
+  });
+})();
+</script>

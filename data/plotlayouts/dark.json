@@ -1,0 +1,7 @@
+{
+  "scene": {
+    "camera": { "eye": { "x": 1.2, "y": 1.2, "z": 0.8 } }
+  },
+  "paper_bgcolor": "rgba(0,0,0,0)",
+  "font": { "color": "var(--fg)" }
+}

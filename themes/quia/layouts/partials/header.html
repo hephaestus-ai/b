@@ -1,0 +1,35 @@
+<header class="header">
+    <div class="topnav">
+
+                <ul class="topnav-menu">
+                    <li class="nav-item"><a href="/index.html" class="nav-link text-uppercase font-weight-bold">Home</a></li>
+                    <li class="nav-item spacer"> • </li>
+                    <li class="nav-item"><a href="/posts/" class="nav-link text-uppercase font-weight-bold">Posts</a></li>
+					{{ with site.GetPage "section" "books" }}
+						{{ if .Pages }}
+						<li class="nav-item spacer"> • </li>
+						<li class="nav-item"><a href="/books/" class="nav-link text-uppercase font-weight-bold">Books</a></li>
+						{{ end }}
+					{{ end }}
+					{{ with site.GetPage "section" "reviews" }}
+						{{ if .Pages }}
+						<li class="nav-item spacer"> • </li>
+						<li class="nav-item"><a href="/reviews/" class="nav-link text-uppercase font-weight-bold">Reviews</a></li>
+						{{ end }}
+					{{ end }}
+					{{ with site.GetPage "section" "gallery" }}
+						{{ if .Pages }}
+						<li class="nav-item spacer"> • </li>
+						<li class="nav-item"><a href="/gallery/" class="nav-link text-uppercase font-weight-bold">Gallery</a></li>
+						{{ end }}
+					{{ end }}
+                    <li class="nav-item spacer"> • </li>
+                    <li class="nav-item"><a href="/contact/index.html" class="nav-link text-uppercase font-weight-bold">Contact</a></li>
+					<li class="nav-item spacer"> • </li>
+                    <li class="nav-item">{{ partial "darkmode.html" . }}</li>
+					
+					
+                </ul>
+
+    </div>
+</header>

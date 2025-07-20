@@ -1,0 +1,162 @@
+{{/* ────────────────────────────────────────────────────────────────
+  plotbox — Plotly inside a mediabox shell                v1.1
+  Params (mediabox + Plotly options)
+
+    data       = required – path in /data to JSON
+    layout     = optional – path in /data to a Plotly *layout* JSON
+    cfg        = optional – path in /data to a Plotly *config* JSON
+    height     = CSS height of the div (default 400px)
+
+  Mediabox flags:
+    title, id, align, width, class, caption, source,
+    layout, border, titleUnderline, greyBg, reverse, clear,
+    mobileFull, marginBottom   ← NEW
+──────────────────────────────────────────────────────────────── */}}
+
+{{/* ─── 1. Primary data ------------------------------------------------ */}}
+{{ $dataPath := .Get "data" | default "" }}
+{{- if eq $dataPath "" -}}
+  {{ errorf "plotbox shortcode: param \"data\" is required" }}
+{{- end }}
+{{ $parts := split (replace $dataPath "/" ".") "." }}
+{{ $json := site.Data }}
+{{ range $parts }}{{ $json = index $json . }}{{ end }}
+{{ if not $json }}
+  {{ errorf "plotbox shortcode: no data found at %q" $dataPath }}
+{{ end }}
+
+{{/* Optional layout & config blobs */}}
+{{ $lyPath := .Get "layout" }}
+{{ $lyBlob := dict }}
+{{ if $lyPath }}
+  {{ $p := site.Data }}
+  {{ range (split (replace $lyPath "/" ".") ".") }}{{ $p = index $p . }}{{ end }}
+  {{ $lyBlob = $p }}
+{{ end }}
+
+{{ $cfgPath := .Get "cfg" }}
+{{ $cfgBlob := dict }}
+{{ if $cfgPath }}
+  {{ $p := site.Data }}
+  {{ range (split (replace $cfgPath "/" ".") ".") }}{{ $p = index $p . }}{{ end }}
+  {{ $cfgBlob = $p }}
+{{ end }}
+
+{{/* Assemble final Plotly spec */}}
+{{ $spec := dict }}
+{{ if isset $json "data" }}
+  {{ $spec = $json }}
+{{ else }}
+  {{ $spec = dict "data" $json }}
+{{ end }}
+{{ if $lyBlob }}{{ $spec = merge $spec (dict "layout" $lyBlob) }}{{ end }}
+{{ if $cfgBlob }}{{ $spec = merge $spec (dict "config" $cfgBlob) }}{{ end }}
+
+{{/* ─── 2. Mediabox chrome -------------------------------------------- */}}
+{{ $type          := "plot" }}
+{{ $align         := .Get "align"         | default "right" }}
+{{ $width         := .Get "width"         | default "40%" }}
+{{ $layoutBox     := .Get "layoutBox"     | default "editorial" }}  {{/* if you need a separate param */}}
+{{ $mobileFull    := ne (.Get "mobileFull") "false" }}
+{{ $marginBottom  := .Get "marginBottom" }}
+
+{{ $border         := ne (.Get "border")         "false" }}
+{{ $titleUnderline := ne (.Get "titleUnderline") "false" }}
+{{ $greyBg         := eq (.Get "greyBg")         "true"  }}
+{{ $reverse        := eq (.Get "reverse")        "true"  }}
+
+{{ $n := add 1 (or ($.Page.Scratch.Get "mediaboxcounter") 0) }}
+{{ $.Page.Scratch.Set "mediaboxcounter" $n }}
+{{ $id         := .Get "id"    | default (printf "box-%d" $n) }}
+{{ $title_text := .Get "title" | default (printf "Plot %d" $n) }}
+{{ $plotId     := printf "%s-div" $id }}
+
+{{ $class := printf "mediabox mediabox-%s mediabox-layout-%s align-%s %s" $type $layoutBox $align (.Get "class") }}
+{{ if not $border }}         {{ $class = printf "%s mediabox-no-border"          $class }}{{ end }}
+{{ if not $titleUnderline }} {{ $class = printf "%s mediabox-no-title-underline" $class }}{{ end }}
+{{ if $greyBg }}             {{ $class = printf "%s mediabox-grey-background"    $class }}{{ end }}
+{{ if $reverse }}            {{ $class = printf "%s mediabox-reverse"            $class }}{{ end }}
+{{ if $mobileFull }}         {{ $class = printf "%s mediabox-mobile-full"        $class }}{{ end }}
+
+{{ $h := .Get "height" | default "400px" }}
+
+{{ $titlePart := printf `<figcaption class="mediabox-title">%s</figcaption>` $title_text }}
+{{ $contentPart := printf `<div class="mediabox-content"><div id="%s" style="width:100%%;height:%s;" role="img" aria-label="%s"></div></div>` $plotId $h $title_text }}
+
+{{ $captionPart := "" }}
+{{ with .Get "caption" }}
+  {{ $captionPart = printf `<figcaption class="mediabox-caption">%s</figcaption>` (. | markdownify) }}
+{{ end }}
+
+{{/* ---------- citation handling ---------- */}}
+{{/* grab params (if any) */}}
+{{ $citeRef    := .Get "cite" }}
+{{ $citeStyle  := .Get "citeStyle" | default "text" | lower }}
+{{ $overrideMD := .Get "citeOverride" }}
+
+{{/* if citeOverride is supplied, use it verbatim */}}
+{{ $citePart := "" }}
+{{ with $overrideMD }}
+  {{ $sourceHTML := . | markdownify }}
+  {{ $sourceHTML = replace $sourceHTML `<a href` `<a target="_blank" rel="noopener" href` }}
+  {{ $citePart = printf `<div class="mediabox-citation">%s</div>` $sourceHTML }}
+{{ end }}
+
+{{/* otherwise, look up the citation map by key and run the formatter */}}
+{{ if and (eq $citePart "") $citeRef }}
+  {{ $cites := $.Page.Params.citations }}
+  {{ $entry := index $cites $citeRef }}
+  {{ if $entry }}
+    {{ $rendered := partial "citation.html" (dict "cite" $entry "style" $citeStyle) }}
+    {{ $citePart = printf `<div class="mediabox-citation">%s</div>` $rendered }}
+  {{ else }}
+    {{ $citePart = printf `<div class=\"mediabox-citation\">[missing citation: %s]</div>` $citeRef }}
+  {{ end }}
+{{ end }}
+
+{{/* ─── 3. Inline style string ---------------------------------------- */}}
+{{ $style := printf "max-width:%s;min-width:%s;" $width $width }}
+{{ if and (eq $captionPart "") (eq $citePart "") }}
+  {{ $style = printf "%spadding-bottom:0.5em;" $style }}
+{{ end }}
+{{ with $marginBottom }}
+  {{ $style = printf "%s margin-bottom:%s;" $style . }}
+{{ end }}
+
+{{/* ─── 4. Render figure ---------------------------------------------- */}}
+{{ if eq (.Get "clear") "true" }}<div style="clear:both;"></div>{{ end }}
+<figure id="{{ $id }}"
+        class="{{ $class | safeHTMLAttr }}"
+        style="{{ $style | safeCSS }}">
+  {{ if eq $layoutBox "top-banner" }}
+    {{ $titlePart   | safeHTML }}{{ $captionPart | safeHTML }}
+    {{ $contentPart | safeHTML }}{{ $citePart  | safeHTML }}
+  {{ else if eq $layoutBox "bottom-banner" }}
+    {{ $contentPart | safeHTML }}{{ $titlePart   | safeHTML }}
+    {{ $captionPart | safeHTML }}{{ $citePart  | safeHTML }}
+  {{ else if eq $layoutBox "right-sidecar" }}
+    {{ $contentPart | safeHTML }}
+    <div class="mediabox-text-wrapper">
+      {{ $titlePart | safeHTML }}{{ $captionPart | safeHTML }}{{ $citePart | safeHTML }}
+    </div>
+  {{ else if eq $layoutBox "left-sidecar" }}
+    <div class="mediabox-text-wrapper">
+      {{ $titlePart | safeHTML }}{{ $captionPart | safeHTML }}{{ $citePart | safeHTML }}
+    </div>
+    {{ $contentPart | safeHTML }}
+  {{ else }}
+    {{ $titlePart | safeHTML }}{{ $contentPart | safeHTML }}
+    {{ $captionPart | safeHTML }}{{ $citePart | safeHTML }}
+  {{ end }}
+</figure>
+
+{{/* ─── 5. Inline Plotly bootstrap ------------------------------------ */}}
+<script>
+(() => {
+  if (typeof Plotly === "undefined") return;
+  const el = document.getElementById("{{ $plotId }}");
+  const specRaw = {{ $spec | jsonify | safeJS }};
+  const spec = (typeof specRaw === "string") ? JSON.parse(specRaw) : specRaw;
+  Plotly.newPlot(el, spec.data || [], spec.layout || {}, spec.config || {});
+})();
+</script>

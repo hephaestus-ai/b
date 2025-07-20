@@ -1,0 +1,14 @@
+{{ define "main" }}
+<section id="main">
+  <div>
+        <article id="content">
+			{{ .Content }}
+           <!--{{ .Content | replaceRE "<pre>" "<div class=\"pre-div\"><pre>" | replaceRE "</pre>" "</pre></div>" | safeHTML }} <!-- replace with render hooks -->
+        </article>
+		
+  </div>
+</section>
+
+
+
+{{ end }}

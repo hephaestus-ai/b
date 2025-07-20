@@ -1,0 +1,57 @@
+<!-- Side navigation -->
+<div class="sidenav">
+  <nav class="wrapper">
+
+    <h2 class="menu-title menu-title-top">menu</h2>
+    <ul>
+      <li class="option">
+        <a href="/index.html">Home</a><span> ◦ </span>
+      </li>
+      <li class="option">
+        <a href="/posts/">Posts</a><span> ◦ </span>
+      </li>
+	{{ with site.GetPage "section" "books" }}
+	  {{ if .Pages }}
+		<li class="option">
+		  <a href="/books/">Books</a><span> ◦ </span>
+		</li>
+	  {{ end }}
+	{{ end }}
+
+	{{ with site.GetPage "section" "reviews" }}
+	  {{ if .Pages }}
+		<li class="option">
+		  <a href="/reviews/">Reviews</a><span> ◦ </span>
+		</li>
+	  {{ end }}
+	{{ end }}
+
+	{{ with site.GetPage "section" "gallery" }}
+	  {{ if .Pages }}
+		<li class="option">
+		  <a href="/gallery/">Gallery</a><span> ◦ </span>
+		</li>
+	  {{ end }}
+	{{ end }}
+      <li class="option">
+        <a href="/contact/index.html">Contact</a><span> ◦ </span>
+      </li>
+	  <li class="option">
+	  {{ partial "darkmode.html" . }}<span> ◦ </span>
+	  </li>
+    </ul>
+
+	
+    {{ with .TableOfContents }}
+      {{ $toc := . }}
+      {{ $tocItems := findRE "<li>" $toc }}
+      {{ if and (eq $.Section "posts") (gt (len $tocItems) 0) }}
+        <h2 class="menu-title">contents</h2>
+			<div class="toc-scroll">
+				{{ $toc | replaceRE "<nav .*?>" "" | replaceRE "</nav>" "" | replaceRE "<li>" "<li class=\"option toc\">" | safeHTML }}
+			</div>
+      {{ end }}
+    {{ end }}
+
+  </nav>
+</div>

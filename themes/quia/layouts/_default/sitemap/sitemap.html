@@ -1,0 +1,16 @@
+{{ define "main" }}
+
+  <h1>Sitemap</h1>
+  <p>Browse all published pages on the site:</p>
+
+  <ul>
+    {{ range .Site.RegularPages }}
+      {{ if not .Params.hidden }}
+      <li>
+        <a href="{{ .RelPermalink }}">{{ .Title }}</a>
+      </li>
+      {{ end }}
+    {{ end }}
+  </ul>
+
+{{ end }}

@@ -1,0 +1,328 @@
+{{/*────────────────────────────────────────────────────────────────
+ echartbox  –  Apache ECharts inside mediabox           v3.1
+ Params (one of the first three is required)
+   data      = path in /data to JSON
+   func2d    = JS expression  y = f(x)
+   func3d    = JS expression  z = f(x,y)
+
+ Optional for func-modes
+   xrange    = "min,max"            (default "-10,10")
+   yrange    = "min,max"  func3d    (default "-10,10")
+   step      = grid step            (default "0.5")
+
+ Other options
+   option    = extra option JSON path (merged)
+   js        = local JS module (must export initChart(el, chart))
+   height    = CSS height (default "400px")
+
+ Mediabox flags (+ new one):
+   title, id, align, width, class, caption, source,
+   layout, border, titleUnderline, greyBg, reverse, clear,
+   mobileFull, marginBottom  ← NEW
+────────────────────────────────────────────────────────────────*/}}
+
+{{/*──── 1. Work out which mode we’re in ─────────────────────────*/}}
+{{ $func2d  := .Get "func2d" | default "" }}
+{{ $func3d  := .Get "func3d" | default "" }}
+{{ $dataRef := .Get "data"   | default "" }}
+
+{{ $hasInner := gt (len .Inner) 0 }}
+{{ $hasJS    := ne (.Get "js") "" }}
+
+{{ $mode := "inline" }}
+{{ if ne (.Get "func3d") "" }}{{ $mode = "func3d" }}{{ end }}
+{{ if ne (.Get "func2d") "" }}{{ $mode = "func2d" }}{{ end }}
+{{ if ne (.Get "data") ""   }}{{ $mode = "data"   }}{{ end }}
+
+{{ if and (eq $mode "inline") (not $hasInner) (not $hasJS) }}
+  {{ errorf "echartbox: nothing to render — no data=, func=, js=, or inline logic" }}
+{{ end }}
+
+{{/*──── 2. Load JSON blobs (data / option) ──────────────────────*/}}
+{{ $dataBlob := dict }}
+{{ if and (eq $mode "data") (ne $dataRef "") }}
+  {{ $parts := split (replace $dataRef "/" ".") "." }}
+  {{ $tmp := site.Data }}
+  {{ range $parts }}{{ $tmp = index $tmp . }}{{ end }}
+  {{ if not $tmp }}{{ errorf "echartbox: no data at %q" $dataRef }}{{ end }}
+  {{ $dataBlob = $tmp }}
+{{ end }}
+
+{{ $optBlob := dict }}
+{{ with .Get "option" }}
+  {{ $parts := split (replace . "/" ".") "." }}
+  {{ $tmp := site.Data }}
+  {{ range $parts }}{{ $tmp = index $tmp . }}{{ end }}
+  {{ if not $tmp }}{{ errorf "echartbox: no option JSON at %q" . }}{{ end }}
+  {{ $optBlob = $tmp }}
+{{ end }}
+
+{{/* Decide full-option vs series-array for data-mode */}}
+{{ $option := dict }}
+{{ if eq $mode "data" }}
+  {{ if eq (printf "%T" $dataBlob) "map[string]interface {}" }}
+    {{ $option = $dataBlob }}
+  {{ else }}
+    {{ $option = dict "series" $dataBlob }}
+  {{ end }}
+  {{ if gt (len $optBlob) 0 }}{{ $option = merge $option $optBlob }}{{ end }}
+{{ else }}
+  {{ $option = $optBlob }}
+{{ end }}
+
+{{/*──── 3.  Mediabox shell ─────────────────────────────────────*/}}
+{{ $type          := "echart" }}
+{{ $align         := .Get "align"         | default "right" }}
+{{ $width         := .Get "width"         | default "40%" }}
+{{ $layoutBox     := .Get "layout"        | default "editorial" }}
+{{ $mobileFull    := ne (.Get "mobileFull") "false" }}
+{{ $marginBottom  := .Get "marginBottom" }}
+
+{{ $border         := ne (.Get "border")         "false" }}
+{{ $titleUnderline := ne (.Get "titleUnderline") "false" }}
+{{ $greyBg         := eq (.Get "greyBg")         "true"  }}
+{{ $reverse        := eq (.Get "reverse")        "true"  }}
+
+{{ $n := add 1 (or ($.Page.Scratch.Get "mediaboxcounter") 0) }}
+{{ $.Page.Scratch.Set "mediaboxcounter" $n }}
+{{ $id       := .Get "id"    | default (printf "box-%d" $n) }}
+{{ $title    := .Get "title" | default (printf "Chart %d" $n) }}
+{{ $divID    := printf "%s-echart" $id }}
+
+{{ $class := printf "mediabox mediabox-%s mediabox-layout-%s align-%s %s" $type $layoutBox $align (.Get "class") }}
+{{ if not $border }}         {{ $class = printf "%s mediabox-no-border"          $class }}{{ end }}
+{{ if not $titleUnderline }} {{ $class = printf "%s mediabox-no-title-underline" $class }}{{ end }}
+{{ if $greyBg }}             {{ $class = printf "%s mediabox-grey-background"    $class }}{{ end }}
+{{ if $reverse }}            {{ $class = printf "%s mediabox-reverse"            $class }}{{ end }}
+{{ if $mobileFull }}         {{ $class = printf "%s mediabox-mobile-full"        $class }}{{ end }}
+
+{{ $height      := .Get "height" | default "400px" }}
+{{ $titlePart   := printf `<figcaption class="mediabox-title">%s</figcaption>` $title }}
+{{ $contentPart := printf `<div class="mediabox-content"><div id="%s" style="width:100%%;height:%s;"></div></div>` $divID $height }}
+
+{{ $captionPart := "" }}
+{{ with .Get "caption" }}
+  {{ $captionPart = printf `<figcaption class="mediabox-caption">%s</figcaption>` (. | markdownify) }}
+{{ end }}
+
+{{/* ---------- citation handling ---------- */}}
+{{/* grab params (if any) */}}
+{{ $citeRef    := .Get "cite" }}
+{{ $citeStyle  := .Get "citeStyle" | default "text" | lower }}
+{{ $overrideMD := .Get "citeOverride" }}
+
+{{/* if citeOverride is supplied, use it verbatim */}}
+{{ $citePart := "" }}
+{{ with $overrideMD }}
+  {{ $sourceHTML := . | markdownify }}
+  {{ $sourceHTML = replace $sourceHTML `<a href` `<a target="_blank" rel="noopener" href` }}
+  {{ $citePart = printf `<div class="mediabox-citation">%s</div>` $sourceHTML }}
+{{ end }}
+
+{{/* otherwise, look up the citation map by key and run the formatter */}}
+{{ if and (eq $citePart "") $citeRef }}
+  {{ $cites := $.Page.Params.citations }}
+  {{ $entry := index $cites $citeRef }}
+  {{ if $entry }}
+    {{ $rendered := partial "citation.html" (dict "cite" $entry "style" $citeStyle) }}
+    {{ $citePart = printf `<div class="mediabox-citation">%s</div>` $rendered }}
+  {{ else }}
+    {{ $citePart = printf `<div class=\"mediabox-citation\">[missing citation: %s]</div>` $citeRef }}
+  {{ end }}
+{{ end }}
+
+{{/*────–– Style string (widths + conditional padding/margin) ────*/}}
+{{ $style := printf "max-width:%s;min-width:%s;" $width $width }}
+{{ if and (eq $captionPart "") (eq $citePart "") }}
+  {{ $style = printf "%spadding-bottom:0.5em;" $style }}
+{{ end }}
+{{ with $marginBottom }}
+  {{ $style = printf "%s margin-bottom:%s;" $style . }}
+{{ end }}
+
+{{/*──── 4. Render figure ───────────────────────────────────────*/}}
+{{ if eq (.Get "clear") "true" }}<div style="clear:both;"></div>{{ end }}
+<figure id="{{ $id }}"
+        class="{{ $class | safeHTMLAttr }}"
+        style="{{ $style | safeCSS }}">
+  {{ if eq $layoutBox "top-banner" }}
+    {{ $titlePart   | safeHTML }}{{ $captionPart | safeHTML }}
+    {{ $contentPart | safeHTML }}{{ $citePart  | safeHTML }}
+  {{ else if eq $layoutBox "bottom-banner" }}
+    {{ $contentPart | safeHTML }}{{ $titlePart   | safeHTML }}
+    {{ $captionPart | safeHTML }}{{ $citePart  | safeHTML }}
+  {{ else if eq $layoutBox "right-sidecar" }}
+    {{ $contentPart | safeHTML }}
+    <div class="mediabox-text-wrapper">
+      {{ $titlePart | safeHTML }}{{ $captionPart | safeHTML }}{{ $citePart | safeHTML }}
+    </div>
+  {{ else if eq $layoutBox "left-sidecar" }}
+    <div class="mediabox-text-wrapper">
+      {{ $titlePart | safeHTML }}{{ $captionPart | safeHTML }}{{ $citePart | safeHTML }}
+    </div>
+    {{ $contentPart | safeHTML }}
+  {{ else }}
+    {{ $titlePart | safeHTML }}{{ $contentPart | safeHTML }}
+    {{ $captionPart | safeHTML }}{{ $citePart | safeHTML }}
+  {{ end }}
+</figure>
+
+{{/*──── 4.  JS bootstrap (runs in browser) ──────────────────────*/}}
+<script>
+(() => {
+  const el   = document.getElementById("{{ $divID }}");
+  const mode = "{{ $mode }}";
+  const opt  = {{ $option | jsonify | safeJS }};
+  
+// choose light/dark theme once
+const pickTheme = () =>
+  document.documentElement.classList.contains('dark')
+    ? 'chart-dark' : 'chart-light';
+
+let chart = echarts.init(el, pickTheme(), { renderer: 'canvas' });
+
+  /* data mode */
+  if (mode === 'data') {
+    chart.setOption(typeof opt === 'string' ? JSON.parse(opt) : opt);
+  }
+
+  /* func2d */
+  if (mode === 'func2d') {
+    const expr = {{ $func2d | jsonify | safeJS }};
+    const f = new Function('x', 'return ' + expr + ';');
+    const [xmin, xmax] = "{{ .Get "xrange" | default "-10,10" }}".split(',').map(Number);
+    const step = Number("{{ .Get "step" | default "0.5" }}");
+    const data = [];
+    for (let x = xmin; x <= xmax; x += step) data.push([x, f(x)]);
+    chart.setOption(Object.assign({
+      xAxis:{}, yAxis:{},
+      series:[{type:'line', smooth:true, data}]
+    }, (typeof opt==='string')?JSON.parse(opt||'{}'):opt));
+  }
+
+  /* func3d */
+  if (mode === 'func3d') {
+    const expr = {{ $func3d | jsonify | safeJS }};
+    const f = new Function('x','y','return ' + expr + ';');
+    const [xmin, xmax] = "{{ .Get "xrange" | default "-10,10" }}".split(',').map(Number);
+    const [ymin, ymax] = "{{ .Get "yrange" | default "-10,10" }}".split(',').map(Number);
+    const step = Number("{{ .Get "step" | default "0.5" }}");
+    const data = [];
+    for (let x = xmin; x <= xmax; x += step) {
+      for (let y = ymin; y <= ymax; y += step) {
+        data.push([x, y, f(x,y)]);
+      }
+    }
+    chart.setOption(Object.assign({
+      tooltip:{show:false},
+      xAxis3D:{type:'value'}, yAxis3D:{type:'value'}, zAxis3D:{type:'value'},
+      grid3D:{boxHeight:50, viewControl:{projection:'perspective'}},
+      series:[{type:'surface', wireframe:{show:false}, data}]
+    }, (typeof opt==='string')?JSON.parse(opt||'{}'):opt));
+  }
+
+/* ——— live theme swap, no dispose, no races ——— */
+/* TODO make this parameterizable. we have a file `echarts-default-themes.js` with themes, but we should really use json. */
+const THEME_LIGHT = {
+  color: [
+    '#2f79c9', '#5fae59', '#f4c542', '#e26c5e',
+    '#48b9d4', '#3ba272', '#f08c4b', '#a266b4', '#e18cb1'
+  ],
+  textStyle: { color: '#111' }, // --fg
+  title: { textStyle: { color: '#111' } },
+  legend: { textStyle: { color: '#444' } }, // --fg-muted-bright
+  tooltip: {
+    backgroundColor: 'rgba(30,30,30,0.9)',
+    borderColor: '#c9c9c9', // --border
+    textStyle: { color: '#fff' }
+  },
+  axisPointer: {
+    lineStyle:  { color: '#888' },  // --accent
+    crossStyle: { color: '#888' },
+    shadowStyle:{ color: 'rgba(0,0,0,0.04)' }
+  },
+  grid: { borderColor: '#c9c9c9' }, // --border
+  xAxis3D: { axisLabel: { color: '#111' } },
+  yAxis3D: { axisLabel: { color: '#111' } },
+  zAxis3D: { axisLabel: { color: '#111' } }
+};
+
+const THEME_DARK = {
+  color: [
+    '#66b1ff', '#82f9c9', '#ffd859', '#ff7b84',
+    '#68dff9', '#08d2a5', '#ffc47a', '#b98fff', '#ec8fb8'
+  ],
+  textStyle: { color: '#eee' }, // --fg
+  title: { textStyle: { color: '#eee' } },
+  legend: { textStyle: { color: '#c9c9c9' } }, // --fg-muted-bright
+  tooltip: {
+    backgroundColor: 'rgba(0,0,0,0.85)',
+    borderColor: '#555', // --border
+    textStyle: { color: '#eee' }
+  },
+  axisPointer: {
+    lineStyle:  { color: '#aaa' }, // --fg-muted
+    crossStyle: { color: '#aaa' },
+    shadowStyle:{ color: 'rgba(255,255,255,0.05)' }
+  },
+  grid: { borderColor: '#555' }, // --border
+  xAxis3D: { axisLabel: { color: '#eee' } },
+  yAxis3D: { axisLabel: { color: '#eee' } },
+  zAxis3D: { axisLabel: { color: '#eee' } }
+};
+
+// TODO adjust the patchTheme fn to check the cache
+const patchTheme = () => {
+  const dark = document.documentElement.classList.contains('dark');
+  const theme = dark ? THEME_DARK : THEME_LIGHT;
+  chart.setOption(theme, false);  // overwrite appearance only
+};
+patchTheme();
+
+// people would usually do `document.addEventListener` but whatever
+new MutationObserver(patchTheme)
+  .observe(document.documentElement, { attributes:true, attributeFilter:['class'] });
+
+  /* optional local module */
+  const jsPath = "{{ .Get "js" }}";
+  if (jsPath && !/^https?:\/\//.test(jsPath) && !/^\/\//.test(jsPath)) {
+    import(jsPath).then(m => {
+      if (typeof m.initChart === 'function') m.initChart(el, chart);
+    }).catch(console.error);
+  }
+  
+  {{ if .Inner }}
+
+(() => {
+  const el = document.getElementById("{{ $divID }}");
+  const chart = echarts.getInstanceByDom(el);
+  {{ .Inner | safeJS }}
+  if (typeof initChart === 'function') initChart(el, chart);
+})();
+if (mode === "inline") {
+  console.info("echartbox: running in inline mode — you must provide initChart(el, chart)");
+}
+
+{{ end }}
+
+// TODO
+// add the deepmerge helper and other helpers and cache init somewhere
+
+// IF you style BEFORE initChart
+// compute the initial options by deep merging the themes' options with the base options
+// init and set this as the chart's options
+// pass to initChart
+// diff the instance's options with initial options to get the passed options
+// compute the final options by merge the two initial options with the passed options
+// cache for later
+
+// IF you style AFTER initChart
+// diff the instance's options with base options to get the passed options
+// to compute the final options deep merge the themes' options with the base options
+// cache the final options (and adjust the patchTheme fn to check the cache)
+// patch the instance's options with the final options, just in case
+  
+  window.addEventListener('resize', () => chart.resize());
+})();
+
+</script>

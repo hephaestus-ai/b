@@ -1,0 +1,142 @@
+<head>
+  <title>{{ .Title }}</title>
+  <meta charset="utf-8" />
+  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5, user-scalable=yes" />
+
+  <link id="favicon" rel="icon" type="image/x-icon" href="/media/favicon.png" />
+
+  <!-- Dark mode preference -->
+	<script>
+	(() => {
+	  const saved  = localStorage.getItem('theme');
+	  const darkOK = saved === 'dark' ||
+					 (!saved && matchMedia('(prefers-color-scheme: dark)').matches);
+
+	  if (darkOK) {
+		document.documentElement.classList.add('dark');
+
+		// swap the icon *before* first paint
+		const fav = document.getElementById('favicon');
+		if (fav) fav.href = '/media/favicon-dark.png';
+	  }
+	})();
+	</script>
+	  <style>
+		/* one rule-set drives every toggle */
+		[data-theme-toggle]{
+		  cursor:pointer;
+		  position:relative;            /* keeps future tweaks easy */
+		  user-select:none;
+		}
+
+		/* default (light) label */
+		[data-theme-toggle]::before{
+		  content:"Dark Mode";
+		}
+
+		/* when <html> has .dark, swap the label */
+		:root.dark [data-theme-toggle]::before{
+		  content:"Light Mode";
+		}
+
+		/* optional: hide whatever text you leave inside the tag
+		   so screen-readers still have something to read */
+		[data-theme-toggle] > span{ display:none; }
+		</style>
+
+  <!-- CSS -->
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400..800;1,400..800&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" type="text/css" href="/css/style.css" />
+  {{ range slice "toc" "mediabox" "hovercard" "refslist" }}
+    <link rel="stylesheet" type="text/css" href="/css/{{ . }}.css" />
+  {{ end }}
+
+
+  {{/* Script loading logic */}}
+  {{ $loads := .Params.loads | default (slice "all") }}
+
+  {{/* Flags for each script group */}}
+  {{ $loadJquery := or (in $loads "all") (in $loads "jquery") }}
+  {{ $loadChart := or (in $loads "all") (in $loads "chartjs") }}
+  {{ $loadEcharts := or (in $loads "all") (in $loads "echarts") }}
+  {{ $loadPlotly := or (in $loads "all") (in $loads "plotly") }}
+  {{ $loadTippy := or (in $loads "all") (in $loads "tippy") }}
+  {{ $loadMermaid := or (in $loads "all") (in $loads "mermaid") }}
+  {{ $loadGraphviz := or (in $loads "all") (in $loads "graphviz") }}
+
+  {{/* Math engine defaults:
+        - mathjax by default when "all"
+        - user can explicitly set "mathjax" or "katex"
+  */}}
+  {{ $loadKatex := in $loads "katex" }}
+  {{ $loadMathjax := or (in $loads "mathjax") (and (in $loads "all") (not $loadKatex)) }}
+
+  {{ if and $loadKatex $loadMathjax }}
+    <script>console.warn("Both KaTeX and MathJax requested — this may cause conflicts.");</script>
+  {{ end }}
+
+  {{ if $loadMathjax }}
+    <script async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+	<script>
+	  window.MathJax = {
+		tex: {
+		  inlineMath: [['$', '$'], ['\\(', '\\)']],
+		  displayMath: [['$$', '$$'], ['\\[', '\\]']],
+		  processEscapes: true
+		},
+		options: {
+		  skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+		}
+	  };
+	</script>
+  {{ end }}
+  
+  {{ if $loadKatex }}
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/katex.min.css" />
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/contrib/auto-render.min.js"
+      onload="renderMathInElement(document.body, {
+        delimiters: [
+          {left: '$$', right: '$$', display: true},
+          {left: '$', right: '$', display: false}
+        ]
+      });">
+    </script>
+  {{ end }}
+
+  {{ if $loadTippy }}
+      <script src="https://unpkg.com/@popperjs/core@2"></script>
+    <script src="https://unpkg.com/tippy.js@6"></script>
+  {{ end }}
+
+  {{ if $loadChart }}
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.5.0/dist/chart.umd.min.js"></script>
+  {{ end }}
+
+  {{ if $loadJquery }}
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  {{ end }}
+
+  {{ if $loadEcharts }}
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.6.0/dist/echarts.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/echarts-gl@2/dist/echarts-gl.min.js"></script>
+  {{ end }}
+
+  {{ if $loadPlotly }}
+    <script src="https://cdn.plot.ly/plotly-3.0.1.min.js" charset="utf-8"></script>
+  {{ end }}
+
+  {{ if $loadMermaid }}
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+  {{ end }}
+
+  {{ if $loadGraphviz }}
+    <script src="https://cdn.jsdelivr.net/npm/viz.js@2.1.2/viz.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/viz.js@2.1.2/full.render.js"></script>
+  {{ end }}
+</head>

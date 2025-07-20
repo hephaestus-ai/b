@@ -1,0 +1,11 @@
+.hc-bibliography {
+  margin-top: 1em;
+  margin-left: 2.5em;
+  max-width: 42em;
+  font-size: 15px;
+  color: var(--fg-muted-bright);
+  list-style-type: decimal;
+  li + li { margin-top: .4em; }
+  
+}
+
