@@ -1,21 +1,7 @@
 {{ define "main" }}
-
-{{ $section := .CurrentSection }}
-{{ $toc := $section.Params.booktoc }}
-{{ if $toc }}
-  <nav class="book-toc">
-    <ol>
-    {{ range $toc }}
-      <li>{{ .title }}</li>
-    {{ end }}
-    </ol>
-  </nav>
-{{ end }}
-
 <section id="main">
-  <article id="content">
-    {{ .Content | safeHTML }}
-  </article>
+    <article id="content">
+        {{ .Content }}
+    </article>
 </section>
-
 {{ end }}
