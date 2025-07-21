@@ -9,7 +9,7 @@ booktoc:
   - title: "Volume I"
     type: "volume"
     style: "h2"
-    artwork: "/books/test-book2/thumbnail2.webp"
+    artwork: "/books/test-book/thumbnail2.webp"
     children:
       - title: "Foundations"
         type: "part"
@@ -48,6 +48,18 @@ booktoc:
                 path: "subchapter"
                 type: "subchapter"
                 children:
+                  - title: "Appendix A"
+                    path: "123"
+                    type: "section"
+                    children:
+                  - title: "Appendix B"
+                    path: "xyz"
+                    type: "section"
+                    children:
+                  - title: "Appendix C"
+                    path: "getting_finished"
+                    type: "section"
+                    children:
               - title: "subchapter"
                 path: "subchapter"
                 type: "subchapter"
