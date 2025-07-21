@@ -395,7 +395,6 @@ p, ul, ol, menu, dir, mjx-container {
       max-width: 42em;
       padding-left: 0.5em;
       padding-right: 0.5em;
-	  letter-spacing: 1px;
 }
 
 .content ul, ol {
