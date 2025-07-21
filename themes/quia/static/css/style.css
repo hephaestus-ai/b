@@ -20,9 +20,43 @@
 }
 
 
+/* .off-white, but the js right now just calls it white */
 :root {
   /* Core colours */
-  --bg: #F8F0E3;
+  --bg:            #F8F0E3; /* main page background */
+  --bg-dark:       #E8DED2; /* ~10 % darker for hovers/active states */
+  --fg:            #111;    /* same high‑contrast text */
+  --fg-muted-bright:#444;
+  --fg-muted:      #666;
+
+  /* Containers (slightly darker than the new bg) */
+  --ex-bg:         #EEE5D4; /* example boxes, call‑outs */
+  --pre-bg:        #E0D6C8; /* code blocks, preformatted */
+
+  /* Borders */
+  --border:        #c9c9c9; /* neutral works on both light bgs */
+
+  /* Nav & footer backgrounds */
+  --nav-bg:        #ffffff; /* keeps header crisp and separate */
+  --footer-bg:     #F8F0E3; /* #F4EADD; */
+
+  /* Links (unchanged keeps brand consistency & still passes contrast) */
+  --link:          #009999;
+  --link-hover:    #005fa3;
+  --link-visited:  #663399;
+
+  /* Accents (spacers, underlines, etc.) */
+  --accent:        #888;    /* ever‑so‑slightly softer grey */
+
+  /* Logo / imagery paths (unchanged) */
+  --bg-image:      url(../../media/because.png);
+  --qed-image:     url(../../media/qed.png);
+  --qed-image-path:../../media/qed.png;
+}
+
+.white {
+   /* Core colours */
+  --bg: #F8F8F8;
   --bg-dark: #eee;
   --fg: #111;
   --fg-muted-bright: #444;
@@ -48,9 +82,9 @@
   --accent: #888;
 
   /* logo images */
-  --bg-image: url(../../media/because.png);
-  --qed-image: url(../../media/qed.png);
-  --qed-image-path: ../../media/qed.png
+  --bg-image: url(../../media/because_white.png);
+  --qed-image: url(../../media/qed_white.png);
+  --qed-image-path: ../../media/qed_white.png;
 }
 
 .dark {
@@ -77,7 +111,7 @@
   /* logo images */
   --bg-image: url(../../media/because_dark.png);
   --qed-image: url(../../media/qed_dark.png);
-  --qed-image-path: ../../media/qed_dark.png
+  --qed-image-path: ../../media/qed_dark.png;
 }
 
 
