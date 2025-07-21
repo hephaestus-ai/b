@@ -686,8 +686,6 @@ table.chroma {
 .MathJax_MenuItem,
 .MJX-Menu-Item
 {
-  background: var(--bg);
-  color: var(--fg);
   padding: .25em 1.5em .25em 2.25em; /* room for ✓ or ► */
   cursor: pointer;
 }
