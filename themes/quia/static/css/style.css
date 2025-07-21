@@ -16,18 +16,24 @@
   .book-toc li.part a,
   .sidenav a, .post-toc, button.post-toc__toggle, button.toc-caret, #TableOfContents ol li a, #TableOfContents ol li ol li a,
   .mediabox, figcaption, 
-  .mediabox svg, .mermaid, /* graphviz and mermaid mediaboxes */
-  .mediabox svg polygon, 
-  .mediabox svg path,
-  .mediabox svg ellipse,
-  .mediabox svg circle,
-  .mediabox svg rect,
-  .mediabox svg line,
+  .mediabox svg, .mermaid, 
   .chroma, table.chroma, pre, code, .chroma .hl  {
     transition:
       background-color 0.4s ease,
       color            0.4s ease,
       border-color     0.4s ease;
+  }
+  
+  .mediabox svg polygon, 
+  .mediabox svg path,
+  .mediabox svg ellipse,
+  .mediabox svg circle,
+  .mediabox svg rect,
+  .mediabox svg line {
+    transition:
+      fill         0.4s ease,
+      stroke       0.4s ease,
+      stroke-width 0.4s ease;
   }
 }
 
