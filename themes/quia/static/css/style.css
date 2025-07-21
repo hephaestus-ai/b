@@ -29,7 +29,7 @@
   .mediabox svg ellipse,
   .mediabox svg circle,
   .mediabox svg rect,
-  .mediabox svg line {
+  .mediabox svg line, tspan, text {
     transition:
       fill         0.4s ease,
       stroke       0.4s ease,
