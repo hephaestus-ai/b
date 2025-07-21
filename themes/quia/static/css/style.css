@@ -102,9 +102,15 @@
   --nav-bg: #181818;
   --footer-bg: #181818;
 
+
+  --link:          #4db8af;
+  --link-hover:    #39a59c;
+  --link-visited:  #8D55cc;
+
   --link: #6cf;
   --link-hover: #005fa3;
   --link-visited: #8D55cc;
+
 
   --accent: #aaa;
 
@@ -598,6 +604,7 @@ code {
 
 .toc-scroll ul, .toc-scroll ol {
 	margin-left: 4em;
+	padding-right: 0em;
 }
 
 .toc-scroll ul ul,
@@ -641,7 +648,6 @@ li.open > .toc-caret      { transform: rotate(45deg); }
 /* optional: nicer visuals */
 .toc-caret { color: var(--fg); }
 li.open > .toc-caret { color: var(--link); }
-
 
 
 

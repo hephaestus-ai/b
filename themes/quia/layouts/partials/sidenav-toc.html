@@ -1,1 +1,1 @@
-{{ .Page.TableOfContents | replaceRE "<nav .*>" "" | replaceRE "<li>" "<li class=\"option toc\">" | safeHTML }}
+{{ .Page.TableOfContents | replaceRE "<nav .*>" "" | replaceRE "<li>" "<li class=\"option toc\">" | replaceRE "</a>" "</a><span> ◦ </span>" | safeHTML }}
