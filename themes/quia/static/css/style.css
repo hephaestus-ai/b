@@ -715,9 +715,7 @@ img {
 	}
   
   table {
-    display: block;
     overflow-x: auto;
-    white-space: nowrap;
   }
   
   /* display header and footer when mobile */
