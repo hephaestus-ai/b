@@ -677,6 +677,77 @@ table.chroma {
 
 /* END code blocks */
 
+/* BEGIN mathjax */
+/* This might cause bugs... */
+
+
+/* Individual items */
+.CtxtMenu_MenuItem,
+.MathJax_MenuItem,
+.MJX-Menu-Item
+{
+  background: var(--bg);
+  color: var(--fg);
+  padding: .25em 1.5em .25em 2.25em; /* room for ✓ or ► */
+  cursor: pointer;
+}
+
+/* Hover / focus */
+.CtxtMenu_MenuItem:hover,
+.MathJax_MenuItem:hover,
+.MJX-Menu-Item:hover,
+.CtxtMenu_MenuItem:focus,
+.MathJax_MenuItem:focus,
+.MJX-Menu-Item:focus
+{
+  background: var(--bg-dark);
+  color: var(--fg);
+}
+
+/* Disabled items */
+.CtxtMenu_MenuItemDisabled,
+.MathJax_MenuDisabled,
+.MJX-Menu-Item.MJX-MenuDisabled
+{
+  color: var(--fg-muted);
+  cursor: default;
+}
+
+/* Check-marks or active ticks */
+.CtxtMenu_MenuActive,
+.MathJax_MenuActive,
+.MJX-Menu-Checkbox.MJX-MenuActive
+{
+  color: var(--link);           /* highlight with your link colour */
+}
+
+/* Sub-menu arrows */
+.CtxtMenu_MenuArrow,
+.MathJax_MenuArrow,
+.MJX-Menu-Arrow
+{
+  border-left-color: var(--fg);
+}
+
+/* Separators / rules */
+.CtxtMenu_MenuSeparator,
+.MathJax_MenuRule,
+.MJX-Menu-Rule
+{
+  border-top: 1px solid var(--border);
+  margin: .25em 0;
+}
+
+/* semi-transparent mask behind menu */
+.MathJax_MenuMask,
+.MJX-Menu-Overlay
+{
+  background: rgba(0,0,0,.05);
+}
+
+/* END mathjax */
+
+
 /* begin side navigation css */
 .menu-title {
     margin-right: 0.5em;
