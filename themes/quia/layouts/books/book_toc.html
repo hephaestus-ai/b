@@ -19,14 +19,14 @@ margin-left: 0em;
   flex-wrap: wrap;
   min-width: 0;
   word-wrap: break-word;
+  
 }
 
 .book-toc ol {
   list-style: none;
-  counter-reset: chapter;
   padding-left: 0;
   padding-right: 0;
-  margin-left:1.75em;
+  margin-left:0em;
   min-width: 0;
   word-wrap: break-word;
     max-width: 100%;
@@ -53,7 +53,7 @@ nav.book-toc>ol {
   font-weight: normal;
   font-style: normal;
   text-transform: capitalize;
-  margin-left: 0.25em;
+  margin-left: 1.25em;
   letter-spacing: 2px;
 }
 
@@ -67,11 +67,14 @@ nav.book-toc>ol {
 .book-toc li.subchapter {
   counter-increment: subchapter;
   font-weight: normal;
-  letter-spacing: 0px;
-  margin: 0;
+  letter-spacing: 1px;
+  margin: 0em;
+  margin-left: 0.5em;
 }
+
 .book-toc li.subchapter::before {
-  min-width:1.5em;
+  content: counter(chapter) "." counter(subchapter) ". ";
+  min-width:1.25em;
   display: inline-block;
 }
 
@@ -81,6 +84,14 @@ nav.book-toc>ol {
   text-transform: lowercase;
   letter-spacing: 0px;
     margin: 0;
+	margin-left: 0.8em;
+}
+
+.book-toc li.section::before {
+  content: "-";
+  color: var(--fg);
+  min-width:0.5em;
+  display: inline-block;
 }
 
 .book-toc li.part::before {
@@ -92,6 +103,8 @@ nav.book-toc>ol {
 
 .book-toc li.part {
   counter-increment: part;
+  counter-reset: chapter;
+  counter-reset: subchapter;
   letter-spacing: 4px;
   font-size: 1.2rem;
   text-transform: uppercase;
@@ -106,6 +119,8 @@ nav.book-toc>ol {
 .book-toc li.volume {
   margin-top: 0em;
   counter-reset: part;
+  counter-reset: chapter;
+  counter-reset: subchapter;
   font-weight: 700;
   color: var(--fg);
   

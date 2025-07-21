@@ -44,6 +44,14 @@ booktoc:
             path: "123"
             type: "chapter"
             children:
+              - title: "subchapter"
+                path: "subchapter"
+                type: "subchapter"
+                children:
+              - title: "subchapter"
+                path: "subchapter"
+                type: "subchapter"
+                children:
           - title: "Super Advanced"
             path: "xyz"
             type: "chapter"
