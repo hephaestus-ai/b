@@ -24,39 +24,52 @@ Expects a context (.) with the following parameters:
 {{ $padding := .Padding | default "0 0.5em" }}
 {{ $margin := .Margin | default "0 0 0 0.8em" }}
 
+
 <script defer>
 (function () {
-  if (!('ResizeObserver' in window)) return;      /* old Safari? just skip */
+  if (!('ResizeObserver' in window)) return;   // skip on ancient browsers
 
-  const WRAP_SEL = '.doublewrap-container';
-  const IMG_SEL  = 'img.js-float-centre';
+  const WRAP_SEL  = '.doublewrap-container';
+  const IMG_SEL   = 'img.js-float-centre';
+  const COL_SEL   = '.left-col, .right-col';
+  const PX_TOLERANCE = 20;
 
-  function centreFloat(img) {
-    const col = img.closest('.left-col, .right-col');
-    if (!col) return;
-    const offset = Math.max(0, (col.offsetHeight - img.offsetHeight) / 2);
-    img.style.setProperty('--float-top', offset + 'px');
-  }
-
-  function initContainer(wrap) {
+  /** centre all floats inside one wrap */
+  function centreWrap(wrap) {
     const imgs = wrap.querySelectorAll(IMG_SEL);
     if (!imgs.length) return;
 
-    /* one observer per column is plenty */
-    wrap.querySelectorAll('.left-col, .right-col').forEach(col => {
-      const ro = new ResizeObserver(() => imgs.forEach(centreFloat));
-      ro.observe(col);
-    });
+    // tallest column in the pair
+    const colHeights = [...wrap.querySelectorAll(COL_SEL)]
+                       .map(col => col.offsetHeight);
+    const hWrap = Math.max(...colHeights);
 
-    window.addEventListener('resize', () => imgs.forEach(centreFloat), {passive:true});
-    imgs.forEach(centreFloat);     /* first run */
+    imgs.forEach(img => {
+      const hImg  = img.offsetHeight;
+      const mNow  = parseFloat(getComputedStyle(img).marginTop) || 0;
+      const want  = Math.max(0, (hWrap - hImg) / 2);
+
+      if (Math.abs(want - mNow) > PX_TOLERANCE) {        // jitter guard
+        img.style.setProperty('--float-top', `${want}px`);
+        img.style.marginTop = 'var(--float-top)';
+      }
+    });
   }
 
-  document.addEventListener('DOMContentLoaded', () => {
-    document.querySelectorAll(WRAP_SEL).forEach(initContainer);
-  });
+  /** hook up observers for each wrap once */
+  function init(wrap) {
+    const ro = new ResizeObserver(() => centreWrap(wrap));
+    wrap.querySelectorAll(COL_SEL).forEach(col => ro.observe(col));
+    centreWrap(wrap);                         // first run
+    addEventListener('resize', () => centreWrap(wrap), { passive: true });
+  }
+
+  addEventListener('DOMContentLoaded', () =>
+    document.querySelectorAll(WRAP_SEL).forEach(init)
+  );
 })();
 </script>
+
 <style>
   .doublewrap-container {
     display: grid;
