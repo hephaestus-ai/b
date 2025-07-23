@@ -4,12 +4,9 @@ title: "Welcome"
 ---
 
 {{< doublewrap_hero 
-    heading="Hand‑crafted Widgets"
+    heading="To a Blog About Everything"
     subheading="Built in Small‑Town USA since 1974"
-    cta_label="Shop now"
-    cta_url="/shop/"
-    cta2_label="Learn more"
-    cta2_url="/about/"
+
     left_image="/images/left_half.webp"
     right_image="/images/right_half.webp" width="200px" height="400px" 
 >}}

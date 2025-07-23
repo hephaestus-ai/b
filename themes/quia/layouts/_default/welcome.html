@@ -2,50 +2,59 @@
 <!-- special snowflake welcome page b/c shortcodes do not behave like proper components -->
 <style>
   body {
-	padding-left: 12.5em;
+    padding-left: 12.5em;
   }
-  
+
   #main {
-  overflow: auto; margin-left:6em;
+    overflow: auto;
+    margin-left: 6em;
   }
 
-#welcome-cols{
-  column-count:1;
-  column-gap:2em;
-  margin:2.5em auto 0;
+  #welcome-cols {
+    column-count: 1;
+    column-gap: 2em;
+    margin: 0.5em auto 0;
 
-}
+  }
 
-#welcome-cols h2,
-#welcome-cols h3,
-#welcome-cols figure,
-#welcome-cols pre,
-#welcome-cols .mediabox{
-  break-inside:avoid;
-}
+  #welcome-cols h2,
+  #welcome-cols h3,
+  #welcome-cols figure,
+  #welcome-cols pre,
+  #welcome-cols .mediabox {
+    break-inside: avoid;
+  }
 
-#welcome-cols h1,
-#welcome-cols h2,
-#welcome-cols h3 {
-  margin-right: 0em;
-}
+  #welcome-cols h1,
+  #welcome-cols h2,
+  #welcome-cols h3 {
+    margin-right: 0em;
+  }
 
-@media(max-width:1200px){
-  #welcome-cols{ column-count:1; }
-}
+  @media(max-width:1200px) {
+    #welcome-cols {
+      column-count: 1;
+    }
+  }
 
-#content h1,#content h2,#content h3{
-  margin-right:.25em;margin-left:.25em;color:var(--fg);padding-right:1.3em;
-}
+  #content h1,
+  #content h2,
+  #content h3 {
+    margin-right: .25em;
+    margin-left: .25em;
+    color: var(--fg);
+    padding-right: 1.3em;
+  }
 </style>
 
 
 <section id="main">
   <!-- leave this header right where it was -->
-  <h1 style="width:fit-content;margin: 0 auto;font-size:26px;text-align:center;padding-left:0.5em;padding-bottom:0.5em;color:var(--fg-muted-bright);">
+  <h1
+    style="width:fit-content;margin: 0 auto;font-size:26px;text-align:center;padding-left:0.5em;padding-bottom:0.5em;color:var(--fg-muted-bright);">
     .🙑 {{ .Title }} 🙒.
   </h1>
-  
+
 
   <!-- everything below flows into two CSS columns automatically -->
   <div id="welcome-cols">
