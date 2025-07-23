@@ -1,0 +1,88 @@
+{{/*
+Partial for a two-column text wrap around a central image.
+Expects a context (.) with the following parameters:
+- LeftImage: URL for the left half of the image.
+- RightImage: URL for the right half of theimage.
+- LeftContent: Markdown content for the left column.
+- RightContent: Markdown content for the right column.
+- LeftClass: (Optional) Custom class for the left image div. Default: "doublewrap-left".
+- RightClass: (Optional) Custom class for the right image div. Default: "doublewrap-right".
+- Width: (Optional) Width of the image halves. Default: "200px".
+- Height: (Optional) Height of the image halves. Default: "400px".
+*/}}
+
+{{ $left_image := .LeftImage | default "" }}
+{{ $right_image := .RightImage | default "" }}
+{{ $left_content := .LeftContent | default "" }}
+{{ $right_content := .RightContent | default "" }}
+{{ $left_class := .LeftClass | default "doublewrap-left" }}
+{{ $right_class := .RightClass | default "doublewrap-right" }}
+{{ $width := .Width | default "200px" }}
+{{ $height := .Height | default "400px" }}
+
+<style>
+  .doublewrap-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+    max-width: 42em;
+    padding-left: 0.5em;
+    padding-right: 0.5em;
+    margin-left: 0.8em;
+  }
+
+  .doublewrap-container div.left-col,
+  .doublewrap-container div.right-col {
+    display: flow-root; /* Creates a new block formatting context */
+  }
+
+  .doublewrap-container .left-col p,
+  .doublewrap-container .right-col p,
+  .doublewrap-container .left-col ul,
+  .doublewrap-container .right-col ul {
+    margin: 0;
+    font-size: 14px;
+    text-align: justify;
+  }
+  
+  .doublewrap-container .left-col ul,
+  .doublewrap-container .right-col ul {
+      list-style-position: inside;
+      padding-left: 1.25rem;
+  }
+
+  .{{ $left_class }},
+  .{{ $right_class }} {
+    width: {{ $width }};
+    height: {{ $height }};
+    shape-image-threshold: 0.5;
+    shape-margin: 1rem;
+  }
+
+  .{{ $left_class }} {
+    float: right;
+    shape-outside: url("{{ $left_image }}");
+    margin-left: 1.25rem;
+  }
+
+  .{{ $right_class }} {
+    float: left;
+    shape-outside: url("{{ $right_image }}");
+    margin-right: 1.25rem;
+  }
+</style>
+
+<div class="doublewrap-container">
+  <div class="left-col">
+    {{ with $left_image }}
+      <img src="{{ . }}" class="{{ $left_class }}" alt="">
+    {{ end }}
+    {{ $left_content | markdownify }}
+  </div>
+  <div class="right-col">
+    {{ with $right_image }}
+      <img src="{{ . }}" class="{{ $right_class }}" alt="">
+    {{ end }}
+    {{ $right_content | markdownify }}
+  </div>
+</div>

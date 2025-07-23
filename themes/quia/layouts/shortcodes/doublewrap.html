@@ -1,0 +1,37 @@
+{{/*
+Shortcode for a two-column text wrap around a central image.
+
+Usage:
+{{< doublewrap left_image="/images/left_half.webp" right_image="/images/right_half.webp" left_class="custom-left-class"
+  (optional) right_class="custom-right-class" (optional) width="250px" (optional) height="500px" (optional)>}}
+
+  (Content for the left column in Markdown)
+
+  ---COLUMNBREAK---
+
+  (Content for the right column in Markdown)
+
+  {{< /doublewrap>}}
+    */}}
+
+    {{ $fullContent := .Inner }}
+
+    {{ $fullContent := .Inner }}
+
+    {{ $parts := split .Inner "---COLUMNBREAK---" }}
+    {{ $left_content := index $parts 0 | safeHTML }}
+    {{ $right_content := "" }}
+    {{ if gt (len $parts) 1 }}
+    {{ $right_content = index $parts 1 | safeHTML }}
+    {{ end }}
+
+    {{ partial "doublewrap.html" (dict
+    "LeftImage" (.Get "left_image")
+    "RightImage" (.Get "right_image")
+    "LeftContent" $left_content
+    "RightContent" $right_content
+    "LeftClass" (.Get "left_class")
+    "RightClass" (.Get "right_class")
+    "Width" (.Get "width")
+    "Height" (.Get "height")
+    ) }}
