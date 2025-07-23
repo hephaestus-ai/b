@@ -1,140 +1,71 @@
-{{/*
-
-    # Why Hugo Sucks
-
-    ### The Philosophy:
-
-    1.  **Templates that Don't Nest Safely:** Instead of elegant composition (e.g., nesting smaller shortcodes for specific
-        elements), we are compelled to cram our layout and content variations
-        for different major sections into a single file. Why? Because nested shortcodes in Hugo are fundamentally unreliable.
-        They lack reliable context passing, mangle Markdown processing, and can produce unpredictable HTML. Getting it to
-		seemingly work is not too hard, but you run into a hundred little edge cases that break, making it not worth it.
-		The Hugo philosophy is probably that markdown is linear anyway. And if you want components, use something else.
-		But other site generators hit a better balance here, offering well designed escape hatches when you need to
-		go beyond the structure of markdown.
-
-    2.  **The "Layout" Trap:** The `layout` parameter is the overlord here. It dictates the entire
-        structural arrangement via massive, repetitive `{{ if eq $layout "..." }}` switch. You can plug
-		content into the template, but all _style and structure need be highly opinionated and coupled_ (core insight). 
-		Of course CSS alone cannot reliably reorder or wrap elements differently across vastly distinct structural needs
-        without an explosion of unmanageable classes or even more terrifyingly complex selectors. You cannot just
-        "flexbox it" when the HTML element order itself needs to change. So what happens is, because the pieces
-		do not compose flexibly, you try to make them internally "smart" (which of course makes them even less friendly
-		to work with if you're a dev) so you can offer the user some meaningful and painless choice "out of the box".
-
-    3.  **Opinionated Styling Coupled to Layout:** You can forget granular styling parameters for colors,
-        fonts, or padding within the shortcode call itself. That would mean an unholy number of arguments. Instead,
-        styling is baked into the CSS classes associated with each `layout`. Little flexibility - it's a forced
-        simplification because Hugo's templating isn't designed for complex, dynamic style injection.
-
-    4.  **Robustness to Absence (Mandatory Defensive Coding):** Every single content parameter (`headline`, `image_url`, etc.)
-        must be wrapped in `{{ with .Get "param_name" }}`. Why? Because Hugo offers no compile-time checks or
-        sane default handling, and trying to access a non-existent parameter will silently fail or, worse,
-        inject garbage. So you need to add defensive logic in case you don't want to pass certain content to the template.
-
-    ### Why Go Templating & Hugo Shortcodes Are An Absolute Awful Experience:
-
-    * **The Unholy `.Inner`:** The shortcode's `.Inner` content is a chaotic black box. Will it be raw Markdown?
-        Partially rendered HTML? A Frankenstein's monster of both? Who knows! It's context-dependent and unreliable.
-        You put a single line of Markdown in an inner shortcode, and Hugo often refuses to wrap it in a `<p>` tag,
-        treating it as an inline fragment. Add a `<div>` around it, and suddenly the Markdown is ignored. It defies
-        all logic and consistency.
-
-    * **Lack of Component Paradigm:** This is the core sin. Hugo shortcodes are string processors, not true components.
-        There's no concept of `props` passing like in React, `slots` like in Vue, or even clear argument passing like in
-        Nunjucks macros. This fundamental architectural choice forces developers into brittle, `if/else` hellscapes
-        just to achieve basic UI modularity.
-
-    * **Go Template Verbosity & Boilerplate:** Every single parameter access requires `.Get`, chaining `| default`,
-        and `safeHTML`/`safeHTMLAttr`/`safeCSS` for safety (which, ironically, can break Markdown rendering).
-        The result is verbose, unreadable template code that's prone to typos and lacks any semblance of modern
-        DX (Developer Experience). No strong typing, no decent IDE auto-completion for template variables, debugging
-        is a joke, and there are far too many {{{{{braces}}}}}
-
-    * **Debugging is a Nightmare:** When something breaks, good luck tracing it. Errors are often cryptic,
-        and the intermediate rendering steps are opaque. You're left guessing which magical incantation of `safe*`
-        functions or `with` blocks will prevent the next inevitable rendering bug.
-
-    * **The "Hugo Way" (Special Snowflake Winter ~~Wonderland~~ Hell):** Some say that this complexity is
-        the price of speed or the result of "content-first" design. In reality, it's a reminder of
-        a templating system that simply isn't designed for the complex, interactive UI _components_ that modern
-        web development demands. The Hugo team could make the shortcodes more "component-like" with reliable
-		nesting, but choose to leave them brittle and unreliable. 3/10 do not recommend.
-
-    So, do not judge me for the tech-debt in this repo. It works. It's ugly, it's bloated, it has special snowflakes,
-	and it's a reminder of the compromises we make to squeeze a modern web experience out of Hugo's templating engine.
-
-*/}}
-
 {{ $layout := .Get "layout" | default "default" }}
 
 {{/*
-    IMPORTANT: When calling `{{ template "block_name" . }}`, the `.` passed is the ENTIRE shortcode context.
-    Therefore, inside these defined blocks, you must continue to use `.Get "param_name"` to access shortcode parameters,
-    just like you would in the main shortcode body.
+IMPORTANT: When calling `{{ template "block_name" . }}`, the `.` passed is the ENTIRE shortcode context.
+Therefore, inside these defined blocks, you must continue to use `.Get "param_name"` to access shortcode parameters,
+just like you would in the main shortcode body.
 */}}
 
 {{ define "hero_headline" }}
-    {{ with .Get "headline" }}<h1 class="hero-headline">{{ . }}</h1>{{ end }}
+{{ with .Get "headline" }}<h1 class="hero-headline">{{ . }}</h1>{{ end }}
 {{ end }}
 
 {{ define "hero_subheadline" }}
-    {{ $sh := . }}
-    {{ if (gt (len .Inner) 0) }}
-        <div class="hero-subheadline">{{ .Inner | markdownify }}</div>
-    {{ else if .Get "subheadline" }}
-        <p class="hero-subheadline">{{ $sh.Get "subheadline" }}</p>
-    {{ end }}
+{{ $sh := . }}
+{{ if (gt (len .Inner) 0) }}
+<div class="hero-subheadline">{{ .Inner | markdownify }}</div>
+{{ else if .Get "subheadline" }}
+<p class="hero-subheadline">{{ $sh.Get "subheadline" }}</p>
+{{ end }}
 {{ end }}
 
 {{ define "hero_ctas" }}
-    {{ $sh := . }} {{/* Capture the current shortcode context as $sh */}}
-    <div class="hero-ctas">
-        {{ with $sh.Get "cta_primary_text" }} {{/* Use $sh.Get to check for the text's existence */}}
-            <a href="{{ $sh.Get "cta_primary_link" | default "#" }}" class="button primary">{{ . }}</a>
-        {{ end }}
-        {{ with $sh.Get "cta_secondary_text" }}
-            <a href="{{ $sh.Get "cta_secondary_link" | default "#" }}" class="button secondary">{{ . }}</a>
-        {{ end }}
-    </div>
+{{ $sh := . }} {{/* Capture the current shortcode context as $sh */}}
+<div class="hero-ctas">
+    {{ with $sh.Get "cta_primary_text" }} {{/* Use $sh.Get to check for the text's existence */}}
+    <a href="{{ $sh.Get " cta_primary_link" | default "#" }}" class="button primary">{{ . }}</a>
+    {{ end }}
+    {{ with $sh.Get "cta_secondary_text" }}
+    <a href="{{ $sh.Get " cta_secondary_link" | default "#" }}" class="button secondary">{{ . }}</a>
+    {{ end }}
+</div>
 {{ end }}
 
 {{ define "hero_trust_element" }}
-    {{ $sh := . }} {{/* Capture the current shortcode context as $sh */}}
-    {{ with $sh.Get "trust_element_text" }}
-        <div class="hero-trust">
-            {{ with $sh.Get "trust_element_icon" }}<i class="{{ . }}"></i>{{ end }}
-            <span>{{ . }}</span>
-        </div>
-    {{ end }}
+{{ $sh := . }} {{/* Capture the current shortcode context as $sh */}}
+{{ with $sh.Get "trust_element_text" }}
+<div class="hero-trust">
+    {{ with $sh.Get "trust_element_icon" }}<i class="{{ . }}"></i>{{ end }}
+    <span>{{ . }}</span>
+</div>
+{{ end }}
 {{ end }}
 
 {{ define "hero_background_visual" }}
-    {{ $sh := . }} {{/* Capture the current shortcode context as $sh */}}
-    <div class="hero-background-visual">
-        {{ with $sh.Get "image_url" }}
-            <img src="{{ . }}" alt="{{ $sh.Get "image_alt" | default "Hero background image" }}">
-        {{ end }}
-        {{ with $sh.Get "video_url" }}
-            <video autoplay loop muted playsinline poster="{{ $sh.Get "video_poster_url" }}">
-                <source src="{{ . }}" type="video/mp4">
-            </video>
-        {{ end }}
-    </div>
+{{ $sh := . }} {{/* Capture the current shortcode context as $sh */}}
+<div class="hero-background-visual">
+    {{ with $sh.Get "image_url" }}
+    <img src="{{ . }}" alt="{{ $sh.Get " image_alt" | default "Hero background image" }}">
+    {{ end }}
+    {{ with $sh.Get "video_url" }}
+    <video autoplay loop muted playsinline poster="{{ $sh.Get " video_poster_url" }}">
+        <source src="{{ . }}" type="video/mp4">
+    </video>
+    {{ end }}
+</div>
 {{ end }}
 
 {{ define "hero_foreground_visual" }}
-    {{ $sh := . }} {{/* Capture the current shortcode context as $sh */}}
-    {{ with $sh.Get "image_url" }}
-        <div class="hero-foreground-visual">
-            <img src="{{ . }}" alt="{{ $sh.Get "image_alt" | default "Hero image" }}">
-        </div>
-    {{ end }}
+{{ $sh := . }} {{/* Capture the current shortcode context as $sh */}}
+{{ with $sh.Get "image_url" }}
+<div class="hero-foreground-visual">
+    <img src="{{ . }}" alt="{{ $sh.Get " image_alt" | default "Hero image" }}">
+</div>
+{{ end }}
 {{ end }}
 
 
 <style>
-
     .hero-section {
         position: relative;
         overflow: hidden;
@@ -143,7 +74,7 @@
         align-items: center;
         justify-content: center;
         padding: 0em 0em 5.6em 0em;
-        box-sizing: border-box; 
+        box-sizing: border-box;
         color: var(--fg);
         text-align: center;
         border-bottom: 1px solid var(--border);
@@ -168,8 +99,8 @@
         height: 99%;
         object-fit: cover;
         display: block;
-		border-radius: 1000px;
-		border: 1px solid;
+        border-radius: 1000px;
+        border: 1px solid;
     }
 
     .hero-background-visual::after {
@@ -196,17 +127,17 @@
     .hero-headline {
         font-size: 1.6em;
         margin-bottom: 0.5em;
-		margin-left: 0em;
-		margin-top: 0em;
-		margin-right: 1.5em;
+        margin-left: 0em;
+        margin-top: 0em;
+        margin-right: 1.5em;
 
         line-height: 1.2;
         color: var(--link);
         font-variant: normal;
         padding: 0;
-		
-		width: 100%;
-		text-align: left;
+
+        width: 100%;
+        text-align: left;
 
     }
 
@@ -215,8 +146,8 @@
         margin-bottom: 1em;
         line-height: 165%;
         color: var(--fg);
-		padding-right: 2em;
-		text-align: justify;
+        padding-right: 2em;
+        text-align: justify;
     }
 
     .hero-ctas {
@@ -224,7 +155,7 @@
         justify-content: center;
         gap: 1em;
         flex-wrap: wrap;
-		margin-left: 1.3em;
+        margin-left: 1.3em;
     }
 
 
@@ -266,7 +197,7 @@
 
     .hero-trust {
         margin-top: 1.5em;
-		margin-left: 1.5em;
+        margin-left: 1.5em;
         font-size: 0.9em;
         color: var(--fg-muted);
         display: flex;
@@ -274,6 +205,7 @@
         justify-content: center;
         gap: 0.5em;
     }
+
     .hero-trust i {
         color: var(--accent);
     }
@@ -281,21 +213,20 @@
 
 
 
-    .hero-layout-default .hero-section {
-        
-    }
-    .hero-layout-default .hero-content {
-        
-    }
+    .hero-layout-default .hero-section {}
+
+    .hero-layout-default .hero-content {}
 
 
     .hero-layout-full-width-image .hero-section {
         min-height: 30em;
     }
+
     .hero-layout-full-width-image .hero-content {
         background-color: rgba(var(--bg), 0.9);
         max-width: 45em;
     }
+
     .hero-layout-full-width-image .hero-background-visual::after {
         background-color: rgba(0, 0, 0, 0.5);
     }
@@ -305,29 +236,36 @@
     .hero-layout-video-background .hero-section {
         min-height: 35em;
     }
+
     .hero-layout-video-background .hero-content {
         background-color: rgba(0, 0, 0, 0.6);
         color: var(--fg);
 
     }
+
     .hero-layout-video-background .hero-headline {
         color: var(--link);
     }
+
     .hero-layout-video-background .hero-subheadline {
         color: var(--fg-muted-bright);
     }
+
     .hero-layout-video-background .hero-background-visual::after {
         background-color: rgba(0, 0, 0, 0.6);
     }
+
     .hero-layout-video-background .button.primary {
         background-color: var(--link);
         color: var(--bg);
         border-color: var(--link);
     }
+
     .hero-layout-video-background .button.secondary {
         color: var(--link);
         border-color: var(--link);
     }
+
     .hero-layout-video-background .button.secondary:hover {
         background-color: var(--link);
         color: var(--bg);
@@ -352,7 +290,7 @@
         display: flex;
         flex-grow: 1;
         width: 100%;
-		gap: 2em;
+        gap: 2em;
     }
 
     .hero-text-wrapper {
@@ -365,6 +303,7 @@
         text-align: left;
         background-color: var(--bg);
     }
+
     .hero-text-wrapper .hero-ctas,
     .hero-text-wrapper .hero-trust {
         justify-content: flex-start;
@@ -372,53 +311,66 @@
 
 
     .hero-foreground-visual {
-	
+
         position: relative;
         flex: 1 1 50%;
         height: auto;
         min-height: 15em;
-		margin: auto;
-		
+        margin: auto;
+
     }
+
     .hero-foreground-visual img {
         /* position: absolute; 
         top: 0; left: 0; */
         /* width: 100%; */
         /* height: 100%; */
         object-fit: cover;
-		
+
     }
 
     .hero-layout-split-left-image .hero-content-wrapper {
         flex-direction: row;
     }
-    .hero-layout-split-left-image .hero-foreground-visual { order: 1; }
-    .hero-layout-split-left-image .hero-text-wrapper { order: 2; }
+
+    .hero-layout-split-left-image .hero-foreground-visual {
+        order: 1;
+    }
+
+    .hero-layout-split-left-image .hero-text-wrapper {
+        order: 2;
+    }
 
     .hero-layout-split-right-image .hero-content-wrapper {
         flex-direction: row;
     }
-    .hero-layout-split-right-image .hero-foreground-visual { order: 2; }
-    .hero-layout-split-right-image .hero-text-wrapper { order: 1; }
+
+    .hero-layout-split-right-image .hero-foreground-visual {
+        order: 2;
+    }
+
+    .hero-layout-split-right-image .hero-text-wrapper {
+        order: 1;
+    }
 
 
     @media only screen and (max-width: 1200px) {
-		body {
-        margin-left: 3.5em;
-		padding: 0;
-	}
-	
-	#main {
-	  margin-left: 6em;
-	  
-	}
-	
-	.content {
-	margin-right: -7.5em;
-	}
-	
-	
-	    .hero-section {
+        body {
+            margin-left: 3.5em;
+            padding: 0;
+        }
+
+        #main {
+            margin-left: 6em;
+
+        }
+
+        .content {
+            margin-right: -7.5em;
+        }
+
+
+        .hero-section {
             padding: 0em 2em 1em;
             min-height: auto;
         }
@@ -458,78 +410,79 @@
         .hero-layout-split-right-image .hero-text-wrapper {
             order: unset;
         }
+
         .hero-text-wrapper {
             padding: 1.5em;
         }
+
         .hero-foreground-visual {
-             min-height: 12em;
+            min-height: 12em;
         }
-
-	}
-
-    @media only screen and (max-width: 900px) {
-	
-		body {
-        margin-left: 3.5em;
-		padding: 0;
-	}
-	
-	#main {
-	  margin-left: 0em;
-	}
-	
-   .content {
-	margin-right: 0em;
-	}
-	
 
     }
 
+    @media only screen and (max-width: 900px) {
+
+        body {
+            margin-left: 3.5em;
+            padding: 0;
+        }
+
+        #main {
+            margin-left: 0em;
+        }
+
+        .content {
+            margin-right: 0em;
+        }
+
+
+    }
 </style>
 
 <section class="hero-section hero-layout-{{ $layout }}">
     {{ if eq $layout "full-width-image" }}
-        {{ template "hero_background_visual" . }}
-        <div class="hero-content full-width-image-content">
-            {{ template "hero_headline" . }}
-            {{ template "hero_subheadline" . }}
-            {{ template "hero_ctas" . }}
-            {{ template "hero_trust_element" . }}
-        </div>
+    {{ template "hero_background_visual" . }}
+    <div class="hero-content full-width-image-content">
+        {{ template "hero_headline" . }}
+        {{ template "hero_subheadline" . }}
+        {{ template "hero_ctas" . }}
+        {{ template "hero_trust_element" . }}
+    </div>
     {{ else if eq $layout "split-left-image" }}
-        <div class="hero-content-wrapper">
-            {{ template "hero_foreground_visual" . }}
-            <div class="hero-text-wrapper">
-                {{ template "hero_headline" . }}
-                {{ template "hero_subheadline" . }}
-                {{ template "hero_ctas" . }}
-                {{ template "hero_trust_element" . }}
-            </div>
+    <div class="hero-content-wrapper">
+        {{ template "hero_foreground_visual" . }}
+        <div class="hero-text-wrapper">
+            {{ template "hero_headline" . }}
+            {{ template "hero_subheadline" . }}
+            {{ template "hero_ctas" . }}
+            {{ template "hero_trust_element" . }}
         </div>
+    </div>
     {{ else if eq $layout "split-right-image" }}
-        <div class="hero-content-wrapper">
-            <div class="hero-text-wrapper">
-                {{ template "hero_headline" . }}
-                {{ template "hero_subheadline" . }}
-                {{ template "hero_ctas" . }}
-                {{ template "hero_trust_element" . }}
-            </div>
-            {{ template "hero_foreground_visual" . }}
+    <div class="hero-content-wrapper">
+        <div class="hero-text-wrapper">
+            {{ template "hero_headline" . }}
+            {{ template "hero_subheadline" . }}
+            {{ template "hero_ctas" . }}
+            {{ template "hero_trust_element" . }}
         </div>
+        {{ template "hero_foreground_visual" . }}
+    </div>
     {{ else if eq $layout "video-background" }}
-        {{ template "hero_background_visual" . }}
-        <div class="hero-content video-overlay-content">
-            {{ template "hero_headline" . }}
-            {{ template "hero_subheadline" . }}
-            {{ template "hero_ctas" . }}
-            {{ template "hero_trust_element" . }}
-        </div>
+    {{ template "hero_background_visual" . }}
+    <div class="hero-content video-overlay-content">
+        {{ template "hero_headline" . }}
+        {{ template "hero_subheadline" . }}
+        {{ template "hero_ctas" . }}
+        {{ template "hero_trust_element" . }}
+    </div>
     {{ else }} {{ template "hero_background_visual" . }}
-        <div class="hero-content default-content">
-            {{ template "hero_headline" . }}
-            {{ template "hero_subheadline" . }}
-            {{ template "hero_ctas" . }}
-            {{ template "hero_trust_element" . }}
-        </div>
+    <div class="hero-content default-content">
+        {{ template "hero_headline" . }}
+        {{ template "hero_subheadline" . }}
+        {{ template "hero_ctas" . }}
+        {{ template "hero_trust_element" . }}
+    </div>
     {{ end }}
 </section>
