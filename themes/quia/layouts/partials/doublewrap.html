@@ -20,15 +20,18 @@ Expects a context (.) with the following parameters:
 {{ $width := .Width | default "200px" }}
 {{ $height := .Height | default "400px" }}
 
+{{ $container_max_width := .ContainerMaxWidth | default "42em" }}
+{{ $padding := .Padding | default "0 0.5em" }}
+{{ $margin := .Margin | default "0 0 0 0.8em" }}
+
 <style>
   .doublewrap-container {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 0;
-    max-width: 42em;
-    padding-left: 0.5em;
-    padding-right: 0.5em;
-    margin-left: 0.8em;
+    max-width: {{ $container_max_width }};
+    padding: {{ $padding }};
+    margin: {{ $margin }};
   }
 
   .doublewrap-container div.left-col,
@@ -38,8 +41,6 @@ Expects a context (.) with the following parameters:
 
   .doublewrap-container .left-col p,
   .doublewrap-container .right-col p,
-  .doublewrap-container .left-col h2,
-  .doublewrap-container .right-col h2,
   .doublewrap-container .left-col ul,
   .doublewrap-container .right-col ul {
     margin: 0;

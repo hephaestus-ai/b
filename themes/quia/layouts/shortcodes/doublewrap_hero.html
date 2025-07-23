@@ -1,0 +1,143 @@
+{{/*
+Shortcode: hero
+==========
+
+A two‑column hero built on the “doublewrap” partial.
+
+Parameters
+----------
+(left + right image handling & sizing are identical to `doublewrap`)
+
+| name | type | default | description |
+|----------------|--------|------------------|-----------------------------------------------|
+| left_image | URL | ― | left half of split image |
+| right_image | URL | ― | right half of split image |
+| width | css | 280px | width of each image half |
+| height | css | 520px | height of each image half |
+| left_class | string | hero-left | extra class on `<img>` left |
+| right_class | string | hero-right | extra class on `<img>` right |
+| bg | css | ― | background (image URL or colour) |
+| heading | text | ― | big headline |
+| subheading | text | ― | smaller strap‑line |
+| cta_label | text | ― | button text |
+| cta_url | URL | ― | button href |
+| cta2_label | text | ― | *optional* secondary button text |
+| cta2_url | URL | ― | *optional* secondary button href |
+
+Inner content
+-------------
+Everything before `---COLUMNBREAK---` is appended **under** the buttons
+in the left column; everything after goes in the right column.
+
+Example
+-------
+{{< hero left_image="/images/hero-left.webp" right_image="/images/hero-right.webp" heading="Hand‑crafted Widgets"
+    subheading="Built in Small‑Town USA since 1974" cta_label="Shop now" cta_url="/shop/" cta2_label="Learn more"
+    cta2_url="/about/" bg="#faf7f0">}}
+
+    We put **love** into every cog and sprocket.
+    Our widgets run longer, louder, and prouder.
+
+    ---COLUMNBREAK---
+
+    - 10‑year guarantee
+    - Free shipping over \$50
+    - 24/7 phone support
+
+    {{< /hero>}}
+        */}}
+        {{ $bg := .Get "bg" }}
+        {{ $heading := .Get "heading" }}
+        {{ $subheading := .Get "subheading" }}
+        {{ $ctaLabel := .Get "cta_label" }}
+        {{ $ctaURL := .Get "cta_url" }}
+        {{ $cta2Label := .Get "cta2_label" }}
+        {{ $cta2URL := .Get "cta2_url" }}
+
+        {{/* Split the user‑supplied Markdown on ---COLUMNBREAK--- */}}
+        {{ $parts := split (.Inner | default "") "---COLUMNBREAK---" }}
+        {{ $leftExtra := index $parts 0 | default "" }}
+        {{ $rightExtra := cond (gt (len $parts) 1) (index $parts 1) "" }}
+
+        <section class="hero-wrapper" {{ if $bg }}style="background:{{ $bg }};" {{ end }}>
+            <div class="hero-text">
+                {{ with $heading }}<h1>{{ . }}</h1>{{ end }}
+                {{ with $subheading }}<p class="subhead">{{ . }}</p>{{ end }}
+            </div>
+
+            {{/* call your existing double‑wrap partial for the column layout */}}
+            {{ partial "doublewrap.html" (dict
+            "LeftImage" (.Get "left_image")
+            "RightImage" (.Get "right_image")
+            "LeftContent" $leftExtra
+            "RightContent" $rightExtra
+            "LeftClass" (.Get "left_class" | default "hero-left")
+            "RightClass" (.Get "right_class" | default "hero-right")
+            "Width" (.Get "width" | default "280px")
+            "Height" (.Get "height" | default "520px")
+            "ContainerMaxWidth" "90%"
+            "Padding" "0"
+            "Margin" "0 auto"
+            ) }}
+
+            <div class="hero-text-bottom">
+                {{ if and $ctaLabel $ctaURL }}
+                <a class="hero-btn" href="{{ $ctaURL }}">{{ $ctaLabel }}</a>
+                {{ end }}
+                {{ if and $cta2Label $cta2URL }}
+                <a class="hero-btn alt" href="{{ $cta2URL }}">{{ $cta2Label }}</a>
+                {{ end }}
+            </div>
+        </section>
+
+        <style>
+            .hero-wrapper {
+                margin-inline: auto;
+            }
+
+            .hero-text {
+                margin-inline: auto 0;
+                padding-inline: 1rem;
+            }
+
+            .hero-text h1 {
+                margin: .1em 0 .3em;
+                line-height: 1.1;
+                font-size: clamp(2rem, 5vw, 3rem);
+                text-align: center;
+            }
+
+            .subhead {
+                font-size: 1.15rem;
+                margin: 0 auto 1.2rem;
+                color: var(--muted, #555);
+                text-align: center;
+            }
+
+            .hero-text-bottom {
+                display: flex;
+                justify-content: center;
+            }
+
+            .hero-btn {
+                display: inline-block;
+                padding: .65em 1.4em;
+                font-weight: 600;
+                background: var(--accent, #8150ff);
+                color: #fff;
+                text-decoration: none;
+                border-radius: .35em;
+                white-space: nowrap;
+                margin-right: .5rem;
+            }
+
+            .hero-btn:hover {
+                filter: brightness(1.08);
+            }
+
+            .hero-btn.alt {
+                background: transparent;
+                border: 2px solid currentColor;
+                color: inherit;
+            }
+        </style>
