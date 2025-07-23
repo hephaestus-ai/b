@@ -3,6 +3,31 @@ layout: "welcome"
 title: "Welcome"
 ---
 
+{{< doublewrap left_image="/images/left_half.webp" right_image="/images/right_half.webp" width="200px" height="400px" >}}
+### Hi
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non felis quis nunc porta consectetur. Nulla facilisi. Vestibulum pellentesque pulvinar orci vitae gravida. Curabitur sagittis dui eget facilisis porttitor. Suspendisse potenti. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non felis quis nunc porta consectetur. Nulla facilisi. Vestibulum pellentesque pulvinar orci vitae gravida. Curabitur sagittis dui eget facilisis. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non felis quis nunc porta consectetur. Nulla facilisi. Vestibulum pellentesque pulvinar orci vitae gravida. Curabitur sagittis dui eget facilisis porttitor. Suspendisse potenti. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non felis quis nunc porta consectetur. Nulla facilisi. Vestibulum pellentesque pulvinar orci vitae gravida. Curabitur sagittis dui eget facilisis.
+---COLUMNBREAK---
+* Aliquam tincidunt mauris eu risus.
+* Vestibulum auctor dapibus.
+* Nunc dignissim risus.
+* Cras ornare tristique.
+* Vivamus vestibulum.
+* Praesent placerat.
+* Pellentesque.
+* Integer vitae libero. Integer vitae libero. Integer vitae libero. Integer vitae libero.
+* Commodo felis.
+* Aliquam tincidunt mauris.
+* Vestibulum auctor dapibus.
+* Nunc dignissim risus.
+* Cras ornare tristique.
+* Vivamus vestibulum.
+* Praesent placerat.
+* Pellentesque.
+* Integer vitae libero.
+* Commodo felis.
+
+{{< /doublewrap >}}
+
 {{< hero_section
     layout="split-right-image"
     headline="Your Future Starts Tomorrow"

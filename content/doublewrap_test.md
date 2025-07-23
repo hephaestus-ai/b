@@ -10,7 +10,6 @@ draft: true
 Hello, hello.
 
 {{< doublewrap left_image="/images/transparent_jester_left.webp" right_image="/images/transparent_jester_right.webp" width="200px" height="600px" >}}
-## Header
 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non felis quis nunc porta consectetur. Nulla facilisi. Vestibulum pellentesque pulvinar orci vitae gravida. Curabitur sagittis dui eget facilisis porttitor. Suspendisse potenti. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non felis quis nunc porta consectetur. Nulla facilisi. Vestibulum pellentesque pulvinar orci vitae gravida. Curabitur sagittis dui eget facilisis. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non felis quis nunc porta consectetur. Nulla facilisi. Vestibulum pellentesque pulvinar orci vitae gravida. Curabitur sagittis dui eget facilisis porttitor. Suspendisse potenti. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non felis quis nunc porta consectetur. Nulla facilisi. Vestibulum pellentesque pulvinar orci vitae gravida. Curabitur sagittis dui eget facilisis.
 ---COLUMNBREAK---
 * Aliquam tincidunt mauris eu risus.
