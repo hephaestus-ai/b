@@ -24,6 +24,39 @@ Expects a context (.) with the following parameters:
 {{ $padding := .Padding | default "0 0.5em" }}
 {{ $margin := .Margin | default "0 0 0 0.8em" }}
 
+<script defer>
+(function () {
+  if (!('ResizeObserver' in window)) return;      /* old Safari? just skip */
+
+  const WRAP_SEL = '.doublewrap-container';
+  const IMG_SEL  = 'img.js-float-centre';
+
+  function centreFloat(img) {
+    const col = img.closest('.left-col, .right-col');
+    if (!col) return;
+    const offset = Math.max(0, (col.offsetHeight - img.offsetHeight) / 2);
+    img.style.setProperty('--float-top', offset + 'px');
+  }
+
+  function initContainer(wrap) {
+    const imgs = wrap.querySelectorAll(IMG_SEL);
+    if (!imgs.length) return;
+
+    /* one observer per column is plenty */
+    wrap.querySelectorAll('.left-col, .right-col').forEach(col => {
+      const ro = new ResizeObserver(() => imgs.forEach(centreFloat));
+      ro.observe(col);
+    });
+
+    window.addEventListener('resize', () => imgs.forEach(centreFloat), {passive:true});
+    imgs.forEach(centreFloat);     /* first run */
+  }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll(WRAP_SEL).forEach(initContainer);
+  });
+})();
+</script>
 <style>
   .doublewrap-container {
     display: grid;
@@ -61,6 +94,12 @@ Expects a context (.) with the following parameters:
     shape-margin: 1rem;
   }
 
+  .left-col img.js-float-centre,
+  .right-col img.js-float-centre {
+    margin-top:   var(--float-top,0);
+  }
+
+
   .{{ $left_class }} {
     float: right;
     shape-outside: url("{{ $left_image }}");
@@ -77,13 +116,13 @@ Expects a context (.) with the following parameters:
 <div class="doublewrap-container">
   <div class="left-col">
     {{ with $left_image }}
-      <img src="{{ . }}" class="{{ $left_class }}" alt="">
+      <img src="{{ . }}" class="{{ $left_class }} js-float-centre" alt="">
     {{ end }}
     {{ $left_content | markdownify }}
   </div>
   <div class="right-col">
     {{ with $right_image }}
-      <img src="{{ . }}" class="{{ $right_class }}" alt="">
+      <img src="{{ . }}" class="{{ $right_class }} js-float-centre" alt="">
     {{ end }}
     {{ $right_content | markdownify }}
   </div>
