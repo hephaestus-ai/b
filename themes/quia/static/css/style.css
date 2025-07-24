@@ -419,6 +419,8 @@ blockquote > blockquote > p:after {
   display: flex;
   list-style-type: "- ";
   justify-content: flex-end; /* Aligns content to the right */
+  padding-right: 3em;
+  font-style: normal;
 }
 
 /* can be used for basic blockquote citations */
