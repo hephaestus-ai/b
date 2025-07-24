@@ -33,7 +33,7 @@ Sources pages by filtering, from a data file, or from a section.
 {{ $oneThridsColsFloored := int (math.Max 1.0 (math.Floor (div (mul (float $maxCols) 1) 3))) }}
 {{ $showBorder := .Get "item_border" | default true }}
 {{ $pageHeight := .Get "item_height" | default "24em" }}
-{{ $truncateSummaryAfter := .Get "truncate_summary_after" | default 240 }}
+{{ $truncateSummaryAfter := .Get "truncate_summary_after" | default 160 }}
 {{ $plainifySummary := .Get "plainify_summary" | default true }}
 {{ $enableLayoutAlternation := .Get "enable_layout_alternation" | default false }}
 {{ $layoutOption := .Get "layout_option" | default "editorial" }}

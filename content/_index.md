@@ -37,4 +37,11 @@ title: "Welcome To"
 
 
 
-{{< grid-display data_file="homepage_features" max_cols=3 item_height="18em" item_border=false layout_option="" header=".🙠	 Spotlight 🙣.">}}{{< /grid-display >}}
+{{< grid-display 
+	data_file="homepage_features"
+	max_cols=3
+	item_height="18em"
+	item_border=false
+	layout_option=""
+	header=".🙠	 Spotlight 🙣."
+>}}{{< /grid-display >}}

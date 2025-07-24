@@ -13,7 +13,7 @@ Renders a paginated grid of pages.
 {{ $maxCols := $page.Params.max_cols | default 3 }}
 {{ $showBorder := $page.Params.item_border | default true }}
 {{ $item_height := $page.Params.item_height | default "24em" }}
-{{ $truncateSummaryAfter := $page.Params.truncate_summary_after | default 240 }}
+{{ $truncateSummaryAfter := $page.Params.truncate_summary_after | default 100 }}
 {{ $plainifySummary := $page.Params.plainify_summary | default true }}
 {{ $enableLayoutAlternation := $page.Params.enable_layout_alternation | default false }}
 
