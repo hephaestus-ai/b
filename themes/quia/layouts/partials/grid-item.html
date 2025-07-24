@@ -50,43 +50,37 @@
 
 
 
-  {{ if $imageSrc }}
-    <div class="content-padding" style="display: flex; flex-direction: column; justify-content: space-between;padding:0.5em 0 0.5em 0.5em;">
-		<h3><a href="{{ $page.RelPermalink }}" style="text-decoration: none; color: inherit;">{{ $page.Title }}</a></h3>
-		{{ if $page.Summary }}
-		  {{ $processedSummary := $page.Summary }}
-		  {{ if $plainifySummary }}
-			{{ $processedSummary = $processedSummary | plainify }}
-		  {{ end }}
-		  <p style="min-width: 0px;padding:0em;">{{ $processedSummary | truncate $truncateSummaryAfter }}</p>
+	{{ $contentPadding := "0.5em" }}
+	{{ $hasImage := false }}
+
+	{{ if $imageSrc }}
+	  {{ $contentPadding = "0.5em 0 0.5em 0.5em" }}
+	  {{ $hasImage = true }}
+	{{ end }}
+
+	<div class="content-padding" style="display: flex; flex-direction: column; justify-content: space-between; padding:{{ $contentPadding }};">
+	  <h3><a href="{{ $page.RelPermalink }}" style="text-decoration: none; color: inherit;">{{ $page.Title }}</a></h3>
+	  {{ if $page.Summary }}
+		{{ $processedSummary := $page.Summary }}
+		{{ if $plainifySummary }}
+		  {{ $processedSummary = $processedSummary | plainify }}
 		{{ end }}
-		<p style="margin-top: auto;min-width: 0px;">
+		<p style="min-width: 0px; padding:0em;">{{ $processedSummary | truncate $truncateSummaryAfter }}</p>
+	  {{ end }}
+	  <p style="margin-top: auto; min-width: 0px;">
 		<a class="read-more" href="{{ $page.RelPermalink }}" style="">Read More...</a>
-		</p>
-    </div>
-    <div class="thumbnail-padding" style="margin: auto; height: 90%; padding: 0.5em;">
-      <a href="{{ $page.RelPermalink }}" style="text-decoration: none; color: inherit;">
-        {{ if $thumbnailExists }}
-          <img src="{{ $imageSrc }}" alt="{{ $imageAlt }}">
-        {{ end }}
-      </a>
-    </div>
-	
-  {{ else }}
-    <div class="content-padding" style="display: flex; flex-direction: column; justify-content: space-between;padding:0.5em;">
-		<h3><a href="{{ $page.RelPermalink }}" style="text-decoration: none; color: inherit;">{{ $page.Title }}</a></h3>
-		{{ if $page.Summary }}
-		  {{ $processedSummary := $page.Summary }}
-		  {{ if $plainifySummary }}
-			{{ $processedSummary = $processedSummary | plainify }}
+	  </p>
+	</div>
+
+	{{ if $hasImage }}
+	  <div class="thumbnail-padding" style="margin: auto; height: 90%; padding: 0.5em;">
+		<a href="{{ $page.RelPermalink }}" style="text-decoration: none; color: inherit;">
+		  {{ if $thumbnailExists }}
+			<img src="{{ $imageSrc }}" alt="{{ $imageAlt }}">
 		  {{ end }}
-		  <p style="min-width: 0px;padding:0em;">{{ $processedSummary | truncate $truncateSummaryAfter }}</p>
-		{{ end }}
-		<p style="margin-top: auto;min-width: 0px;">
-		<a class="read-more" href="{{ $page.RelPermalink }}" style="">Read More...</a>
-	</p>
-  </div>
-  {{ end }}
+		</a>
+	  </div>
+	{{ end }}
   
 </div>
 
