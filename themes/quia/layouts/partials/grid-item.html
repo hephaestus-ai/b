@@ -57,7 +57,9 @@
       {{ end }}
       <p>{{ $processedSummary | truncate $truncateSummaryAfter }}</p>
     {{ end }}
-    <p style="margin-top: auto;"><a href="{{ $page.RelPermalink }}" style="text-decoration: none; color: inherit;">Read More...</a></p>
+    <p style="margin-top: auto;">
+	<a class="read-more" href="{{ $page.RelPermalink }}" style="">Read More...</a>
+	</p>
   </div>
 
   {{ if $imageSrc }}
