@@ -397,6 +397,23 @@ p, ul, ol, menu, dir, mjx-container {
       padding-right: 0.5em;
 }
 
+blockquote {
+	max-width: 40.5em;
+	margin-right: 0;
+	padding-right: 0;
+	font-family: 'spectral';
+    font-style: italic;
+	color: var(--fg-muted-bright);
+}
+
+blockquote > p:before {
+  content: '“';
+}
+blockquote > p:after {
+  content: '”';
+}
+
+
 .content ul, ol {
    list-style: circle;
    margin-left: 3.5em;

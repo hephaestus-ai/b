@@ -134,6 +134,42 @@ bah and humbug
 $
 ```
 
+Naked code block:
+
+```
+## this is a comment
+$ echo this is a command
+this is a command
+
+## edit the file
+$vi foo.md
++++
+date = "2014-09-28"
+title = "creating a new theme"
++++
+
+bah and humbug
+:wq
+
+## show it
+$ cat foo.md
++++
+date = "2014-09-28"
+title = "creating a new theme"
++++
+
+bah and humbug
+$
+```
+
+Normal paragraph. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque vel dolor non neque posuere aliquam. Proin porttitor sem sem, ac viverra justo ultrices eget. Proin dui justo, semper porttitor erat a, semper tempor dolor. Vestibulum ultrices mauris ac dolor molestie faucibus. Vestibulum efficitur euismod nisl, vitae consequat orci porta vel. Suspendisse efficitur est mauris, sit amet pulvinar justo ullamcorper in.
+
+> quote? Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque vel dolor non neque posuere aliquam. Proin porttitor sem sem, ac viverra justo ultrices eget. Proin dui justo, semper porttitor erat a, semper tempor dolor. Vestibulum ultrices mauris ac dolor molestie faucibus. Vestibulum efficitur euismod nisl, vitae consequat orci porta vel. Suspendisse efficitur est mauris, sit amet pulvinar justo ullamcorper in. Praesent porttitor nisi quis rutrum maximus. Pellentesque sodales, quam eget semper rhoncus, velit risus sagittis arcu, ut gravida tortor dolor ut diam. Praesent nulla tellus, pellentesque ut finibus ut, eleifend et ex. Vivamus porta odio ac erat elementum dapibus.
+
+>> double indent. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque vel dolor non neque posuere aliquam. Proin porttitor sem sem, ac viverra justo ultrices eget. Proin dui justo, semper porttitor erat a, semper tempor dolor. Vestibulum ultrices mauris ac dolor molestie faucibus. Vestibulum efficitur euismod nisl, vitae consequat orci porta vel.
+
+>>> hello, this is a triple indent
+
 ## Section for Table Examples
 
 | Statement                                                                              | Verdict              |
