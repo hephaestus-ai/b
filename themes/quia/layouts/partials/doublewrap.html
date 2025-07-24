@@ -13,6 +13,7 @@ Expects a context (.) with the following parameters:
 
 {{ $left_image := .LeftImage | default "" }}
 {{ $right_image := .RightImage | default "" }}
+{{ $mobile_image := .MobileImage | default ""}}
 {{ $left_content := .LeftContent | default "" }}
 {{ $right_content := .RightContent | default "" }}
 {{ $left_class := .LeftClass | default "doublewrap-left" }}
@@ -24,7 +25,7 @@ Expects a context (.) with the following parameters:
 {{ $padding := .Padding | default "0 0.5em" }}
 {{ $margin := .Margin | default "0 0 0 0.8em" }}
 
-{{ $centerCols := .CenterCols | default true}}
+{{ $centerCols := .CenterCols | default false}}
 
 
 <script defer>
@@ -32,7 +33,11 @@ Expects a context (.) with the following parameters:
   if (!('ResizeObserver' in window)) return;
 
   const WRAP_SEL      = '.doublewrap-container';
-  const IMG_SEL       = 'img.js-float-centre, .right-col-content, .left-col-content'; // adjust if needed
+  {{ if $centerCols }}
+  const IMG_SEL       = 'img.js-float-centre, .right-col-content, .left-col-content';
+  {{ else }}
+  const IMG_SEL       = 'img.js-float-centre'; 
+  {{ end }}
   const COL_SEL       = '.left-col, .right-col';
   const PX_TOLERANCE  = 15;
 
@@ -154,6 +159,8 @@ Expects a context (.) with the following parameters:
     padding: {{ $padding }};
     margin: {{ $margin }};
   }
+  
+
 
   .doublewrap-container div.left-col,
   .doublewrap-container div.right-col {
@@ -164,10 +171,15 @@ Expects a context (.) with the following parameters:
   .doublewrap-container .right-col p,
   .doublewrap-container .left-col ul,
   .doublewrap-container .right-col ul {
-    margin: 0;
+    margin: 0 1em;
     text-align: justify;
 	color: var(--fg-muted-bright);
-	font-family: 'Book Antiqua';
+	font-family: 'spectral';
+  }
+  
+  .doublewrap-container .left-col p,
+  .doublewrap-container .left-col ul {
+    text-indent: 1em;
   }
   
   .doublewrap-container .left-col ul,
@@ -201,9 +213,44 @@ Expects a context (.) with the following parameters:
     shape-outside: url("{{ $right_image }}");
     margin-right: 1.25rem;
   }
+  
+  	.mobile-img {
+	  display: none;
+	}
+  
+  @media only screen and (max-width: 900px) {
+    .{{ $left_class }},
+    .{{ $right_class }} {
+	    width: calc({{ $width }} / 2);
+        height: calc({{ $height }} / 2);
+	}
+	
+	.doublewrap-container {
+		display: grid;
+		grid-template-columns: 1fr;
+		gap: 0;
+		max-width: 100%;
+		padding: {{ $padding }};
+		margin: {{ $margin }};
+	  }
+	  
+    .left-col img.js-float-centre,
+    .right-col img.js-float-centre {
+      display: none;
+    }
+	
+	.mobile-img {
+	  display: block;
+	  margin: auto;
+	  width: calc({{ $width }} * 2);
+      height: {{ $height }};
+	}
+
+  }
 </style>
 
 <div class="doublewrap-container">
+
   <div class="left-col">
     {{ with $left_image }}
       <img src="{{ . }}" class="{{ $left_class }} js-float-centre" alt="">
@@ -212,6 +259,9 @@ Expects a context (.) with the following parameters:
     {{ $left_content | markdownify }}
     </div>
   </div>
+    {{ with $mobile_image }}
+      <img src="{{ . }}" class="{{ $left_class }} mobile-img" alt="">
+    {{ end }}
   <div class="right-col">
     {{ with $right_image }}
       <img src="{{ . }}" class="{{ $right_class }} js-float-centre" alt="">

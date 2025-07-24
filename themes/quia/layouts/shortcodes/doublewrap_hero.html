@@ -69,6 +69,7 @@ Example
             {{ partial "doublewrap.html" (dict
             "LeftImage" (.Get "left_image")
             "RightImage" (.Get "right_image")
+			"MobileImage" (.Get "mobile_image")
             "LeftContent" $leftExtra
             "RightContent" $rightExtra
             "LeftClass" (.Get "left_class" | default "hero-left")
