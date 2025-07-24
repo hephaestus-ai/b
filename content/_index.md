@@ -22,7 +22,7 @@ title: "Welcome To"
 
 ---COLUMNBREAK---
 
-**There’s** a light switch in the right-hand menu if the theme annoys you.
+**There’s** a light switch in the menu if the theme annoys you.
 
 **You** can browse by starting with the Spotlight below, or if that doesn’t grab you, the Posts archive holds everything else; tags can be used to organize the content.
 

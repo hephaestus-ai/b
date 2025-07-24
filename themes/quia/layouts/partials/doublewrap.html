@@ -181,6 +181,10 @@ Expects a context (.) with the following parameters:
   .doublewrap-container .left-col ul {
     text-indent: 1em;
   }
+  .doublewrap-container .right-col p,
+  .doublewrap-container .right-col ul {
+    text-indent: 0em;
+  }
   
   .doublewrap-container .left-col ul,
   .doublewrap-container .right-col ul {
@@ -245,6 +249,11 @@ Expects a context (.) with the following parameters:
 	  width: calc({{ $width }} * 2);
       height: {{ $height }};
 	}
+	
+  .doublewrap-container .right-col p,
+  .doublewrap-container .right-col ul {
+    text-indent: 1em;
+  }
 
   }
 </style>
