@@ -362,9 +362,6 @@ body::after{
 ul, ol, dir {
   -moz-padding-start: 3.24em;
 }
-blockquote {
-  margin: 1em 3.24em;
-}
 
 a {
   color: var(--link);
@@ -398,12 +395,13 @@ p, ul, ol, menu, dir, mjx-container {
 }
 
 blockquote {
-	max-width: 40.5em;
-	margin-right: 0;
+	max-width: 41.5em;
+    margin: 1em 0 1em 2.25em;
 	padding-right: 0;
 	font-family: 'spectral';
     font-style: italic;
 	color: var(--fg-muted-bright);
+	text-indent: 1em;
 }
 
 blockquote > p:before {
@@ -413,6 +411,11 @@ blockquote > p:after {
   content: '”';
 }
 
+/* can be used for basic blockquote citations */
+.content blockquote>ul {
+  display: flex;
+  list-style-type: "";
+  justify-content: flex-end; /* Aligns content to the right */
 
 .content ul, ol {
    list-style: circle;
@@ -421,6 +424,7 @@ blockquote > p:after {
 }
 
 
+}
 
 .bottomnav-menu { /* TODO should move this; refactor to component specific CSS */
 	margin-left: 0em;
