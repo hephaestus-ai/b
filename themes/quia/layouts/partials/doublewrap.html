@@ -24,59 +24,128 @@ Expects a context (.) with the following parameters:
 {{ $padding := .Padding | default "0 0.5em" }}
 {{ $margin := .Margin | default "0 0 0 0.8em" }}
 
-{{ $centerShorterCol := .CenterShorterCol | default true}}
+{{ $centerCols := .CenterCols | default true}}
 
 
 <script defer>
-(function () {
-  if (!('ResizeObserver' in window)) return;   // skip on ancient browsers
+(() => {
+  if (!('ResizeObserver' in window)) return;
 
-  const WRAP_SEL  = '.doublewrap-container';
-  {{ if $centerShorterCol }}
-  const IMG_SEL   = 'img.js-float-centre, .right-col-content, .left-col-content';
-  {{ else }}
-  const IMG_SEL   = 'img.js-float-centre';
-  {{ end }}
-  const COL_SEL   = '.left-col, .right-col';
-  const PX_TOLERANCE = 10;
+  const WRAP_SEL      = '.doublewrap-container';
+  const IMG_SEL       = 'img.js-float-centre, .right-col-content, .left-col-content'; // adjust if needed
+  const COL_SEL       = '.left-col, .right-col';
+  const PX_TOLERANCE  = 15;
 
-  /** centre all floats inside one wrap */
+  const wraps = [];
+  let resizeHandlerAttached = false;
+  let ro; // single ResizeObserver
+
+  function waitForImages(root = document) {
+    const imgs = [...root.querySelectorAll('img')];
+    if (!imgs.length) return Promise.resolve();
+    return Promise.all(
+      imgs.map(img => {
+        if (img.complete && img.naturalHeight !== 0) return Promise.resolve();
+        return new Promise(res => img.addEventListener('load', res, { once: true }));
+      })
+    );
+  }
+
   function centreWrap(wrap) {
     const imgs = wrap.querySelectorAll(IMG_SEL);
     if (!imgs.length) return;
 
-    // tallest column in the pair
-    const colHeights = [...wrap.querySelectorAll(COL_SEL)]
-                       .map(col => col.offsetHeight);
-    const hWrap = Math.max(...colHeights);
+    const hWrap = Math.max(
+      ...[...wrap.querySelectorAll(COL_SEL)].map(col => col.offsetHeight)
+    );
 
     imgs.forEach(img => {
-      const hImg  = img.offsetHeight;
-      const mNow  = parseFloat(getComputedStyle(img).marginTop) || 0;
-      const want  = Math.max(0, (hWrap - hImg) / 2);
-
-      if (Math.abs(want - mNow) > PX_TOLERANCE) {        // jitter guard
-        img.style.setProperty('--float-top', `${want}px`);
+      const hImg = img.offsetHeight;
+      const mNow = parseFloat(getComputedStyle(img).marginTop) || 0;
+      const want = Math.max(0, (hWrap - hImg) / 2);
+      if (Math.abs(want - mNow) > PX_TOLERANCE) {
+        img.style.setProperty('--float-top', `${Math.round(want)}px`);
         img.style.marginTop = 'var(--float-top)';
       }
     });
   }
 
-  /** hook up observers for each wrap once */
-  function init(wrap) {
-    const ro = new ResizeObserver(() => centreWrap(wrap));
-    wrap.querySelectorAll(COL_SEL).forEach(col => ro.observe(col));
-    centreWrap(wrap);                         // first run
-    addEventListener('resize', () => centreWrap(wrap), { passive: true });
+  function runAll() {
+    wraps.forEach(centreWrap);
   }
 
-  addEventListener('DOMContentLoaded', () =>
-    document.querySelectorAll(WRAP_SEL).forEach(init)
-  );
+	function debounce(fn, wait) {
+	  let t;
+	  let lastW = window.innerWidth;
+	  let lastH = window.innerHeight;
+
+	  return (...args) => {
+		clearTimeout(t);
+		t = setTimeout(() => {
+		  const nowW = window.innerWidth;
+		  const nowH = window.innerHeight;
+		  if (nowW !== lastW || nowH !== lastH) {
+			lastW = nowW;
+			lastH = nowH;
+			fn.apply(null, args);
+		  }
+		}, wait);
+	  };
+	}
+
+  async function init() {
+    const found = [...document.querySelectorAll(WRAP_SEL)];
+    if (!found.length) return;
+
+    wraps.push(...found);
+
+    // Ensure deterministic first measurement
+    await waitForImages(document);
+
+    // Initial render after images are known
+    runAll();
+
+    // One observer for all columns
+    ro = new ResizeObserver(() => {
+      // Schedule to end of current task to avoid re-entrancy
+      queueMicrotask(runAll);
+    });
+    wraps.forEach(wrap => {
+      wrap.querySelectorAll(COL_SEL).forEach(col => ro.observe(col));
+    });
+
+    // One global resize listener (not one per wrap)
+    if (!resizeHandlerAttached) {
+      window.addEventListener('resize', debounce(runAll, 100), { passive: true });
+      resizeHandlerAttached = true;
+    }
+  }
+
+  // Use window "load" so we never run before assets are available on hard reload
+  window.addEventListener('load', init);
 })();
 </script>
 
+
+
+
 <style>
+.right-col-content h1,
+.left-col-content h1,
+.right-col-content h2,
+.left-col-content h2,
+.right-col-content h3,
+.left-col-content h3,
+.right-col-content h4,
+.left-col-content h4,
+.right-col-content h5,
+.left-col-content h5,
+.right-col-content h6,
+.left-col-content h6
+ {
+  display: inline-block;
+}
+
   .doublewrap-container {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -97,6 +166,8 @@ Expects a context (.) with the following parameters:
   .doublewrap-container .right-col ul {
     margin: 0;
     text-align: justify;
+	color: var(--fg-muted-bright);
+	font-family: 'Book Antiqua';
   }
   
   .doublewrap-container .left-col ul,

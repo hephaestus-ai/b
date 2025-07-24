@@ -75,7 +75,7 @@ Example
             "RightClass" (.Get "right_class" | default "hero-right")
             "Width" (.Get "width" | default "280px")
             "Height" (.Get "height" | default "520px")
-            "ContainerMaxWidth" "80%"
+            "ContainerMaxWidth" (.Get "container_max_width" | default "70%")
             "Padding" "0"
             "Margin" "0 auto"
             ) }}
@@ -93,12 +93,13 @@ Example
         <style>
             .hero-wrapper {
                 margin-inline: auto;
-                padding-bottom: 5em;
+                padding-bottom: 2.5em;
                 border-bottom: 1px solid var(--border);
             }
 
             .hero-text {
                 margin-inline: auto 0;
+				font-family: 'Book Antiqua';
             }
 
             .hero-text h1 {
@@ -111,8 +112,12 @@ Example
             .subhead {
                 font-size: 1.15rem;
                 margin: 0 auto 1.2rem;
-                color: var(--muted, #555);
-                text-align: center;
+                color: var(--fg-muted, #555);
+				font-family: 'Book Antiqua';
+                text-align: justify;
+				text-align-last: center;
+				max-width: 28em;
+				
             }
 
             .hero-text-bottom {

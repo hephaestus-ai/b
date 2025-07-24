@@ -1,44 +1,41 @@
 ---
 layout: "welcome"
-title: "Welcome"
+title: "Welcome To"
 ---
 
 {{< doublewrap_hero 
-    heading="To a Blog About Everything"
-    subheading="Built in Small‑Town USA since 1974"
+    heading="a Blog about Everything"
+    subheading="In which the Fascinating Miscellania of the Universe, in all its Grandeur and Minutae, are Laid Bare for Deep Contemplation."
 
-    left_image="/images/left_half.webp"
-    right_image="/images/right_half.webp" width="200px" height="400px" 
+    left_image="/images/polyhedral1_left.png"
+    right_image="/images/polyhedral1_right.png" width="180px" height="540px" 
 >}}
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non felis quis nunc porta consectetur. Nulla facilisi. Vestibulum pellentesque pulvinar orci vitae gravida. Curabitur sagittis dui eget facilisis porttitor. Suspendisse potenti. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non felis quis nunc porta consectetur. Nulla facilisi. Vestibulum pellentesque pulvinar orci vitae gravida. Curabitur sagittis dui eget facilisis. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non felis quis nunc porta consectetur. Nulla facilisi. Vestibulum pellentesque pulvinar orci vitae gravida. Curabitur sagittis dui eget facilisis porttitor. Suspendisse potenti. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non felis quis nunc porta consectetur. Nulla facilisi. Vestibulum pellentesque pulvinar orci vitae gravida. Curabitur sagittis dui eget facilisis.
----COLUMNBREAK---
-* Aliquam tincidunt mauris eu risus.
-* Vestibulum auctor dapibus.
-* Nunc dignissim risus.
-* Cras ornare tristique.
-* Vivamus vestibulum.
-* Praesent placerat.
-* Pellentesque.
-* Integer vitae libero. Integer vitae libero. Integer vitae libero. Integer vitae libero.
-* Commodo felis.
-* Aliquam tincidunt mauris.
-* Vestibulum auctor dapibus.
-* Nunc dignissim risus.
-* Cras ornare tristique.
 
+**Welcome** to my personal blog, a place where I dump some random thoughts, various explanations I believe others may find helpful, and (eventually) longer form books. I am a technologist with expertise in software engineering, machine learning, and mathematics. When I step away from work I like to focus on topics such as economics, politics, culture, history, and strategy.
+
+**In** a previous life, I was a high-end tutor for an affluent clientele, a role that taught me the value of breaking down complex problems and presenting explanations in understandable, memorable ways.
+
+**For** the time being, I prefer to maintain anonymity.
+
+
+
+---COLUMNBREAK---
+
+**There’s** a light switch in the right-hand menu if the theme annoys you.
+
+**You** can browse by starting with the Spotlight below, or if that doesn’t grab you, the Posts archive holds everything else; tags can be used to organize the content.
+
+**Longer** work lives under Books, still in progress, so expect scaffolding and gaps. You can check back soon.
+
+**If** you spot an error, want to connect, or just feel like arguing, you can Contact me.
+
+**That's** about it for now. I hope you find something worthwhile here.
 
 {{< /doublewrap_hero >}}
 
 
 
 
-{{< grid-display data_file="homepage_features" max_cols=2 item_height="18em" item_border=false layout_option="left-half-sidecar" header=".🙠	 Spotlight 🙣.">}}
-## Featured Articles
-
-Some copy can go here, or not. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque vel dolor non neque posuere aliquam. Proin porttitor sem sem, ac viverra justo ultrices eget. Proin dui justo, semper porttitor erat a, semper tempor dolor. Vestibulum ultrices mauris ac dolor molestie faucibus.
-
-Vestibulum efficitur euismod nisl, vitae consequat orci porta vel. Suspendisse efficitur est mauris, sit amet pulvinar justo ullamcorper in. Praesent porttitor nisi quis rutrum maximus.
-
-{{< /grid-display >}}
+{{< grid-display data_file="homepage_features" max_cols=3 item_height="18em" item_border=false layout_option="" header=".🙠	 Spotlight 🙣.">}}{{< /grid-display >}}
 
 
