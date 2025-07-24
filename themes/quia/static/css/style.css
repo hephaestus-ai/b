@@ -401,21 +401,30 @@ blockquote {
 	font-family: 'spectral';
     font-style: italic;
 	color: var(--fg-muted-bright);
-	text-indent: 1em;
 }
 
-blockquote > p:before {
+blockquote>blockquote {
+    margin: 0;
+}
+
+/* TODO: blockquote>blockquote>p should have these. a single blockquote should be naked. */
+blockquote > blockquote > p:before {
   content: '“';
 }
-blockquote > p:after {
+blockquote > blockquote > p:after {
   content: '”';
 }
 
-/* can be used for basic blockquote citations */
 .content blockquote>ul {
   display: flex;
-  list-style-type: "";
+  list-style-type: "- ";
   justify-content: flex-end; /* Aligns content to the right */
+}
+
+/* can be used for basic blockquote citations */
+.content blockquote>blockquote>ul {
+  list-style-type: "";
+}
 
 .content ul, ol {
    list-style: circle;
@@ -424,7 +433,6 @@ blockquote > p:after {
 }
 
 
-}
 
 .bottomnav-menu { /* TODO should move this; refactor to component specific CSS */
 	margin-left: 0em;
