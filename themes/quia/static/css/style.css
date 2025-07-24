@@ -542,10 +542,10 @@ pre {
 pre { /* tag for code blocks. not idea since other stuff might use pre */
     padding-bottom: 0.5em;
     padding-top: 0.5em;
-    margin-left: 1.5em;
+    margin-left: 1.25rem;
     margin-top: 0em;
 	margin-bottom: 0em;
-    max-width: 50.75em; /* why?? */
+    max-width: 41.2rem; /* why?? */
     padding-left: 0.5em;
     padding-right: 0.5em;
 	
@@ -699,7 +699,7 @@ table.chroma {
   font-family: var(--monospace-font, ui-monospace, SFMono-Regular, monospace);
   font-size: 1em;
   line-height: 1.5;
-  max-width: 40.75rem; /* idfk why. TODO fix this stuff later */
+  max-width: 41rem; /* idfk why. TODO fix this stuff later */
 }
 
 
