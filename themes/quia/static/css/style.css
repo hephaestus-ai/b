@@ -987,7 +987,7 @@ img {
 	margin-left: 1.75em; /* centers it. i didn't do calcs for this, but it looks correct */
   }
   .site-logo {
-		
+		display: none;
   }
   
   body::after{
@@ -1067,10 +1067,6 @@ figure {
   margin: 2em;
   /* padding: 0.2em;
   border: 1px solid #e3e3e3;*/
-}
-
-img {
-    max-width: 95%; 
 }
 
 }

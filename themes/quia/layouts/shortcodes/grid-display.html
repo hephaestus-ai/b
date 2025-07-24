@@ -85,12 +85,7 @@ Sources pages by filtering, from a data file, or from a section.
   .grid-item .content-padding {
     padding: 1em;
   }
-  
-  .thumbnail-padding {
-    margin: auto;
-    height: 90%;
-    padding: 1em;
-  }
+ 
 
   .grid-item h3 {
     margin-top: 0.5em;
@@ -234,7 +229,7 @@ Sources pages by filtering, from a data file, or from a section.
   /* --- New Section Header Style --- */
   .grid-section-header {
     text-align: center; /* Center the header */
-    padding-bottom: 0.28em; 
+    padding: 0em 0.25em 0.28em 0.25em; 
     color: var(--fg-muted-bright);
     font-size: 26px;
   }
@@ -265,8 +260,9 @@ Sources pages by filtering, from a data file, or from a section.
 
   @media (max-width: 900px) {
     body {
-      margin-left: 3.5em;
+      margin-left: 2.5em;
       padding: 0;
+	  padding-left: 1em;
     }
     .grid-container {
       grid-template-columns: 1fr;

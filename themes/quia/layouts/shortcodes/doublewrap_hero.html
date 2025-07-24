@@ -61,7 +61,7 @@ Example
 
         <section class="hero-wrapper" {{ if $bg }}style="background:{{ $bg }};" {{ end }}>
             <div class="hero-text">
-                {{ with $heading }}<h1>{{ . }}</h1>{{ end }}
+                {{ with $heading }}<h1 style="padding-left: 0.25em; padding-right: 0.25em;">{{ . }}</h1>{{ end }}
                 {{ with $subheading }}<p class="subhead">{{ . }}</p>{{ end }}
             </div>
 
