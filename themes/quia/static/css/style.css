@@ -428,9 +428,8 @@ blockquote > blockquote > p:after {
   list-style-type: "";
 }
 
-.content ul, ol {
-   list-style: circle;
-   margin-left: 3.5em;
+.content ul, .content ol {
+   margin-left: 4.25em;
    max-width: 39.25em;
 }
 

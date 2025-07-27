@@ -167,10 +167,24 @@ Normal paragraph. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pelle
 > quote? Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque vel dolor non neque posuere aliquam. Proin porttitor sem sem, ac viverra justo ultrices eget. Proin dui justo, semper porttitor erat a, semper tempor dolor. Vestibulum ultrices mauris ac dolor molestie faucibus. Vestibulum efficitur euismod nisl, vitae consequat orci porta vel. Suspendisse efficitur est mauris, sit amet pulvinar justo ullamcorper in. Praesent porttitor nisi quis rutrum maximus. Pellentesque sodales, quam eget semper rhoncus, velit risus sagittis arcu, ut gravida tortor dolor ut diam. Praesent nulla tellus, pellentesque ut finibus ut, eleifend et ex. Vivamus porta odio ac erat elementum dapibus.
 > - Mark Twain
 
+ 1. blockquote
+ 2. should
+ 3. be
+ 4. aligned
+ 5. with
+ 6. lists
+
 Another normal paragraph. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque vel dolor non neque posuere aliquam. 
 
 >> double indent. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque vel dolor non neque posuere aliquam. Proin porttitor sem sem, ac viverra justo ultrices eget. Proin dui justo, semper porttitor erat a, semper tempor dolor. Vestibulum ultrices mauris ac dolor molestie faucibus. Vestibulum efficitur euismod nisl, vitae consequat orci porta vel.
 >> - ~ Mark Twain
+
+ - blockquote
+ - should
+ - be
+ - aligned
+ - with
+ - lists
 
 >>> hello, this is a triple indent
 
