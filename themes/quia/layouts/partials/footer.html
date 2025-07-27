@@ -129,17 +129,17 @@ document.addEventListener('DOMContentLoaded', () => {
   const favicon = document.getElementById('favicon');
 
   // helper to flip theme + favicon
-  const setDark = on => {
-    root.classList.toggle('dark', on);
-    if (favicon) favicon.href = on ? '/media/favicon-dark.png'
-                                   : '/media/favicon.png';
-    localStorage.setItem('theme', on ? 'dark' : 'light');
+  const setLight = on => {
+    root.classList.toggle('off-white', on);
+    if (favicon) favicon.href = on ? '/media/favicon.png'
+                                   : '/media/favicon-dark.png';
+    localStorage.setItem('theme', on ? 'off-white' : 'dark');
   };
 
   // click delegation — one listener covers every button
   document.addEventListener('click', e => {
     if (e.target.closest('[data-theme-toggle]')) {
-      setDark(!root.classList.contains('dark'));
+      setLight(!root.classList.contains('off-white'));
     }
   });
 })();

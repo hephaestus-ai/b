@@ -38,8 +38,56 @@
 }
 
 
-/* .off-white, but the js right now just calls it white */
+/* dark */
 :root {
+  --bg: #181818; /* 242424 or 181818 */
+    --bg-dark: #111;
+  --fg: #eee;
+  --fg-muted-bright: #c9c9c9;
+  --fg-muted: #aaa;
+
+  --ex-bg: #333;
+  --pre-bg: #333;
+
+  --border: #555;
+
+  --nav-bg: #181818;
+  --footer-bg: #181818;
+
+
+  --link:          #4db8af;
+  --link-hover:    #39a59c;
+  --link-visited:  #8D55cc;
+
+  --link: #6cf;
+  --link-hover: #005fa3;
+  --link-visited: #8D55cc;
+
+
+  --accent: #aaa;
+
+  /* logo images */
+  --bg-image: url(../../media/because_dark.png);
+  --qed-image: url(../../media/qed_dark.png);
+  --qed-image-path: ../../media/qed_dark.png;
+  
+  /* chroma code blocks */
+  --code-bg:        var(--pre-bg);
+  --code-text:      var(--fg);
+  --tok-keyword:    #c586c0;
+  --tok-string:     #ce9178;
+  --tok-comment:    var(--fg-muted);
+  --tok-error:      #f44747;
+  --tok-variable:   #9cdcfe;
+  --tok-type:       #4ec9b0;
+  --tok-number:     #b5cea8;
+  --tok-builtin:    #dcdcaa;
+  --tok-punctuation:var(--fg);
+  --tok-highlight:  #3b3b1b;
+  --tok-whitespace: #555;
+}
+
+.off-white {
   /* Core colours */
   --bg:            #F8F0E3; /* main page background */
   --bg-dark:       #E8DED2; /* ~10 % darker for hovers/active states */
@@ -133,54 +181,6 @@
   --tok-punctuation:#000;
   --tok-highlight:  #f5e2bb;
   --tok-whitespace: var(--accent);
-}
-
-.dark {
-  --bg: #181818; /* 242424 or 181818 */
-    --bg-dark: #111;
-  --fg: #eee;
-  --fg-muted-bright: #c9c9c9;
-  --fg-muted: #aaa;
-
-  --ex-bg: #333;
-  --pre-bg: #333;
-
-  --border: #555;
-
-  --nav-bg: #181818;
-  --footer-bg: #181818;
-
-
-  --link:          #4db8af;
-  --link-hover:    #39a59c;
-  --link-visited:  #8D55cc;
-
-  --link: #6cf;
-  --link-hover: #005fa3;
-  --link-visited: #8D55cc;
-
-
-  --accent: #aaa;
-
-  /* logo images */
-  --bg-image: url(../../media/because_dark.png);
-  --qed-image: url(../../media/qed_dark.png);
-  --qed-image-path: ../../media/qed_dark.png;
-  
-  /* chroma code blocks */
-  --code-bg:        var(--pre-bg);
-  --code-text:      var(--fg);
-  --tok-keyword:    #c586c0;
-  --tok-string:     #ce9178;
-  --tok-comment:    var(--fg-muted);
-  --tok-error:      #f44747;
-  --tok-variable:   #9cdcfe;
-  --tok-type:       #4ec9b0;
-  --tok-number:     #b5cea8;
-  --tok-builtin:    #dcdcaa;
-  --tok-punctuation:var(--fg);
-  --tok-highlight:  #3b3b1b;
-  --tok-whitespace: #555;
 }
 
 
@@ -1016,6 +1016,7 @@ img {
     /* Ensure it's at the very top */
     top: 3.25em; 
 	margin-left: 1.75em; /* centers it. i didn't do calcs for this, but it looks correct */
+	display: none;
   }
   .site-logo {
 		display: none;

@@ -10,15 +10,15 @@
 	<script>
 	(() => {
 	  const saved  = localStorage.getItem('theme');
-	  const darkOK = saved === 'dark' ||
-					 (!saved && matchMedia('(prefers-color-scheme: dark)').matches);
+	  const offwhiteOK = saved === 'off-white' ||
+					 (!saved && matchMedia('(prefers-color-scheme: off-white)').matches);
 
-	  if (darkOK) {
-		document.documentElement.classList.add('dark');
+	  if (offwhiteOK) {
+		document.documentElement.classList.add('off-white');
 
 		// swap the icon *before* first paint
 		const fav = document.getElementById('favicon');
-		if (fav) fav.href = '/media/favicon-dark.png';
+		if (fav) fav.href = '/media/favicon.png';
 	  }
 	})();
 	</script>
@@ -32,12 +32,12 @@
 
 		/* default (light) label */
 		[data-theme-toggle]::before{
-		  content:"Dark Mode";
+		  content:"Light Mode";
 		}
 
-		/* when <html> has .dark, swap the label */
-		:root.dark [data-theme-toggle]::before{
-		  content:"Light Mode";
+		/* when <html> has .off-white, swap the label */
+		:root.off-white [data-theme-toggle]::before{
+		  content:"Dark Mode";
 		}
 
 		/* optional: hide whatever text you leave inside the tag
