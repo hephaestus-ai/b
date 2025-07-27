@@ -3,12 +3,12 @@
 
 {{- if $map -}}
 <ol class="hc-bibliography">
-  {{- range $map -}}
+  {{- range $key, $val := $map -}}
     {{- $formatted := partial "citation.html" (dict "cite" . "style" $style) -}}
     {{- $doi  := .doi -}}
     {{- $link := .link | default (cond $doi (print "https://doi.org/" $doi) nil) -}}
 
-    <li>
+    <li id="{{ $key }}">
       {{ $formatted | safeHTML }}
       {{- with $link }} <a href="{{ . | safeURL }}" target="_blank" rel="noopener">[link]</a>{{ end -}}
     </li>
