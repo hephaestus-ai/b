@@ -355,5 +355,33 @@ booktoc:
             type: "subsection"
           - title: "Inline wiretaps, IDS/IPS (Suricata), eBPF anomaly detection"
             type: "subsection"
+  - title: "HTTP & Application Protocols"
+    type: "chapter"
+    children:
+      - title: "HTTP/1.x → 2 → 3"
+        type: "section"
+        children:
+          - title: "HTTP/1.1 text framing, chunked transfer, pipelining pitfalls"
+            type: "subsection"
+          - title: "HTTP/2 binary framing, HPACK header compaction, stream priorities"
+            type: "subsection"
+          - title: "HTTP/3 on QUIC: stream mapping, DATAGRAM, flow control"
+            type: "subsection"
+      - title: "State & Negotiation"
+        type: "section"
+        children:
+          - title: "Cookies: SameSite, Secure, HttpOnly, partitioned (CHIPS)"
+            type: "subsection"
+          - title: "Content negotiation: Accept, Accept‑Encoding, language, charset"
+            type: "subsection"
+          - title: "CORS, CORB, COEP, COOP, Referrer‑Policy enforcement"
+            type: "subsection"
+      - title: "WebSocket & WebTransport"
+        type: "section"
+        children:
+          - title: "Upgrade handshake, framing, backpressure"
+            type: "subsection"
+          - title: "WebTransport: datagram/unreliable transport on QUIC"
+            type: "subsection"
 
 ---
