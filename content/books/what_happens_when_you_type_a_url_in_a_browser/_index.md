@@ -178,5 +178,28 @@ booktoc:
             type: "subsection"
           - title: "Container image distribution: ECR, vulnerability scanning, immutable tags"
             type: "subsection"
+  - title: "Device Drivers & Input Delivery"
+    type: "chapter"
+    children:
+      - title: "USB Host Controller Driver"
+        type: "section"
+        children:
+          - title: "PCIe enumeration, BAR mapping, MMIO doorbell writes"
+            type: "subsection"
+          - title: "URB lifecycle, DMA buffer allocation, completion handling"
+            type: "subsection"
+      - title: "Input Subsystem"
+        type: "section"
+        children:
+          - title: "/dev/input/eventX, evdev struct layout, key repeat handling"
+            type: "subsection"
+          - title: "libinput filtering: tap‑to‑click, palm detection, gesture recognition"
+            type: "subsection"
+          - title: "Windows Raw Input (RID) vs. macOS IOKit HID vs. Wayland vs. X11"
+            type: "subsection"
+          - title: "IME frameworks: IBus, Fcitx, TSF, TSM – composition & candidate UI"
+            type: "subsection"
+          - title: "Accessibility: AT‑SPI, UIA, switch control, dwell‑click"
+            type: "subsection"
 
 ---
