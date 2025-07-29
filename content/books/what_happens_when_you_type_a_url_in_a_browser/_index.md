@@ -201,5 +201,37 @@ booktoc:
             type: "subsection"
           - title: "Accessibility: AT‑SPI, UIA, switch control, dwell‑click"
             type: "subsection"
+  - title: "Windowing, Compositor & Browser Front‑End"
+    type: "chapter"
+    children:
+      - title: "Native Window System"
+        type: "section"
+        children:
+          - title: "X11 protocol, XInput2, window manager focus, grabs"
+            type: "subsection"
+          - title: "Wayland: wl_compositor, wl_surface, wl_seat/keyboard/pointer"
+            type: "subsection"
+          - title: "macOS Quartz Compositor, AppKit event loop, UIFocusEngine"
+            type: "subsection"
+          - title: "Windows DWM, MessageLoop, raw input, pointer injection"
+            type: "subsection"
+      - title: "Browser Process Model"
+        type: "section"
+        children:
+          - title: "Browser vs. Renderer vs. GPU vs. Network vs. Utility processes"
+            type: "subsection"
+          - title: "Sandbox policies: seccomp‑BPF, AppContainer, AppArmor, chroots"
+            type: "subsection"
+          - title: "IPC: Mojo, DBus, XPC, Mach ports, shared memory buffers"
+            type: "subsection"
+      - title: "Task Scheduling"
+        type: "section"
+        children:
+          - title: "Platform message pump → TaskScheduler tasks (UI, IO, Worker)"
+            type: "subsection"
+          - title: "Cross‑thread TaskHopping, SequenceLocalStorage"
+            type: "subsection"
+          - title: "Idle tasks, delayed tasks, repeating tasks"
+            type: "subsection"
 
 ---
