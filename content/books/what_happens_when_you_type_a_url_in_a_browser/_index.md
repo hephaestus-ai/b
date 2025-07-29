@@ -528,5 +528,48 @@ booktoc:
             type: "subsection"
           - title: "Sync: semaphores, fences, cross‑process coordination"
             type: "subsection"
+  - title: "JavaScript & WebAssembly Engine Internals"
+    type: "chapter"
+    children:
+      - title: "Parser to Bytecode"
+        type: "section"
+        children:
+          - title: "Lexer/Parser: recursive descent, error recovery, AST"
+            type: "subsection"
+          - title: "Bytecode generation, constant pools, direct threading"
+            type: "subsection"
+      - title: "Interpreter & Baseline JIT"
+        type: "section"
+        children:
+          - title: "Bytecode dispatch, inline caches, polymorphic/stable ICs"
+            type: "subsection"
+      - title: "Optimizing JIT"
+        type: "section"
+        children:
+          - title: "IR pipeline, inlining, CSE, LICM, GVN, escape analysis"
+            type: "subsection"
+          - title: "Deoptimization, on‑stack replacement, OSR"
+            type: "subsection"
+      - title: "Garbage Collection"
+        type: "section"
+        children:
+          - title: "Generational GC: young/old, minor/major, write barriers"
+            type: "subsection"
+          - title: "Incremental vs. concurrent, idle‑time & background sweeps"
+            type: "subsection"
+      - title: "WebAssembly"
+        type: "section"
+        children:
+          - title: "Module validation, streaming compilation, tiered backends"
+            type: "subsection"
+          - title: "JS↔WASM boundary, reference types, exception handling"
+            type: "subsection"
+      - title: "Debug & DevTools"
+        type: "section"
+        children:
+          - title: "Source maps, breakpoints, stepping & call stacks"
+            type: "subsection"
+          - title: "Profiler: sampling vs. instrumentation, flamegraphs"
+            type: "subsection"
 
 ---
