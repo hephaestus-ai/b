@@ -233,5 +233,35 @@ booktoc:
             type: "subsection"
           - title: "Idle tasks, delayed tasks, repeating tasks"
             type: "subsection"
+  - title: "Omnibox, URL Parsing & Safe‑Browsing"
+    type: "chapter"
+    children:
+      - title: "Omnibox UI/UX"
+        type: "section"
+        children:
+          - title: "MVC design: OmniboxModel, AutocompleteController, TextfieldView"
+            type: "subsection"
+          - title: "Inline vs. dropdown suggestions, keywords, search alias mode"
+            type: "subsection"
+      - title: "URL Processing"
+        type: "section"
+        children:
+          - title: "WHATWG URL spec parser state machine, error recovery"
+            type: "subsection"
+          - title: "Unicode NFC/NFD, IDNA2003 vs. IDNA2008, punycode conversion"
+            type: "subsection"
+          - title: "Percent-encoding, hash vs. query vs. path vs. fragment"
+            type: "subsection"
+          - title: "Heuristics: search vs. URL, scheme defaulting, smart commits"
+            type: "subsection"
+      - title: "Safe‑Browsing & Policy"
+        type: "section"
+        children:
+          - title: "Local DB shards, hash-prefix lookups, API-based checks"
+            type: "subsection"
+          - title: "Phishing/malware interstitial flow, allow-list overrides"
+            type: "subsection"
+          - title: "Enterprise policies: GPO, JSON policies, MDM"
+            type: "subsection"
 
 ---
