@@ -571,5 +571,52 @@ booktoc:
             type: "subsection"
           - title: "Profiler: sampling vs. instrumentation, flamegraphs"
             type: "subsection"
+  - title: "Performance, Profiling & Observability"
+    type: "chapter"
+    children:
+      - title: "Timing APIs"
+        type: "section"
+        children:
+          - title: "Navigation, resource, paint timing, user timing marks/measures"
+            type: "subsection"
+          - title: "LCP, FCP, CLS, TBT, INP calculations"
+            type: "subsection"
+      - title: "OS‑Level Profiling"
+        type: "section"
+        children:
+          - title: "Linux perf events, CPU counters (LLC misses, branch mispredicts)"
+            type: "subsection"
+          - title: "Intel PT, Last Branch Record, LBR filter"
+            type: "subsection"
+      - title: "BPF & eBPF Tracing"
+        type: "section"
+        children:
+          - title: "uprobes on libc, resolver, browser IPC"
+            type: "subsection"
+          - title: "BPFtrace/flamegraphs for multi‑process stacks"
+            type: "subsection"
+      - title: "Network Analysis"
+        type: "section"
+        children:
+          - title: "tcpdump, Wireshark dissectors, flow visualizations"
+            type: "subsection"
+          - title: "HAR files, waterfall charts, Chrome trace viewer"
+            type: "subsection"
+      - title: "Memory Analysis"
+        type: "section"
+        children:
+          - title: "Heap snapshots, retaining paths, detached DOM detection"
+            type: "subsection"
+          - title: "Leak detection tools: TSAN, LeakSanitizer for C++ components"
+            type: "subsection"
+      - title: "Chaos & Fuzzing"
+        type: "section"
+        children:
+          - title: "libFuzzer/AFL/ClusterFuzz for URL, HTTP, CSS parsers"
+            type: "subsection"
+          - title: "Network fault injection: ToxiProxy, Pumba, TC netem"
+            type: "subsection"
+          - title: "Record & replay: rr, Web Replay, Pernosco"
+            type: "subsection"
 
 ---
