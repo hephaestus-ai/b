@@ -865,7 +865,7 @@ table.chroma {
   overflow-y: auto;
   max-height: calc(85vh - 15em); /* adjust based on header/menu height */
   scrollbar-gutter: stable;
-
+box-sizing: border-box;
 }
 
 /* pretty scrollbar */
@@ -894,6 +894,7 @@ table.chroma {
 .toc-scroll ul, .toc-scroll ol {
 	margin-left: 4em;
 	padding-right: 0em;
+	margin-bottom: 1em;
 }
 
 .toc-scroll ul ul,
@@ -942,7 +943,7 @@ li.open > .toc-caret { color: var(--link); }
 
 
 
-/* being fancy effects */
+/* begin fancy effects */
 /* fade in effect */
 .sidenav a::after {
   content: '';
@@ -958,7 +959,7 @@ li.open > .toc-caret { color: var(--link); }
 .sidenav a:hover::after,
 .sidenav a:focus::after {
   opacity: 1;
-  transform: translate3d(0, 0.2em, 0);
+  transform: translate3d(0, 0, 0);
 }
 .sidenav li, a {
   line-height:100%;
@@ -973,6 +974,7 @@ li.open > .toc-caret { color: var(--link); }
 .sidenav li, a:focus::after {
   transform: translate3d(0, 0, 0);
 }
+
 /* end fancy effects */
 
 /* end side navigation css */
