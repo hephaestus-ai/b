@@ -83,7 +83,7 @@ Renders a paginated grid of pages.
 {{ end }}
   
 <div class="grid-container">
-   {{ range $index, $page := $paginator.Pages }}
+   {{ range $index, $page := $paginator.Pages.Reverse }}
 	{{ partial "grid-item.html" (dict 
 	  "page" $page 
 	  "index" $index 
