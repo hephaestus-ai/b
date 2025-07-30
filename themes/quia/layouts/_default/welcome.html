@@ -6,7 +6,7 @@
   }
 
   #main {
-    overflow: auto;
+    overflow: visible;
     margin-left: 6em;
   }
 
@@ -45,13 +45,32 @@
     color: var(--fg);
     padding-right: 1.3em;
   }
+  
+  .welcome-header {
+    font-family: 'Book Antiqua', 'Noto Sans Symbols 2';
+    width: fit-content;
+    margin: 0 auto;
+    font-size: 26px;
+    text-align: center;
+    padding-left: 0.5em;
+    padding-bottom: 0.5em;
+    color: var(--fg-muted-bright);
+  }
+  
+  @media (max-width: 900px) {
+    .welcome-header, h1, h2, h3 {
+	  font-family: 'Book Antiqua', 'Noto Sans Symbols 2';
+      font-size: 20px;
+      padding-left: 0.25em;
+      padding-bottom: 0.25em;
+    }
+  }
 </style>
 
 
 <section id="main">
   <!-- leave this header right where it was -->
-  <h1
-    style="width:fit-content;margin: 0 auto;font-size:26px;text-align:center;padding-left:0.5em;padding-bottom:0.5em;color:var(--fg-muted-bright);">
+  <h1 class="welcome-header">
     .🙑 {{ .Title }} 🙒.
   </h1>
 

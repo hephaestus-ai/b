@@ -205,6 +205,13 @@ html {
   font-style: normal;
 }
 
+/* for unicode dingbats on browsers (safari) that don't support them */
+@font-face {
+  font-family: "Noto Sans Symbols 2", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
 /*
 @font-face {
   font-family: 'Palatino';
@@ -239,8 +246,8 @@ body {
   text-align: justify;
      /* Sadly URW Palladio L looks like shit on current Linuces in Xft,
       * even though it looks fine in GhostScript. FreeSerif is much better. */
-   font-family: FreeSerif, 'Book Antiqua', serif;  /* TODO explore new fonts */
-  font-family: "EB Garamond", serif;
+  font-family: FreeSerif, 'Book Antiqua', 'Noto Sans Symbols 2', serif;  /* TODO explore new fonts */
+  font-family: "EB Garamond", 'Noto Sans Symbols 2', serif;
   
   font-optical-sizing: auto;
   font-weight: 400;
@@ -453,7 +460,7 @@ h1, h2, h3 {
   margin-top: 0.25em;
   text-align: right;
   clear: both;
-  font-family: 'Book Antiqua';
+  font-family: 'Book Antiqua', 'Noto Sans Symbols 2';
 }
 
 h1 {
@@ -1136,15 +1143,21 @@ img {
 
 /* add special effects to header later, maybe */
   
-  body { padding-left: 1em; margin-right: 1em; margin-top: 0em; }
-  h1, h2, h3 { margin-right: -40px }
-  h4, h5, h6 {}
-  
   body {
-      margin-right: 3.5em;
-      margin-left: 1em;
-      /*margin-top: 0em;*/
-  }   
+	padding-left: 1em;
+	margin-right: 2em;
+	margin-top: 0em;
+	margin-left: 1em;
+  }
+  
+  body::after{
+	  display: none;
+
+  }
+
+  h1, h2, h3 {
+	margin-right: -15px
+  }
   
 figure {
   margin: 2em;

@@ -230,8 +230,7 @@ Expects a context (.) with the following parameters:
 	}
 	
 	.doublewrap-container {
-		display: grid;
-		grid-template-columns: 1fr;
+		display: block;
 		gap: 0;
 		max-width: 100%;
 		padding: {{ $padding }};
@@ -243,12 +242,13 @@ Expects a context (.) with the following parameters:
       display: none;
     }
 	
-	.mobile-img {
-	  display: block;
-	  margin: auto;
-	  width: calc({{ $width }} * 2);
-      height: {{ $height }};
-	}
+    .mobile-img {
+      display: block;
+      margin: auto;
+      width: 100%;
+      max-width: calc({{ $width }} * 2);
+      height: auto;
+    }
 	
   .doublewrap-container .right-col p,
   .doublewrap-container .right-col ul {
@@ -269,7 +269,7 @@ Expects a context (.) with the following parameters:
     </div>
   </div>
     {{ with $mobile_image }}
-      <img src="{{ . }}" class="{{ $left_class }} mobile-img" alt="">
+      <img src="{{ . }}" class="mobile-img" alt="">
     {{ end }}
   <div class="right-col">
     {{ with $right_image }}
