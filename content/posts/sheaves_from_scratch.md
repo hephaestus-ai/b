@@ -15,12 +15,18 @@ I may break this post up later. As you will see, we build many other things from
 
 ## TLDR
 
-## Primitive set theory
+## Primitive Set Theory
 
-## Constructors used by topology
+## Constructors Used by Topology
 
-## Topological space
+## Topological Space
 
-## Opens as a subtype and basic operations
+## Opens as a Subtype and Basic Operations
 
-## Presheaf and Sheaf of sets
+## Presheaf and Sheaf of Sets
+
+## Constructable Sheaves
+
+## Why Sheaves are Important
+
+## Wrapping Up
