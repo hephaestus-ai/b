@@ -38,6 +38,7 @@ Sources pages by filtering, from a data file, or from a section.
 {{ $enableLayoutAlternation := .Get "enable_layout_alternation" | default false }}
 {{ $layoutOption := .Get "layout_option" | default "editorial" }}
 {{ $sectionHeader := .Get "header" }}
+{{ $id := .Get "id" }}
 
 <style>
   .content h1, .content h2, .content h3 {
@@ -268,7 +269,7 @@ Sources pages by filtering, from a data file, or from a section.
 
 {{/* --- Render optional section header --- */}}
 {{ if $sectionHeader }}
-  <h2 class="grid-section-header">{{ $sectionHeader }}</h2>
+  <h2 class="grid-section-header" id="{{ $id }}">{{ $sectionHeader }}</h2>
 {{ end }}
 {{/* --- Conditional rendering based on layout_option --- */}}
 {{ if eq $layoutOption "editorial" }}

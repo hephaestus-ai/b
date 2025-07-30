@@ -22,13 +22,13 @@ title: "Welcome To"
 
 ---COLUMNBREAK---
 
-**You** can browse by starting with the Spotlight below, or if that doesn’t grab you, the Posts archive holds everything else; tags can be used to organize the content.
+**You** can browse by starting with the [Spotlight](#spotlight) below, or if that doesn’t grab you, the [Posts](posts/) archive holds everything else; tags can be used to organize the content.
 
-**Longer** work lives under Books, still in progress, so expect scaffolding and gaps. You can check back soon.
+**Longer** work lives under [Books](books/), still in progress, so expect scaffolding and gaps. You can check back soon.
 
 **There’s** a light switch in the menu if the theme annoys you.
 
-**If** you spot an error, want to connect, or just feel like arguing, you can Contact me.
+**If** you spot an error, want to connect, or just feel like arguing, you can [Contact](contact/) me.
 
 **That's** about it for now. I hope you find something worthwhile here.
 
@@ -44,4 +44,5 @@ title: "Welcome To"
 	item_border=false
 	layout_option=""
 	header=".🙠	 Spotlight 🙣."
+	id="spotlight"
 >}}{{< /grid-display >}}
