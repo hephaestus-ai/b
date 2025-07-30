@@ -1114,7 +1114,7 @@ img {
    .topnav {
        height: 4em;
        text-align: center;
-       margin-left: 1.75em;
+       /* margin-left: 1.75em; */
    }
    
   .footer {
@@ -1137,8 +1137,8 @@ img {
 	white-space: nowrap;
   }
 
-  .topnav a:hover {
-    color: var(--link-hover);
+  a:hover, .topnav a:hover, .bottomnav-menu a:hover {
+    color: var(--link);
   }
 
 /* add special effects to header later, maybe */
