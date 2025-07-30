@@ -46,13 +46,7 @@ Up to now we’ve been talking about open sets inside a topological space, but t
 
 Concretely, if $X$ is our space, we bundle all of its open subsets into a new type, called $\mathrm{Opens}(X)$. Think of an element of $\mathrm{Opens}(X)$ as “just an open set,” and nothing more. Under the hood, each “open” carries *two* pieces of data: the set itself, and a guarantee that it really is open in $X$. From there, we can treat it like an ordinary set when needed.
 
-If you’ve ever fumbled the notation $V \subseteq_o U$, here’s the catch: it doesn’t mean just any subset relation. It means “$V$ and $U$ are both open, and every point of $V$ lies in $U$.” In symbols:
-
-$$
-V \subseteq_o U \quad\text{means}\quad V \subseteq U,
-$$
-
-but the little circle reminds you that you're only comparing open sets. Don’t lose sight of that.
+If you’ve ever fumbled the notation $V \subseteq_o U$, here’s the catch: it doesn’t mean just any subset relation. It means “$V$ and $U$ are both open, and every point of $V$ lies in $U$” but the little circle reminds you that you're only comparing open sets. Don’t lose sight of that.
 
 We also want to intersect two open sets and remain inside the world of opens. Definitionally, it’s no surprise that:
 
