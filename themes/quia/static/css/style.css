@@ -961,7 +961,7 @@ li.open > .toc-caret { color: var(--link); }
   opacity: 1;
   transform: translate3d(0, 0, 0);
 }
-.sidenav li, a {
+.sidenav li {
   line-height:100%;
   padding-top: 0.65em;
   padding-bottom: 0.1em;
