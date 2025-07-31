@@ -54,15 +54,17 @@ TODO very useful for all sorts of local-to-global gluing challenges (global to l
 
 TODO there's a lot more to say here.
 
-#### The Mathematician’s View
+#### Less Conventional Examples - cryptography, poetry, etc
 
-Modern geometry, from Riemann surfaces to schemes in algebraic geometry, lives on the mantra "build globally by gluing locally." Charts of a manifold, affine pieces of a variety, even basic coordinate systems are local patches that must be stitched together on overlaps. Sheaves abstract that glueing process so cleanly that entire subjects - étale cohomology, Hodge theory, perverse sheaves - follow just by feeding different kinds of algebraic gadgets into the same framework. The slogan *"cohomology is the derived functor of global sections"* packages decades of theory into one line; without sheaves the slogan is meaningless.
+1. LLMs as sheaves: take any finite set of token bigrams—pairs $(w_i, w_{i+1})$. Call that set your "open context." A section over it is a probability distribution for the *next* token conditioned on those bigrams. Overlaps are smaller contexts that the big set and the next one down share; compatibility means the two distributions agree after marginalising to the overlap. Gluing all compatible local distributions is what a large language model learns during training: a single global rule that extends every fragment. Failures to glue would show up as places where the model assigns inconsistent probabilities to the same substring seen through two different neighbourhoods.
+2. Naturally, linguistics has flirted with sheaf-like models where sentence fragments glue into discourse, though they have thus far (to my knowledge) lacked the mathematical discipline to describe language phenomena with full sheaves.
+3. Distributed ledgers can be phrased in sheaf language: each block covers a slice of global state; overlaps check for double spends; the sheaf condition enforces ledger consistency without central control.
+4. TODO gluing together chains in defeasible logic
+5. TODO Narrative, surprise, etc. as (pre)sheaves over events
 
-TODO very useful for all sorts of local-to-global gluing challenges (global to local is obviously easy)
+#### So...
 
-TODO there's a lot more to say here.
-
-
+The discipline is almost irrelevant. The recurring pattern is "information lives on overlapping pieces; agreement on overlaps decides whether it unifies." A sheaf captures that agreement and exposes its limits. Despite its generality, it usually retains some pertinent information that secretly answers a bunch of questions you care about. This makes it, in my opinion, one of those "surprisingly effective" ideas.
 
 ## Primitive Set Theory
 
