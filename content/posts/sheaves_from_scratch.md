@@ -18,6 +18,23 @@ I may break this post up later. As you will see, we build many other things from
 
 ## Why Sheaves are Important
 
+In short, a sheaf is a machine for turning local, overlapping pieces of information into a consistent global picture - and for telling you precisely when that fails. But before we start laying out details it might help to know what we are building toward. "Sheaf" can sound forbiddingly abstract, yet the idea is less exotic than the name, and once you start thinking in sheaves you'll see them everywhere, and, like many fundamental mathematical concepts, confers a superpower to organize and understand problems and their features more quickly. Perhaps a quick way to see it is by looking at some examples.
+
+#### The Engineer’s View
+
+If you want to describe a global sensor grid monitoring temperature over a large facility you might eventually discover that you're just dealing with a sheaf. Each sensor reports only for the room it occupies; adjacent rooms overlap in their coverage because data packets sometimes drop. You want a single, up-to-date heat map of the whole building, but you will only trust a reading if every overlapping sensor agrees on the shared region. A sheaf formalises exactly that: it assigns a *set of possible data states* to every room (open set) and tells you whether those states are compatible on their overlaps. If they are, the sheaf produces one coherent building-wide state; if not, it points to the conflict. From a systems perspective, this is a recipe for resilient data fusion and graceful degradation.
+
+A rules engine where each rule fires under a specific set of conditions is also secretly a sheaf. Overlapping rule sets can clash, so you attach to every condition-set the exceptions still in play, then insist that on overlaps the exception lists match. When they do, a single, conflict-free policy emerges; when they don’t, the sheaf pinpoints the minimal contradictory slice. In other words, debugging a snarled permission matrix is just cohomology in work clothes.
+
+In a distributed system with half-trusting agents, each node keeps its own list of "normal" rules and "exceptions that override those rules." Lists themselves glue the same way ordinary data do, but the overrides form a second layer: you have to know whose exception beats whose when two agents disagree. That two-tier structure is exactly what a 2-sheaf (a stack) captures. A section over one agent is a pair (rule set, exception set); compatibility on an overlap checks that exceptions line up in priority. Gluing succeeds only when every clash can be resolved into a single, well-scoped override - no silent contradictions.
+
+Type-theoretic semantics often need to interpret a program fragment "in a context," then extend that interpretation when more variables become visible. Contexts overlap when subroutines share free variables. A presheaf on the lattice of contexts captures how meanings restrict; making it a *sheaf* imposes a principled uniqueness condition that echoes referential transparency. Categorical models of dependent type theory exploit exactly this sheaf condition to guarantee that substitution behaves predictably.
+
+In robotics, coverage problems for cooperating drones translate into sheaves over time-indexed configuration spaces.
+
+In another post I plan on writing, I show how domain driven design (DDD) can be viewed as a 2-sheaf. (Indeed, whenever you have two things that "think" about the same underlying things with different ontologies, you're typically dealing with a 2-sheaf).
+
+And so on.
 
 ## Primitive Set Theory
 
@@ -167,8 +184,6 @@ I like to present the subset-of-the-power-set perspective, despite the fact that
 * take a [cartesian product](https://en.wikipedia.org/wiki/Cartesian_product) between two sets, and then take some kind of subset of that cartesian product
 
 Topological spaces (TODO mention two or three other examples) match the first pattern, while objects like functions follow the second one. Some objects (such as measures) actually use both.
-
----
 
 Take any set \$X\$. Its **power set** \$\mathcal P(X)\$ is the gigantic set containing *every* possible subset of \$X\$. (TODO example of a powerset). Choosing a topology means marking some plates on that buffet with the label **open** and leaving the rest un-labeled. Formally, you pick a subset
 
