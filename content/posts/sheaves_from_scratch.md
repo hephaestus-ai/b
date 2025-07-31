@@ -36,6 +36,18 @@ In another post I plan on writing, I show how domain driven design (DDD) can be 
 
 And so on.
 
+#### The Scientist’s View
+
+Experimental physicists treat many quantities such as temperature, pressure, electromagnetic potential, etc. as *fields*: functions defined on space-time that you usually measure only in patches. You integrate those patches into a global field by enforcing that neighbouring patches agree where they meet. Classical analysis handles smoothness or continuity; a sheaf pushes that idea further, handling not just numbers but any algebraic or logical structure you care to measure. Cohomology, born in algebraic topology, then quantifies the "obstruction" to globalising your field. In practice that obstruction detects things like magnetic monopoles or defects in a crystal lattice. The sheaf is the bookkeeping device, cohomology the diagnostic read-out.
+
+TODO maybe tie to (co)bordism, idk
+
+In topological data analysis, persistent cohomology detects shape in point clouds. The raw algorithm feeds a simplicial-complex sheaf into a cohomology engine; the resulting barcodes visualize when local clusters knit together. Newer techniques replace simplices with cosheaves to encode directed influence, useful in network flow and contagion models. Either way the sheaf language is what lets purely combinatorial data inherit geometric intuition.
+
+TODO example from computational neuroscience?
+
+
+
 ## Primitive Set Theory
 
 {{< mediabox type="note" title="Box 1 – What to memorize" align="right" id="box1">}}
