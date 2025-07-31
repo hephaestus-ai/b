@@ -401,6 +401,11 @@ p, ul, ol, menu, dir, mjx-container {
       padding-right: 0.5em;
 }
 
+li>p, li>p {
+  padding: 0em;
+  margin: 0;
+}
+
 blockquote {
 	max-width: 41.5em;
     margin: 1em 0 1em 2.25em;

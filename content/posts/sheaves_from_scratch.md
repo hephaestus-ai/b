@@ -144,13 +144,62 @@ With the concept of open sets pinned down we can finally talk about *local data*
 
 ### Topology from Power Sets
 
+{{< mediabox type="note" title="Box 3 – What to memorize" align="right" id="box3">}}
+**Three more topological notions:**
+
+* A *topology* on a set \$X\$ is a distinguished collection \$\mathcal O\subseteq\mathcal P(X)\$ of subsets of \$X\$.
+* Requirements on \$\mathcal O\$:
+
+  1. \$X\in\mathcal O\$ (the whole space is open);
+  2. \$\bigcup S\in\mathcal O\$ whenever every member of \$S\$ lies in \$\mathcal O\$;
+  3. \$U\cap V\in\mathcal O\$ whenever \$U,V\in\mathcal O\$.
+* The “\$\subseteq\mathcal P(X)\$” part matters: \$\mathcal O\$ *lives inside* the power set, it doesn’t replace it.
+
+TODO: items for memorizing the two patterns
+
+{{< /mediabox >}}
+
+I like to present the subset-of-the-power-set perspective because it's _**extremely**_ _**useful**_ to understand that many "larger" objects you encounter in mathematics just boil down to two main patterns:
+
+* take a power set over some base set, and then take some kind of subset of the power set
+* take a cartesian product between two sets, and then take some kind of subset of that cartesian product
+
+Topological spaces (TODO mention two or three other examples) matches the first pattern, while objects like functions follow the second one. Some objects (such as measures) actually use both.
+
+Take any set \$X\$.  Its **power set** \$\mathcal P(X)\$ is the gigantic set containing *every* subset of \$X\$—the total buffet.  Choosing a topology means marking some plates on that buffet with the label **open** and leaving the rest un-labeled.  Formally, you pick a subset
+
+$$
+\mathcal O\;\subseteq\;\mathcal P(X)
+$$
+
+and demand that \$\mathcal O\$ satisfy the three axioms in the box.  Thinking of \$\mathcal O\$ as a subset of \$\mathcal P(X)\$ is useful for two reasons.
+
+* **Visual bookkeeping.**  It tells you at a glance that “open” is a *property* of ordinary subsets, not some exotic new gadget.  Every open set is still just a member of \$\mathcal P(X)\$—there’s no secret structure glued on.
+* **Compare topologies.**  If you have two collections \$\mathcal O\_1\$ and \$\mathcal O\_2\$ inside the same power set, inclusion \$\mathcal O\_1\subseteq\mathcal O\_2\$ translates directly into “\$\mathcal O\_2\$ has at least as many open sets as \$\mathcal O\_1\$.”  This lets you speak sensibly about one topology being finer or coarser than another.
+
+A quick illustration.  On \$\mathbb R\$ the **usual topology** is the set of all unions of open intervals.  That sits strictly between two extremes that also live inside \$\mathcal P(\mathbb R)\$:
+
+* The **discrete topology** is *all* of \$\mathcal P(\mathbb R)\$—every subset is open.
+* The **trivial topology** is \${\varnothing,\mathbb R}\$—nothing but the empty set and the whole line.
+
+Both extremes obey the axioms, so they really are topologies; they just choose radically different subsets of \$\mathcal P(\mathbb R)\$.
+
+### Why the axioms use union and (binary) intersection
+
+Union ensures you can always *widen* a neighborhood without losing openness; intersection guarantees you can *refine* two overlapping neighborhoods to a smaller one.  Notice it is **finite** intersection, not arbitrary—if you intersect the nested family \$(0,1/n)\$ over all \$n\$, you fall out of the usual topology and land on \${0}\$, which is closed.
+
+A first-time snag: the axioms refer only to *operations already available in \$\mathcal P(X)\$*.  They don’t impose anything alien; they merely select a subset stable under those operations.
+
+With this subset-of-the-power-set picture in mind, the phrase *“open in \$X\$”* should read as: *belongs to the chosen \$\mathcal O\subseteq\mathcal P(X)\$*.  Keep that translation handy; the moment we attach data to opens the distinction between “all subsets” and “the ones in \$\mathcal O\$” becomes critical.
+
+
 ## Opens as a Subtype and Basic Operations
 
 {{< mediabox type="note" title="Box 4 – What to memorize" align="right" id="box4">}}
 **Three notions to keep in your head:**
 
-* **Opens (X)** is the universe of open subsets of $X$.
-* $V \subseteq_o U$ means: $V$ is contained in $U$ *and both are open*.
+* **Opens (X)** is the universe of open subsets of \$X\$.
+* \$V \subseteq_o U\$ means: \$V\$ is contained in \$U\$ *and both are open*.
 * The intersection of two opens is again open, and it never makes either set larger.
 
 These three bullets are the real cargo we need later when we define how to *restrict* data from one open set to another and, ultimately, how to glue local data into something global.
