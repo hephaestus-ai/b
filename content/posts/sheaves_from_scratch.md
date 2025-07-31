@@ -56,11 +56,15 @@ TODO there's a lot more to say here.
 
 #### Less Conventional Examples - cryptography, poetry, etc
 
-1. LLMs as sheaves: take any finite set of token bigrams—pairs $(w_i, w_{i+1})$. Call that set your "open context." A section over it is a probability distribution for the *next* token conditioned on those bigrams. Overlaps are smaller contexts that the big set and the next one down share; compatibility means the two distributions agree after marginalising to the overlap. Gluing all compatible local distributions is what a large language model learns during training: a single global rule that extends every fragment. Failures to glue would show up as places where the model assigns inconsistent probabilities to the same substring seen through two different neighbourhoods.
-2. Naturally, linguistics has flirted with sheaf-like models where sentence fragments glue into discourse, though they have thus far (to my knowledge) lacked the mathematical discipline to describe language phenomena with full sheaves.
-3. Distributed ledgers can be phrased in sheaf language: each block covers a slice of global state; overlaps check for double spends; the sheaf condition enforces ledger consistency without central control.
-4. TODO gluing together chains in defeasible logic
-5. TODO Narrative, surprise, etc. as (pre)sheaves over events
+LLMs as sheaves: take any finite set of token bigrams—pairs $(w_i, w_{i+1})$. Call that set your "open context." A section over it is a probability distribution for the *next* token conditioned on those bigrams. Overlaps are smaller contexts that the big set and the next one down share; compatibility means the two distributions agree after marginalising to the overlap. Gluing all compatible local distributions is what a large language model learns during training: a single global rule that extends every fragment. Failures to glue would show up as places where the model assigns inconsistent probabilities to the same substring seen through two different neighbourhoods.
+
+Unsurprisingly, linguistics has flirted with sheaf-like models where sentence fragments glue into discourse, though they have thus far (to my knowledge) lacked the mathematical discipline to describe language phenomena with full sheaves.
+
+Distributed ledgers can be phrased in sheaf language: each block covers a slice of global state; overlaps check for double spends; the sheaf condition enforces ledger consistency without central control.
+
+TODO gluing together chains in defeasible logic
+
+TODO Narrative, surprise, etc. as (pre)sheaves over events
 
 #### So...
 
