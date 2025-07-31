@@ -30,12 +30,12 @@ Before we build anything sophisticated we need a place to stand. That place is a
 Start with one *universe* of discourse, which we’ll simply call **Set**. (If you're confused by the phrase "universe of discourse", it just means the set of all objects that are under consideration in a specific context or discussion; you don't need to understand this term fully). Think of it as the object containing every set we will ever talk about. Inside that object we highlight two relations between subobjects:
 
 1. **Membership** \$\boldsymbol{\in}\$
-  Saying \$a \in A\$ means *“the set \$a\$ sits inside the set \$A\$ as a single member.”*
-  A classic point of confusion: \$a\subseteq A\$ is generally **false** if \$a\$ itself is an element - you can’t be both an element and a subset at the same time.
+ Saying \$a \in A\$ means *“the set \$a\$ sits inside the set \$A\$ as a single member.”*
+ A classic point of confusion: \$a\subseteq A\$ is generally **false** if \$a\$ itself is an element - you can’t be both an element and a subset at the same time.
 
 2. **Subset** \$\boldsymbol{\subseteq}\$
-  We write \$A \subseteq B\$ when *every* element of \$A\$ is also an element of \$B\$.
-  It’s worth pausing here: newbies often blur \$\in\$ and \$\subseteq\$ because both talk about “being inside” something. Remember - one compares a *set to a set*, the other compares a *set to its members*.
+ We write \$A \subseteq B\$ when *every* element of \$A\$ is also an element of \$B\$.
+ It’s worth pausing here: newbies often blur \$\in\$ and \$\subseteq\$ because both talk about “being inside” something. Remember - one compares a *set to a set*, the other compares a *set to its members*.
 
 Everything else we need flows from a single guiding principle called the **axiom of extensionality**, written:
 
@@ -43,7 +43,7 @@ $$
 A = B \quad\Longleftrightarrow\quad \forall x\,(x\in A\;\Leftrightarrow\;x\in B).
 $$
 
-TODO how to read this...
+TODO plain english reading of the expression...
 
 In practice the axiom does two jobs. First, it keeps us rigorous - if you want to prove two sets are equal, you must check every element. Second, it lets us *rename* a set once we know its elements, sparing us from carrying around duplicate symbols.
 
@@ -51,10 +51,68 @@ That’s the entire skeleton. No power sets, no choice, not even unions yet - th
 
 A common stumble at this stage: treating \$\subseteq\$ as though it were symmetric. It isn’t. Saying \$A\subseteq B\$ puts a directional arrow from \$A\$ into \$B\$; going the other way requires its own proof. Forgetting that directionality later - when we restrict data or glue it - tends to snowball into bigger mistakes.
 
-Take a moment to let these three notions settle. Once they feel second-nature you’ll be able to parse every definition that follows without stopping to untangle basic set-speak.
-
+Take a moment to let these three notions settle. Once they feel second-nature you’ll be able to parse every definition that follows without stopping to untangle basic set theory ideas.
 
 ## Constructors Used by Topology
+
+{{< mediabox type="note" title="Box 2 – What to memorize" align="right" id="box2">}}
+**Four notions to memorize**
+
+* \$\displaystyle\bigcup S\$ is the union of *every* set sitting inside the collection \$S\$.
+* \$X\cap Y\$ is the ordinary intersection of two sets.
+* Membership shortcuts:
+ $$
+ x\in\bigcup S \Longleftrightarrow \exists,T\in S;(x\in T)
+ $$
+ $$
+ x\in X\cap Y \Longleftrightarrow x\in X\text{ and }x\in Y
+ $$
+* Intersections only shrink: \$X\cap Y\subseteq X\$ and \$X\cap Y\subseteq Y\$.
+ {{< /mediabox >}}
+
+The bare-bones set theory from the last section gives us a basic language to talk about sets, but it doesn’t let us *build* new ones. To do that we add two constructors that topology leans on constantly: arbitrary union and binary intersection.
+
+#### Union
+
+Take any collection of sets, call it \$S\$. We write
+
+$$
+\bigcup S
+$$
+
+for the set of all points that show up in at least one member of \$S\$. The rule is as simple as it looks:
+
+$$
+x\in\bigcup S \;\Longleftrightarrow\; \exists\,T\in S\;(x\in T).
+$$
+
+The plain english reading of this expression is basically: TODO
+
+A point many people miss on first reading: \$\bigcup S\$ is a *one-step* operation. The whole family of sets is swallowed at once; there’s no hidden iteration. (why is this relevant?)
+
+If \$S={(0,1),, (1,2)}\$ inside \$\mathbb R\$, then \$\bigcup S=(0,2)\$. Exactly the points that appear somewhere in the two intervals - no more, no less.
+
+#### Intersection
+
+For intersection we only need the binary case for sheaves. Given two sets \$X\$ and \$Y\$ we define
+
+$$
+X\cap Y=\{x\mid x\in X\text{ and }x\in Y\}.
+$$
+
+TODO plain english reading of the expression...
+
+Nothing subtle here, but two elementary lemmas save headaches later:
+
+$$
+X\cap Y\subseteq X,\quad X\cap Y\subseteq Y.
+$$
+
+They look obvious; still, they are worth a spot in your memory. When we start restricting data on open sets, these inclusions justify every "of course this lands where it should" step.
+
+With \$X=(0,2)\$ and \$Y=(1,3)\$ in \$\mathbb R\$ we get \$X\cap Y=(1,2)\$, strictly smaller than either parent. No surprises, and that’s the point - the constructor behaves exactly the way everyday intuition says it should.
+
+Now, with union and intersection in place we finally have enough raw material to describe a topology: a family of subsets closed under union (the first operation) and stable under intersection (the second operation).
 
 ## Topological Space
 
