@@ -420,6 +420,7 @@ blockquote {
 	font-family: 'spectral';
     font-style: italic;
 	color: var(--fg-muted-bright);
+	/* font-size: 18px; */
 }
 
 blockquote>blockquote {
@@ -448,8 +449,8 @@ blockquote > blockquote > p:after {
 }
 
 .content ul, .content ol {
-   margin-left: 4.25em;
-   max-width: 39.25em;
+   margin-left: 4.25rem;
+   max-width: 38.5rem;
 }
 
 
