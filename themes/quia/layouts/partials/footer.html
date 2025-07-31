@@ -86,47 +86,62 @@
 })();
 </script>
 
-
-
-
-<script>/* TODO move. for the table of contents shortcode */
+<script>
 document.addEventListener('DOMContentLoaded', () => {
   document.querySelectorAll('.post-toc').forEach(toc => {
-    /* give every LI with a child UL a caret */
+
+    // Clean up empty list items
     toc.querySelectorAll('li').forEach(li => {
-      const sub = li.querySelector(':scope > ul, :scope > ol');
+      if (li.textContent.trim() === '' && li.children.length === 0) {
+        li.remove();
+      }
+    });
+
+    // Process each list item
+    toc.querySelectorAll('li').forEach(li => {
+      const sub  = li.querySelector(':scope > ul, :scope > ol');
       const link = li.querySelector(':scope > a');
 
-      /* make/insert caret */
+      // Create the caret button regardless
       const caret = document.createElement('button');
       caret.className = 'post-toc__toggle';
       caret.type = 'button';
+      caret.textContent = '+';
       caret.setAttribute('aria-expanded', 'false');
-      caret.textContent = '+';              /* your “looks good” arrow */
       li.prepend(caret);
 
-      if (!sub) {              /* leaf node – hide caret but keep spacing */
+      // If no usable sublist, disable interaction but keep space
+      const hasVisibleSub = sub && sub.querySelector('a');
+      if (!hasVisibleSub) {
         caret.setAttribute('data-leaf', 'true');
+        caret.disabled = true; // optional: prevents click
         return;
       }
 
-      /* start collapsed */
+      // Expand/collapse behavior
       sub.hidden = true;
-
-      caret.addEventListener('click', () => {
+      const toggle = () => {
         const open = caret.getAttribute('aria-expanded') === 'true';
-        caret.setAttribute('aria-expanded', !open);
+        caret.setAttribute('aria-expanded', String(!open));
         sub.hidden = open;
+      };
+
+      caret.addEventListener('click', toggle);
+      caret.addEventListener('keydown', e => {
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggle(); }
       });
 
-      /* also expand caret branch if its link matches current hash */
-      if (location.hash && link?.hash === location.hash) {
-        caret.click();
+      // Auto-expand if this link matches the location hash
+      if ((location.hash && link?.hash === location.hash) ||
+          link?.matches('[aria-current="page"]')) {
+        toggle();
       }
     });
   });
 });
 </script>
+
+
 
 <!-- page dark mode stuff -->
 <script>
