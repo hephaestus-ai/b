@@ -15,6 +15,10 @@ I may break this post up later. As you will see, we build many other things from
 
 ## TLDR
 
+
+## Why Sheaves are Important
+
+
 ## Primitive Set Theory
 
 {{< mediabox type="note" title="Box 1 – What to memorize" align="right" id="box1">}}
@@ -153,7 +157,5 @@ Behind the scenes, this construction simply takes the intersection of the underl
 ## Presheaf and Sheaf of Sets
 
 ## Constructable Sheaves
-
-## Why Sheaves are Important
 
 ## Wrapping Up

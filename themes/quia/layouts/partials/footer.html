@@ -20,39 +20,42 @@
 
 <script>
 (function () {
-  //console.log("TOC folding script loaded.");
   const toc = document.querySelector('.toc-scroll');
   if (!toc) return;
-  //console.log(".toc-scroll found");
 
-  /* 1. Add caret buttons to every <li> that contains a sub-<ol> */
-  toc.querySelectorAll('li').forEach((li) => { // Removed idx, it wasn't used
-    // Look for a direct child <ol> within the current <li>
-    const sub = li.querySelector(':scope > ol'); // Changed from ul to ol
-    console.log("0");
+  // OPTIONAL: Clean up truly empty <li> nodes
+  toc.querySelectorAll('li').forEach((li) => {
+    if (li.textContent.trim() === '' && li.children.length === 0) {
+      li.remove();
+    }
+  });
+
+  // Add carets only to non-empty sublists
+  toc.querySelectorAll('li').forEach((li) => {
+    const sub = li.querySelector(':scope > ol');
     if (!sub) return;
-    console.log("1");
+
+    // Skip if sublist has only empty <li>s
+    const hasVisibleChild = [...sub.children].some(
+      el => el.tagName === 'LI' && el.textContent.trim() !== ''
+    );
+    if (!hasVisibleChild) return;
 
     li.classList.add('has-children');
 
-    /* make a small button that comes before the link */
     const btn = document.createElement('button');
     btn.className = 'toc-caret';
     btn.setAttribute('aria-label', 'Toggle section');
     btn.setAttribute('aria-expanded', 'false');
     btn.innerText = '+';
 
-    /* insert button before the link */
     const firstLink = li.querySelector(':scope > a');
-    if (firstLink) { // Ensure there's a link to insert before
+    if (firstLink) {
       li.insertBefore(btn, firstLink);
     } else {
-      // Fallback if no link (e.g., if a list item only contains a sub-list)
       li.prepend(btn);
     }
 
-
-    /* 2. toggle open / closed */
     function toggle() {
       const open = li.classList.toggle('open');
       btn.setAttribute('aria-expanded', String(open));
@@ -66,8 +69,9 @@
     });
   });
 
-  // Use a more robust selector for the active link if location.hash is empty
-  const activeLinkSelector = location.hash ? 'a[href="' + location.hash + '"]' : 'a[aria-current="page"]';
+  const activeLinkSelector = location.hash
+    ? 'a[href="' + location.hash + '"]'
+    : 'a[aria-current="page"]';
   const active = toc.querySelector(activeLinkSelector);
 
   if (active) {
@@ -76,11 +80,13 @@
       li.classList.add('open');
       const caret = li.querySelector(':scope > .toc-caret');
       if (caret) caret.setAttribute('aria-expanded', 'true');
-      li = li.parentElement.closest('li'); // Ensures we climb up to the closest parent <li>
+      li = li.parentElement.closest('li');
     }
   }
 })();
 </script>
+
+
 
 
 <script>/* TODO move. for the table of contents shortcode */
