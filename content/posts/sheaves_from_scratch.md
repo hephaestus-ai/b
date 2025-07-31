@@ -18,7 +18,7 @@ I may break this post up later. As you will see, we build many other things from
 
 ## Why Sheaves are Important
 
-In short, a sheaf is a machine for turning local, overlapping pieces of information into a consistent global picture - and for telling you precisely when that fails. But before we start laying out details it might help to know what we are building toward. "Sheaf" can sound forbiddingly abstract, yet the idea is less exotic than the name, and once you start thinking in sheaves you'll see them everywhere, and, like many fundamental mathematical concepts, confers a superpower to organize and understand problems and their features more quickly. Perhaps a quick way to see it is by looking at some examples.
+In short, a sheaf is a machine for turning local, overlapping pieces of information into a consistent global picture, and for telling you precisely when that fails. While reading through this section is *optional*, before we start laying out details it might help to know what we are building toward. "Sheaf" can sound forbiddingly abstract, yet the idea is less exotic than the name, and once you start thinking in sheaves you'll see them everywhere. The understanding of sheaves, like many fundamental mathematical concepts, confers a superpower that will help you organize and understand problems and their features more quickly. Perhaps a quick way to see it is by looking at some examples.
 
 #### The Engineer’s View
 
@@ -45,6 +45,22 @@ TODO maybe tie to (co)bordism, idk
 In topological data analysis, persistent cohomology detects shape in point clouds. The raw algorithm feeds a simplicial-complex sheaf into a cohomology engine; the resulting barcodes visualize when local clusters knit together. Newer techniques replace simplices with cosheaves to encode directed influence, useful in network flow and contagion models. Either way the sheaf language is what lets purely combinatorial data inherit geometric intuition.
 
 TODO example from computational neuroscience?
+
+#### The Mathematician’s View
+
+Modern geometry, from Riemann surfaces to schemes in algebraic geometry, lives on the mantra "build globally by gluing locally." Charts of a manifold, affine pieces of a variety, even basic coordinate systems are local patches that must be stitched together on overlaps. Sheaves abstract that glueing process so cleanly that entire subjects - étale cohomology, Hodge theory, perverse sheaves - follow just by feeding different kinds of algebraic gadgets into the same framework. The slogan *"cohomology is the derived functor of global sections"* packages decades of theory into one line; without sheaves the slogan is meaningless.
+
+TODO very useful for all sorts of local-to-global gluing challenges (global to local is obviously easy)
+
+TODO there's a lot more to say here.
+
+#### The Mathematician’s View
+
+Modern geometry, from Riemann surfaces to schemes in algebraic geometry, lives on the mantra "build globally by gluing locally." Charts of a manifold, affine pieces of a variety, even basic coordinate systems are local patches that must be stitched together on overlaps. Sheaves abstract that glueing process so cleanly that entire subjects - étale cohomology, Hodge theory, perverse sheaves - follow just by feeding different kinds of algebraic gadgets into the same framework. The slogan *"cohomology is the derived functor of global sections"* packages decades of theory into one line; without sheaves the slogan is meaningless.
+
+TODO very useful for all sorts of local-to-global gluing challenges (global to local is obviously easy)
+
+TODO there's a lot more to say here.
 
 
 
