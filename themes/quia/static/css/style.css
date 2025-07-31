@@ -391,7 +391,7 @@ p {
       margin-left: 0.8em;
 }
 
-p, ul, ol, menu, dir, mjx-container {
+p, ul, ol, menu, dir {
       margin-top: 0em;
 	  margin-bottom: 0em;
       max-width: 42rem;
@@ -725,13 +725,17 @@ table.chroma {
 /* BEGIN mathjax */
 /* This might cause bugs... */
 
-mjx-container.MathJax {
-  margin-left: 0.8em !important;
-}
-
-p .MathJax {
+.MathJax {
   padding: 0em !important;
   margin: 0em !important;  
+}
+
+article>mjx-container.MathJax {
+  margin-left: 0.8em !important;
+  margin-top: 0em !important;
+  margin-bottom: 0em !important;
+  max-width: 42rem !important;
+  padding: 0.5em !important;
 }
 
 /* Individual items */
