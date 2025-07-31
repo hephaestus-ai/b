@@ -389,14 +389,12 @@ p {
       padding-bottom: 0.5em;
       padding-top: 0.5em;
       margin-left: 0.8em;
-      min-width: 200px;
-
 }
 
 p, ul, ol, menu, dir, mjx-container {
       margin-top: 0em;
 	  margin-bottom: 0em;
-      max-width: 42em;
+      max-width: 42rem;
       padding-left: 0.5em;
       padding-right: 0.5em;
 }
@@ -727,6 +725,14 @@ table.chroma {
 /* BEGIN mathjax */
 /* This might cause bugs... */
 
+mjx-container.MathJax {
+  margin-left: 0.8em !important;
+}
+
+p .MathJax {
+  padding: 0em !important;
+  margin: 0em !important;  
+}
 
 /* Individual items */
 .CtxtMenu_MenuItem,
