@@ -5,6 +5,8 @@ title: "What Happens When You Type a URL into a Browser"
 thumbnail: "thumbnail.webp"
 draft: true
 booktoc:
+  - title: "Introduction"
+    type: "chapter"
   - title: "Keystroke & Input Hardware"
     type: "chapter"
     children:
