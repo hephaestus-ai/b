@@ -128,74 +128,79 @@ Now, with union and intersection in place we finally have enough raw material to
 * Infinite intersections are *not* guaranteed to stay open - the "two" in axiom (iii) is doing real work.
 {{< /mediabox >}}
 
-Union and intersection let us manufacture new sets; now we decide which of those sets count as *open* and thereby fix the "geometry" of our universe.  Formally, a topology on a set \$X\$ is a choice of collection \$\mathcal O\$ satisfying the three axioms in the box.  Think of \$\mathcal O\$ as a menu: each item on the menu is declared open, everything else is not.
+TODO: intuitive intro to topologies
 
-Why these axioms and no others?  The short answer is that they capture the way neighborhoods behave in ordinary spaces like \$\mathbb R\$.
+Union and intersection let us manufacture new sets; now we decide which of those sets count as *open* and thereby fix the "geometry" of our universe. Formally, a topology on a set \$X\$ is a choice of collection \$\mathcal O\$ satisfying the three axioms in the box. Think of \$\mathcal O\$ as a menu: each item on the menu is declared open, everything else is not.
 
-* **Whole space first.**  If *nothing* in \$X\$ were open, analysis would starve; making \$X\$ itself open guarantees at least one playground.
-* **Unions are cheap.**  If every point already sits in one open set or another, pooling them shouldn’t break openness.  This encodes the intuition that you can enlarge a neighborhood as much as you like.
-* **Finite intersections are safe.**  Two overlapping neighborhoods share a smaller neighborhood.  But the axiom stops at two: intersect an infinite tower of shrinking intervals \$(0,1/n)\$ and you drop to \${0}\$, which is *not* open in the usual topology on \$\mathbb R\$.
+Why these axioms and no others? The short answer is that they capture the way neighborhoods behave in ordinary spaces like \$\mathbb R\$.
 
-A classic trip-up is forgetting that *open* is always **relative to the chosen \$\mathcal O\$**.  The subset \$,(0,1)\subseteq(0,2)\subseteq\mathbb R,\$ is open for the usual topology, yet if you switch to the trivial topology \${\varnothing,X}\$ it suddenly isn’t.  Keep the phrase "open in \$X\$" in your mental subtitles every time you see the word.
+* **Whole space first.** If *nothing* in \$X\$ were open, analysis would starve; making \$X\$ itself open guarantees at least one playground.
+* **Unions are cheap.** If every point already sits in one open set or another, pooling them shouldn’t break openness. This encodes the intuition that you can enlarge a neighborhood as much as you like.
+* **Finite intersections are safe.** Two overlapping neighborhoods share a smaller neighborhood. But the axiom stops at two: intersect an infinite tower of shrinking intervals \$(0,1/n)\$ and you drop to \${0}\$, which is *not* open in the usual topology on \$\mathbb R\$.
 
-One other snag: some readers assume "finite intersections" means "any finite collection."  In practice you only ever need the two-set version; the three-set case follows by applying it twice, and so on.
+A classic trip-up is forgetting that *open* is always **relative to the chosen \$\mathcal O\$**. The subset \$,(0,1)\subseteq(0,2)\subseteq\mathbb R,\$ is open for the usual topology, yet if you switch to the trivial topology \${\varnothing,X}\$ it suddenly isn’t. Keep the phrase "open in \$X\$" in your mental subtitles every time you see the word.
 
-With the concept of open sets pinned down we can finally talk about *local data*: information attached to each open subset.  That is the gateway to presheaves, which in turn set the stage for sheaves.  But first we package the opens themselves into a tidy type, so they can be manipulated without dragging the entire topology everywhere we go - next section.
+One other snag: some readers assume "finite intersections" means "any finite collection." In practice you only ever need the two-set version; the three-set case follows by applying it twice, and so on.
 
-### Topology from Power Sets
+With the concept of open sets pinned down we can finally talk about *local data*: information attached to each open subset. That is the gateway to presheaves, which in turn set the stage for sheaves. But first we package the opens themselves into a tidy type, so they can be manipulated without dragging the entire topology everywhere we go - next section.
 
-{{< mediabox type="note" title="Box 3 – What to memorize" align="right" id="box3">}}
+#### Topology from Power Sets
+
+{{< mediabox type="note" title="Box 4 – What to (optionally) memorize" align="right" id="box4">}}
 **Three more topological notions:**
 
 * A *topology* on a set \$X\$ is a distinguished collection \$\mathcal O\subseteq\mathcal P(X)\$ of subsets of \$X\$.
 * Requirements on \$\mathcal O\$:
 
-  1. \$X\in\mathcal O\$ (the whole space is open);
-  2. \$\bigcup S\in\mathcal O\$ whenever every member of \$S\$ lies in \$\mathcal O\$;
-  3. \$U\cap V\in\mathcal O\$ whenever \$U,V\in\mathcal O\$.
+ 1. \$X\in\mathcal O\$ (the whole space is open);
+ 2. \$\bigcup S\in\mathcal O\$ whenever every member of \$S\$ lies in \$\mathcal O\$;
+ 3. \$U\cap V\in\mathcal O\$ whenever \$U,V\in\mathcal O\$.
 * The "\$\subseteq\mathcal P(X)\$" part matters: \$\mathcal O\$ *lives inside* the power set, it doesn’t replace it.
 
 TODO: items for memorizing the two patterns
 
 {{< /mediabox >}}
 
-I like to present the subset-of-the-power-set perspective because it's _**extremely useful**_ to understand that many "larger" objects you encounter in mathematics just boil down to two main patterns:
+I like to present the subset-of-the-power-set perspective, despite the fact that it's not necessary here and utilizes operations that were not defined in the [primitive set theory](#primitive-set-theory) section,  because it's _**extremely useful**_ to understand that many "larger" objects you encounter in mathematics just boil down to two main patterns:
 
-* take a power set over some base set, and then take some kind of subset of the power set
-* take a cartesian product between two sets, and then take some kind of subset of that cartesian product
+* take a [power set](https://en.wikipedia.org/wiki/Power_set) over some base set, and then take some kind of subset of the power set
+* take a [cartesian product](https://en.wikipedia.org/wiki/Cartesian_product) between two sets, and then take some kind of subset of that cartesian product
 
-Topological spaces (TODO mention two or three other examples) matches the first pattern, while objects like functions follow the second one. Some objects (such as measures) actually use both.
+Topological spaces (TODO mention two or three other examples) match the first pattern, while objects like functions follow the second one. Some objects (such as measures) actually use both.
 
-Take any set \$X\$.  Its **power set** \$\mathcal P(X)\$ is the gigantic set containing *every* subset of \$X\$ - the total buffet.  Choosing a topology means marking some plates on that buffet with the label **open** and leaving the rest un-labeled.  Formally, you pick a subset
+Take any set \$X\$. Its **power set** \$\mathcal P(X)\$ is the gigantic set containing *every* possible subset of \$X\$. (TODO example of a powerset). Choosing a topology means marking some plates on that buffet with the label **open** and leaving the rest un-labeled. Formally, you pick a subset
 
 $$
 \mathcal O\;\subseteq\;\mathcal P(X)
 $$
 
-and demand that \$\mathcal O\$ satisfy the three axioms in the box.  Thinking of \$\mathcal O\$ as a subset of \$\mathcal P(X)\$ is useful for two reasons.
+and demand that \$\mathcal O\$ satisfy the three axioms in the box. Thinking of \$\mathcal O\$ as a subset of \$\mathcal P(X)\$ is useful for two reasons (beyond just being a generally good/unifying way to think about a whole slew of things):
 
-* **Visual bookkeeping.**  It tells you at a glance that "open" is a *property* of ordinary subsets, not some exotic new gadget.  Every open set is still just a member of \$\mathcal P(X)\$ - there’s no secret structure glued on.
-* **Compare topologies.**  If you have two collections \$\mathcal O\_1\$ and \$\mathcal O\_2\$ inside the same power set, inclusion \$\mathcal O\_1\subseteq\mathcal O\_2\$ translates directly into "\$\mathcal O\_2\$ has at least as many open sets as \$\mathcal O\_1\$."  This lets you speak sensibly about one topology being finer or coarser than another.
+* **Visual bookkeeping.** It tells you at a glance that "open" is a *property* of ordinary subsets, not some exotic new gadget. Every open set is still just a member of \$\mathcal P(X)\$ - there’s no secret structure glued on.
+* **Compare topologies.** If you have two collections \$\mathcal O\_1\$ and \$\mathcal O\_2\$ inside the same power set, inclusion \$\mathcal O\_1\subseteq\mathcal O\_2\$ translates directly into "\$\mathcal O\_2\$ has at least as many open sets as \$\mathcal O\_1\$." This lets you speak sensibly about one topology being finer or coarser than another.
 
-A quick illustration.  On \$\mathbb R\$ the **usual topology** is the set of all unions of open intervals.  That sits strictly between two extremes that also live inside \$\mathcal P(\mathbb R)\$:
+A quick illustration. On \$\mathbb R\$ the **usual topology** is the set of all unions of open intervals. That sits strictly between two extremes that also live inside \$\mathcal P(\mathbb R)\$:
 
 * The **discrete topology** is *all* of \$\mathcal P(\mathbb R)\$ - every subset is open.
 * The **trivial topology** is \${\varnothing,\mathbb R}\$ - nothing but the empty set and the whole line.
 
 Both extremes obey the axioms, so they really are topologies; they just choose radically different subsets of \$\mathcal P(\mathbb R)\$.
 
-### Why the axioms use union and (binary) intersection
+#### Why the axioms use union and (binary) intersection
 
-Union ensures you can always *widen* a neighborhood without losing openness; intersection guarantees you can *refine* two overlapping neighborhoods to a smaller one.  Notice it is **finite** intersection, not arbitrary - if you intersect the nested family \$(0,1/n)\$ over all \$n\$, you fall out of the usual topology and land on \${0}\$, which is closed.
+Union ensures you can always *widen* a neighborhood without losing openness; intersection guarantees you can *refine* two overlapping neighborhoods to a smaller one. Notice it is **finite** intersection, not arbitrary - if you intersect the nested family \$(0,1/n)\$ over all \$n\$, you fall out of the usual topology and land on \${0}\$, which is closed.
 
-A first-time snag: the axioms refer only to *operations already available in \$\mathcal P(X)\$*.  They don’t impose anything alien; they merely select a subset stable under those operations.
+A first-time snag: the axioms refer only to *operations already available in \$\mathcal P(X)\$*. They don’t impose anything alien; they merely select a subset stable under those operations.
 
-With this subset-of-the-power-set picture in mind, the phrase *"open in \$X\$"* should read as: *belongs to the chosen \$\mathcal O\subseteq\mathcal P(X)\$*.  Keep that translation handy; the moment we attach data to opens the distinction between "all subsets" and "the ones in \$\mathcal O\$" becomes critical.
+With this subset-of-the-power-set picture in mind, the phrase *"open in \$X\$"* should read as: *belongs to the chosen \$\mathcal O\subseteq\mathcal P(X)\$*. Keep that translation handy; the moment we attach data to opens the distinction between "all subsets" and "the ones in \$\mathcal O\$" becomes critical.
 
+#### A Few Final Points of Confusion
+
+TODO: topologists abuse the term "closeness" but topology does not necessarily entail metrics; confusingly sometimes a metric entails or _induces_ a topology, though.
 
 ## Opens as a Subtype and Basic Operations
 
-{{< mediabox type="note" title="Box 4 – What to memorize" align="right" id="box4">}}
+{{< mediabox type="note" title="Box 5 – What to memorize" align="right" id="box5">}}
 **Three notions to keep in your head:**
 
 * **Opens (X)** is the universe of open subsets of \$X\$.
@@ -230,5 +235,9 @@ Behind the scenes, this construction simply takes the intersection of the underl
 ## Presheaf and Sheaf of Sets
 
 ## Constructable Sheaves
+
+## Coder-friendly Restatement of Sheaves
+
+## Mnemonics
 
 ## Wrapping Up
