@@ -391,6 +391,15 @@ p {
       margin-left: 0.8em;
 }
 
+hr {
+  width: 43.5rem;
+  margin: 0.8em;
+  height: 1px;
+  border: none;
+  color: var(--border);
+  background-color: var(--border);  
+}
+
 p, ul, ol, menu, dir {
       margin-top: 0em;
 	  margin-bottom: 0em;

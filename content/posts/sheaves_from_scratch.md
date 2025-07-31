@@ -168,6 +168,8 @@ I like to present the subset-of-the-power-set perspective, despite the fact that
 
 Topological spaces (TODO mention two or three other examples) match the first pattern, while objects like functions follow the second one. Some objects (such as measures) actually use both.
 
+---
+
 Take any set \$X\$. Its **power set** \$\mathcal P(X)\$ is the gigantic set containing *every* possible subset of \$X\$. (TODO example of a powerset). Choosing a topology means marking some plates on that buffet with the label **open** and leaving the rest un-labeled. Formally, you pick a subset
 
 $$
