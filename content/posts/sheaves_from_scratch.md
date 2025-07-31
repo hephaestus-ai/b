@@ -24,15 +24,13 @@ In short, a sheaf is a machine for turning local, overlapping pieces of informat
 
 If you want to describe a global sensor grid monitoring temperature over a large facility you might eventually discover that you're just dealing with a sheaf. Each sensor reports only for the room it occupies; adjacent rooms overlap in their coverage because data packets sometimes drop. You want a single, up-to-date heat map of the whole building, but you will only trust a reading if every overlapping sensor agrees on the shared region. A sheaf formalises exactly that: it assigns a *set of possible data states* to every room (open set) and tells you whether those states are compatible on their overlaps. If they are, the sheaf produces one coherent building-wide state; if not, it points to the conflict. From a systems perspective, this is a recipe for resilient data fusion and graceful degradation.
 
-A rules engine where each rule fires under a specific set of conditions is also secretly a sheaf. Overlapping rule sets can clash, so you attach to every condition-set the exceptions still in play, then insist that on overlaps the exception lists match. When they do, a single, conflict-free policy emerges; when they don’t, the sheaf pinpoints the minimal contradictory slice. In other words, debugging a snarled permission matrix is just cohomology in work clothes.
+A rules (or exception handling) engine where each rule (or exception handler) fires under a specific set of conditions is also secretly a sheaf. Overlapping rule sets can clash, so you attach to every condition-set the exceptions still in play, then insist that on overlaps the exception lists match. When they do, a single, conflict-free policy emerges; when they don’t, the sheaf pinpoints the minimal contradictory slice. In other words, debugging a snarled permission matrix is just cohomology. TODO do I really want to keep this example as is?
 
-In a distributed system with half-trusting agents, each node keeps its own list of "normal" rules and "exceptions that override those rules." Lists themselves glue the same way ordinary data do, but the overrides form a second layer: you have to know whose exception beats whose when two agents disagree. That two-tier structure is exactly what a 2-sheaf (a stack) captures. A section over one agent is a pair (rule set, exception set); compatibility on an overlap checks that exceptions line up in priority. Gluing succeeds only when every clash can be resolved into a single, well-scoped override - no silent contradictions.
+In robotics, coverage problems for cooperating drones translate into sheaves over time-indexed configuration spaces. In even more complex distributed systems, with half-trusting agents, each node might keep its own list of "normal" rules and "exceptions that override those rules." Lists themselves glue the same way ordinary data do, but the overrides form a second layer: you have to know whose exception beats whose when two agents disagree. That two-tier structure is exactly what a 2-sheaf (a stack) captures. A section over one agent is a pair (rule set, exception set); compatibility on an overlap checks that exceptions line up in priority. Gluing succeeds only when every clash can be resolved into a single, well-scoped override - no silent contradictions.
 
 Type-theoretic semantics often need to interpret a program fragment "in a context," then extend that interpretation when more variables become visible. Contexts overlap when subroutines share free variables. A presheaf on the lattice of contexts captures how meanings restrict; making it a *sheaf* imposes a principled uniqueness condition that echoes referential transparency. Categorical models of dependent type theory exploit exactly this sheaf condition to guarantee that substitution behaves predictably.
 
-In robotics, coverage problems for cooperating drones translate into sheaves over time-indexed configuration spaces.
-
-In another post I plan on writing, I show how domain driven design (DDD) can be viewed as a 2-sheaf. (Indeed, whenever you have two things that "think" about the same underlying things with different ontologies, you're typically dealing with a 2-sheaf).
+In another post I plan on writing, I show how domain driven design (DDD) can be viewed as a 2-sheaf... (Indeed, whenever you have two things that "think" about the same underlying things with different ontologies, you're typically dealing with a 2-sheaf).
 
 And so on.
 
@@ -56,7 +54,7 @@ TODO there's a lot more to say here.
 
 #### Less Conventional Examples - cryptography, poetry, etc
 
-LLMs as sheaves: take any finite set of token bigrams—pairs $(w_i, w_{i+1})$. Call that set your "open context." A section over it is a probability distribution for the *next* token conditioned on those bigrams. Overlaps are smaller contexts that the big set and the next one down share; compatibility means the two distributions agree after marginalising to the overlap. Gluing all compatible local distributions is what a large language model learns during training: a single global rule that extends every fragment. Failures to glue would show up as places where the model assigns inconsistent probabilities to the same substring seen through two different neighbourhoods.
+LLMs as sheaves: take any finite set of token bigrams - pairs $(w_i, w_{i+1})$. Call that set your "open context." A section over it is a probability distribution for the *next* token conditioned on those bigrams. Overlaps are smaller contexts that the big set and the next one down share; compatibility means the two distributions agree after marginalising to the overlap. Gluing all compatible local distributions is what a large language model learns during training: a single global rule that extends every fragment. Failures to glue would show up as places where the model assigns inconsistent probabilities to the same substring seen through two different neighbourhoods.
 
 Unsurprisingly, linguistics has flirted with sheaf-like models where sentence fragments glue into discourse, though they have thus far (to my knowledge) lacked the mathematical discipline to describe language phenomena with full sheaves.
 
@@ -66,7 +64,7 @@ TODO gluing together chains in defeasible logic
 
 TODO Narrative, surprise, etc. as (pre)sheaves over events
 
-#### So...
+#### Takeaway
 
 The discipline is almost irrelevant. The recurring pattern is "information lives on overlapping pieces; agreement on overlaps decides whether it unifies." A sheaf captures that agreement and exposes its limits. Despite its generality, it usually retains some pertinent information that secretly answers a bunch of questions you care about. This makes it, in my opinion, one of those "surprisingly effective" ideas.
 
