@@ -120,6 +120,30 @@ Now, with union and intersection in place we finally have enough raw material to
 
 ## Topological Space
 
+{{< mediabox type="note" title="Box 3 – What to memorize" align="right" id="box3">}}
+**Three topology notions to memorize:**
+
+* A **topological space** is a set \$X\$ equipped with a collection \$\mathcal O\$ of subsets of \$X\$ called *open sets*.
+* Axioms: (i) the whole space \$X\$ is open; (ii) any union \$\bigcup S\$ of open sets is open; (iii) the intersection \$U\cap V\$ of **two** open sets is open.
+* Infinite intersections are *not* guaranteed to stay open—the “two” in axiom (iii) is doing real work.
+{{< /mediabox >}}
+
+Union and intersection let us manufacture new sets; now we decide which of those sets count as *open* and thereby fix the “geometry” of our universe.  Formally, a topology on a set \$X\$ is a choice of collection \$\mathcal O\$ satisfying the three axioms in the box.  Think of \$\mathcal O\$ as a menu: each item on the menu is declared open, everything else is not.
+
+Why these axioms and no others?  The short answer is that they capture the way neighborhoods behave in ordinary spaces like \$\mathbb R\$.
+
+* **Whole space first.**  If *nothing* in \$X\$ were open, analysis would starve; making \$X\$ itself open guarantees at least one playground.
+* **Unions are cheap.**  If every point already sits in one open set or another, pooling them shouldn’t break openness.  This encodes the intuition that you can enlarge a neighborhood as much as you like.
+* **Finite intersections are safe.**  Two overlapping neighborhoods share a smaller neighborhood.  But the axiom stops at two: intersect an infinite tower of shrinking intervals \$(0,1/n)\$ and you drop to \${0}\$, which is *not* open in the usual topology on \$\mathbb R\$.
+
+A classic trip-up is forgetting that *open* is always **relative to the chosen \$\mathcal O\$**.  The subset \$,(0,1)\subseteq(0,2)\subseteq\mathbb R,\$ is open for the usual topology, yet if you switch to the trivial topology \${\varnothing,X}\$ it suddenly isn’t.  Keep the phrase “open in \$X\$” in your mental subtitles every time you see the word.
+
+One other snag: some readers assume “finite intersections” means “any finite collection.”  In practice you only ever need the two-set version; the three-set case follows by applying it twice, and so on.
+
+With the concept of open sets pinned down we can finally talk about *local data*: information attached to each open subset.  That is the gateway to presheaves, which in turn set the stage for sheaves.  But first we package the opens themselves into a tidy type, so they can be manipulated without dragging the entire topology everywhere we go—next section.
+
+### Topology from Power Sets
+
 ## Opens as a Subtype and Basic Operations
 
 {{< mediabox type="note" title="Box 4 – What to memorize" align="right" id="box4">}}
