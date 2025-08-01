@@ -21,27 +21,45 @@ Near the end I also briefly discuss:
 
 
 
-## Mission Profile and Requirements
+## Defining Purpose of our STPA Analysis / Mission Profile and Requirements
+
+#### Identifying Losses
+
+#### Identifying System Level Hazards
 
 #### Characteristics of the target environment
 
-####  Power
+#### Power
 
-####  Communications
+#### Communications
 
-####  Operational constraints
+#### Operational constraints
 
-## High-Level System Architecture
+#### Refined Hazards
 
-####  Compute core: Multi-node BFT-based "kernel"
+## Voyager-style
 
-####  Memory & Storage
+#### System as Control Structure / High-Level System Architecture
 
-####  Clock & Power domains
+Pre-existing vs invented. We'll look at both. But we won't fully do the STPA for the Voyager, just mention disruptive events and addressable causes?
 
-####  Data & Control Fabric
+#### Analysis of Disruptive Actions and Events
 
-## Fault-Tolerance Strategies
+#### Identifying the Addressable Causes of Disruptions
+
+
+## Ours
+
+#### System as Control Structure
+
+Pre-existing vs invented. We'll look at both. But we won't fully do the STPA for the Voyager, just mention disruptive events and addressable causes?
+
+#### Analysis of Disruptive Actions and Events
+
+#### Identifying the Addressable Causes of Disruptions
+
+
+## Fault-Tolerance Requirements and Strategies in Detail
 
 ####  Byzantine Fault Tolerance at every layer (2f+1 quorum)
 
@@ -50,6 +68,16 @@ Near the end I also briefly discuss:
 ####  Consensus-based bootloader and image management
 
 ####  Watchdog hierarchy and power-cycle quarantine
+
+## Architectural Implementation Details
+
+####  Compute core: Multi-node replicated "kernel"
+
+####  Memory & Storage
+
+####  Clock & Power domains
+
+####  Data & Control Fabric
 
 ## Diversity and Anti-Common-Mode Measures
 
@@ -60,16 +88,6 @@ Near the end I also briefly discuss:
 ####  Physical placement and shielding strategies
 
 ####  Vendor and fab diversity
-
-## Formal Hazard Analysis with STPA
-
-####  Identifying unsafe control actions
-
-####  Mapping faults to hazardous states
-
-####  Designing control structure and safety constraints
-
-####  Integrating STPA results into design decisions
 
 ## Reliability Modeling and Lifetime Estimation
 
