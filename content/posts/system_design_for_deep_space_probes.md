@@ -17,6 +17,91 @@ Near the end I also briefly discuss:
 
 {{< table_of_contents >}}
 
-## Introduction
+## System Design With STPA Methodology
 
-## Discussion
+
+
+## Mission Profile and Requirements
+
+#### Characteristics of the target environment
+
+####  Power
+
+####  Communications
+
+####  Operational constraints
+
+## High-Level System Architecture
+
+####  Compute core: Multi-node BFT-based "kernel"
+
+####  Memory & Storage
+
+####  Clock & Power domains
+
+####  Data & Control Fabric
+
+## Fault-Tolerance Strategies
+
+####  Byzantine Fault Tolerance at every layer (2f+1 quorum)
+
+####  Self-diagnosis and recovery flows
+
+####  Consensus-based bootloader and image management
+
+####  Watchdog hierarchy and power-cycle quarantine
+
+## Diversity and Anti-Common-Mode Measures
+
+####  Heterogeneous cores (ISA diversity)
+
+####  Compiler and toolchain diversity
+
+####  Physical placement and shielding strategies
+
+####  Vendor and fab diversity
+
+## Formal Hazard Analysis with STPA
+
+####  Identifying unsafe control actions
+
+####  Mapping faults to hazardous states
+
+####  Designing control structure and safety constraints
+
+####  Integrating STPA results into design decisions
+
+## Reliability Modeling and Lifetime Estimation
+
+####  Radiation-induced failure rates (TID, SEL, displacement)
+
+####  Permanent hardware decay (polymers, solder fatigue, micrometeoroid damage)
+
+####  Exponential failure models and expected time to quorum loss
+
+####  Graceful degradation vs. strict quorum policies
+
+## Material and Technology Roadmap
+
+####  Current rad-hard hardware capabilities
+
+####  Emerging substrates
+
+####  Packaging innovations
+
+####  Self-replication and in-situ repair prospects
+
+#### Estimated lifespans
+
+## Risk Discussion: Scientific vs. Engineering Value
+
+####  Limited scientific return compared to mission cost and complexity
+
+####  Cultural and inspirational roles of ultra-durable probes
+
+####  Engineering lessons for adjacent domains
+
+## Conclusions and Future Work
+
+## Bibliography
+
