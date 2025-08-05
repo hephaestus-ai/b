@@ -164,16 +164,20 @@ Now, with union and intersection in place we finally have enough raw material to
 ## Topological Space
 
 {{< mediabox type="note" title="Box 3 – What to memorize" align="right" id="box3">}}
-**Three topology notions to memorize:**
+**Four topology notions to memorize:**
 
-* A **topological space** is a set \$X\$ equipped with a collection \$\mathcal O\$ of subsets of \$X\$ called *open sets*.
+* A **topological space** is a set $X$ together with a specified collection $\mathcal O$ of subsets of the power set $\mathcal P(X)$ which obey three axioms designed to capture the idea of continuity and locality. $\mathcal O$ is called the *open sets* and a member of $\mathcal O$ is an open set.
 * Axioms: (i) the whole space \$X\$ is open; (ii) any union \$\bigcup S\$ of open sets is open; (iii) the intersection \$U\cap V\$ of **two** open sets is open.
 * Infinite intersections are *not* guaranteed to stay open - the "two" in axiom (iii) is doing real work.
 {{< /mediabox >}}
 
-TODO: intuitive intro to topologies
+Topologies are a way of talking about *closeness*, *continuity*, and *gluing*, but in an extremely stripped-down, minimalist way. Think of them as what you're left with when you remove distances from geometry, but still want to talk about which points are "near" each other, or what it means for a function to vary "smoothly."
 
-Union and intersection let us manufacture new sets; now we decide which of those sets count as *open* and thereby fix the "geometry" of our universe. Formally, a topology on a set \$X\$ is a choice of collection \$\mathcal O\$ satisfying the three axioms in the box. Think of \$\mathcal O\$ as a menu: each item on the menu is declared open, everything else is not.
+More precisely: a **topology** doesn’t tell you how far apart two points are; it just tells you, for every point, which surrounding regions count as "open neighborhoods" around it. These open sets let us define all the core ideas of calculus and geometry, like continuity, limits, or connectedness, purely in terms of set membership, without ever talking about distances.
+
+This abstraction is what makes topology so powerful. The same basic ideas work whether your underlying set is a line, a surface, a space of functions, or a wild combinatorial structure. All you need is a system of open sets that satisfies three axioms.
+
+Union and intersection let us manufacture new sets; now we decide which of those sets count as *open* and thereby fix the structure of our universe. Formally, a topology on a set \$X\$ is a choice of collection \$\mathcal O\$ satisfying the three axioms in the box. (FIXME: put the axioms here as well)
 
 Why these axioms and no others? The short answer is that they capture the way neighborhoods behave in ordinary spaces like \$\mathbb R\$.
 
@@ -190,24 +194,22 @@ With the concept of open sets pinned down we can finally talk about *local data*
 #### Topology from Power Sets
 
 {{< mediabox type="note" title="Box 4 – What to (optionally) memorize" align="right" id="box4">}}
-**Three more topological notions:**
-
-* A *topology* on a set $X$ is a distinguished collection $\mathcal O\subseteq\mathcal P(X)$ of subsets of $X$.
-* Requirements on $\mathcal O$:
-
- 1. $X\in\mathcal O$ (the whole space is open);
- 2. $\bigcup S\in\mathcal O$ whenever every member of $S$ lies in $\mathcal O$;
- 3. $U\cap V\in\mathcal O$ whenever $U,V\in\mathcal O$.
-* The "$\subseteq\mathcal P(X)$" part matters: $\mathcal O$ *lives inside* the power set - it doesn’t replace it.
-
 **Two construction patterns worth memorizing**
 
 * **Pattern A - subsets of a power set.**
- Start with a set $X$, take its power set $\mathcal P(X)$, then single out some subcollection.
- *Typical examples*: topologies, $\sigma$-algebras (measure theory), abstract simplicial complexes (algebraic topology).
+ Start with a set $X$, take its power set $\mathcal P(X)$, then single out some subcollection that exhibits certain properties, follows certain axioms, or sometimes even just select arbitrarily.
+ *Typical examples*: topologies, $\sigma$-algebras (measure theory), abstract simplicial complexes (algebraic topology), hypergraphs (these are arbitrary subsets of a power set).
 * **Pattern B - subsets of a Cartesian product.**
  Start with two sets $X, Y$, form their product $X\times Y$, then pick a subset of that product.
  *Typical examples*: graphs of functions, general binary relations, edge-sets of (directed) graphs.
+
+**Two more notions:**
+
+* Requirements on $\mathcal O$:
+  - $X\in\mathcal O$ (the whole space is open, i.e. the whole set $X$ must be a member of $\mathcal O$);
+  - **upward closedness:** $\bigcup S\in\mathcal O$ whenever every member of $S$ lies in $\mathcal O$;
+  - **downward closedness:** $U\cap V\in\mathcal O$ whenever $U,V\in\mathcal O$.
+* The properties of upward closedness and downward closedness _induce_ a lattice, connecting topology and order theory
 
 {{< /mediabox >}}
 
