@@ -166,7 +166,7 @@ Now, with union and intersection in place we finally have enough raw material to
 {{< mediabox type="note" title="Box 3 – What to memorize" align="right" id="box3">}}
 **Three topology notions to memorize:**
 
-* A **topological space** $(X,\mathcal O)$ is a set $X$ "equipped" with a specified collection $\mathcal O$ of subsets of $X$, which obey three axioms designed to capture the idea of continuity and locality. $\mathcal O$ is called the *open sets* and a member of $\mathcal O$ is an open set.
+* A **topological space** $X_\tau = (X,\tau)$ is a set $X$ "equipped" with a specified collection $\tau$ of subsets of $X$, which obey three axioms designed to capture the idea of continuity and locality. $\tau$ is called the *topology* or the *open sets* and a member of $\tau$ is an open set.
 * Axioms: (i) the whole space \$X\$ is open; (ii) any union \$\bigcup S\$ of open sets is open; (iii) the intersection \$U\cap V\$ of **two** open sets is open.
 * Infinite intersections are *not* guaranteed to stay open - the "two" in axiom (iii) is doing real work.
 {{< /mediabox >}}
@@ -177,7 +177,7 @@ More precisely: a **topology** doesn’t tell you how far apart two points are; 
 
 This abstraction is what makes topology so powerful. The same basic ideas work whether your underlying set is a line, a surface, a space of functions, or a wild combinatorial structure. All you need is a system of open sets that satisfies three axioms.
 
-Union and intersection let us manufacture new sets; now we decide which of those sets count as *open* and thereby fix the structure of our universe. Formally, a topology on a set \$X\$ is a choice of collection \$\mathcal O\$ satisfying the three axioms in the box. (FIXME: put the axioms here as well)
+Union and intersection let us manufacture new sets; now we decide which of those sets count as *open* and thereby fix the structure of our universe. Formally, a topology on a set \$X\$ is a choice of collection \$\tau\$ satisfying the three axioms in the box. (FIXME: put the axioms here as well)
 
 Why these axioms and no others? The short answer is that they capture the way neighborhoods behave in ordinary spaces like \$\mathbb R\$.
 
@@ -185,7 +185,7 @@ Why these axioms and no others? The short answer is that they capture the way ne
 * **Unions are cheap.** If every point already sits in one open set or another, pooling them shouldn’t break openness. This encodes the intuition that you can enlarge a neighborhood as much as you like.
 * **Finite intersections are safe.** Two overlapping neighborhoods share a smaller neighborhood. But the axiom stops at two: intersect an infinite tower of shrinking intervals \$(0,1/n)\$ and you drop to \${0}\$, which is *not* open in the usual topology on \$\mathbb R\$.
 
-A classic trip-up is forgetting that *open* is always **relative to the chosen \$\mathcal O\$**. The subset \$,(0,1)\subseteq(0,2)\subseteq\mathbb R,\$ is open for the usual topology, yet if you switch to the trivial topology \${\varnothing,X}\$ it suddenly isn’t. Keep the phrase "open in \$X\$" in your mental subtitles every time you see the word.
+A classic trip-up is forgetting that *open* is always **relative to the chosen \$\tau\$**. The subset \$(0,1)\subseteq(0,2)\subseteq\mathbb R,\$ is open for the usual topology, yet if you switch to the trivial topology \${\varnothing,X}\$ it suddenly isn’t.
 
 One other snag: some readers assume "finite intersections" means "any finite collection." In practice you only ever need the two-set version; the three-set case follows by applying it twice, and so on.
 
@@ -205,14 +205,14 @@ With the concept of open sets pinned down we can finally talk about *local data*
 
 **Four more notions:**
 
-* $\mathcal O$ can also be constructed by selecting specific _members_ from the power set $\mathcal P(X)$, each of which correspond to _subsets_ of $X$.
-* The entire $\mathcal O$ corresponds to _one subset_ of $\mathcal P(X)$
-* Requirements on $\mathcal O$:
-  - $X\in\mathcal O$ (the whole space is open, i.e. the whole set $X$ must be a member of $\mathcal O$);
-  - **closure under arbitrary unions:** $\bigcup S\in\mathcal O$ whenever every member of $S$ lies in $\mathcal O$;
-  - **closure under finite intersections:** $U\cap V\in\mathcal O$ whenever $U,V\in\mathcal O$.
+* $\tau$ can also be constructed by selecting specific _members_ from the power set $\mathcal P(X)$, each of which correspond to _subsets_ of $X$.
+* The entire $\tau$ corresponds to _one subset_ of $\mathcal P(X)$
+* Requirements on $\tau$:
+  - $X\in\tau$ (the whole space is open, i.e. the whole set $X$ must be a member of $\tau$);
+  - **closure under arbitrary unions:** $\bigcup S\in\tau$ whenever every member of $S$ lies in $\tau$;
+  - **closure under finite intersections:** $U\cap V\in\tau$ whenever $U,V\in\tau$.
 * An example of a cross discipline connection:
-  * Because inclusion $\subseteq$ already orders the opens, these closure axioms make $\mathcal O$ a frame (a complete Heyting algebra): every family of opens has a join given by its union, and every finite family has a meet given by its intersection. More abstractly, $\mathcal O$ is a lattice.
+  * Because inclusion $\subseteq$ already orders the opens, these closure axioms make $\tau$ a frame (a complete Heyting algebra): every family of opens has a join given by its union, and every finite family has a meet given by its intersection. More abstractly, $\tau$ is a lattice.
   * A **lattice** is any collection where you can always take  
     * the "smallest common **superset**" of two members (their union), and  
     * the "largest common **subset**" (their intersection).  
@@ -237,17 +237,19 @@ $$
 To define a topology on $X$ formally, you pick a subset:
 
 $$
- \mathcal O\;\subseteq\;\mathcal P(X)
+ \tau\;\subseteq\;\mathcal P(X)
 $$
 
-and demand that $\mathcal O$ satisfy the three axioms. Thinking of $\mathcal O$ as a subset of $\mathcal P(X)$ pays off for three reasons:
+and demand that $\tau$ satisfy the three axioms.
+
+Now, thinking of $\tau$ as a subset of $\mathcal P(X)$ pays off for at least three reasons:
 
 * **Spotting family resemblances (and getting theorems "for free").**  Once you notice that many gadgets are literally "just special subsets" of a power set (or product set), you can reuse ideas instead of re-proving them. Recognising these "same-shape" constructions turns big theorems into plug-and-play modules and shows how different areas of math quietly talk to each other.
   * Open sets (topology) and measurable sets (measure theory) both form collections closed under unions ∧ intersections, so any lattice-theoretic fact you show in one world (e.g. De Morgan’s laws, distributivity tricks) automatically holds in the other.  
   * A σ-algebra is just a topology with complements and countable unions thrown in, so every theorem about topologies that doesn’t mention complements still applies.  
   * The graph of a function $f\colon X\to Y$ is a special kind of relation-just a subset of $X\times Y$ with at most one $Y$-partner per $X$-so facts about relations (domain, range, composition) instantly specialise to functions.
 * **Visual bookkeeping.** It makes clear that "open" is just an extra property of ordinary subsets - no exotic new gadget needed. Every open set is still a plain member of $\mathcal P(X)$.
-* **Comparing topologies.** Given two collections $\mathcal O_1$ and $\mathcal O_2$ inside the same power set, inclusion $\mathcal O_1\subseteq\mathcal O_2$ translates directly into "$\mathcal O_2$ has at least as many open sets as $\mathcal O_1$." This lets you talk sensibly about one topology being *finer* or *coarser* than another.
+* **Comparing topologies.** Given two collections $\tau_1$ and $\tau_2$ inside the same power set, inclusion $\tau_1\subseteq\tau_2$ translates directly into "$\tau_2$ has at least as many open sets as $\tau_1$." This lets you talk sensibly about one topology being *finer* or *coarser* than another.
 
 A quick illustration. On $\mathbb R$ the **usual topology** is the set of all unions of open intervals. That sits strictly between two extremes that also live inside $\mathcal P(\mathbb R)$:
 
@@ -262,41 +264,57 @@ Union ensures you can always *widen* a neighborhood without losing openness; int
 
 A first-time snag: the axioms refer only to *operations already available in \$\mathcal P(X)\$*. They don’t impose anything alien; they merely select a subset stable under those operations.
 
-With this subset-of-the-power-set picture in mind, the phrase *"open in \$X\$"* should read as: *belongs to the chosen \$\mathcal O\subseteq\mathcal P(X)\$*. Keep that translation handy; the moment we attach data to opens the distinction between "all subsets" and "the ones in \$\mathcal O\$" becomes critical.
+With this subset-of-the-power-set picture in mind, the phrase *"open in \$X\$"* should read as: *belongs to the chosen \$\tau\subseteq\mathcal P(X)\$*. Keep that translation handy; the moment we attach data to opens the distinction between "all subsets" and "the ones in \$\tau\$" becomes critical.
 
 #### A Few Final Points of Confusion
 
-TODO: many subsets of $\mathcal P(X)$ are topologies. Selection is often arbitrary, meaning what is "open" in one context is not in another.
+TODO: $\tau$ is the topology, $X_\tau$ is the *topological space* which is define as $X$ "equipped" with or "endowed" with a topology $\tau$, often written $X_\tau = (X, \tau)$
+
+TODO: Openness is not an intrinsic propery to some of the subsets of $X$. Many subsets of $\mathcal P(X)$ are topologies. Selection is often arbitrary, or stems from additional axioms you want to place on the subset beyond the topological ones, meaning what is "open" in one context is not in another.
 
 TODO: topologists abuse the term "closeness" but topology does not necessarily entail metrics; confusingly sometimes a metric entails or _induces_ a topology, though.
 
 TODO: the example provided has a finite power set, but power sets can be infinitely large
 
-## Opens as a Subtype and Basic Operations
+## Opens as a Subtype and Two Basic Operations
 
 {{< mediabox type="note" title="Box 5 – What to memorize" align="right" id="box5">}}
 **Three notions to keep in your head:**
 
-* **Opens (X)** is the universe of open subsets of \$X\$.
-* \$V \subseteq_o U\$ means: \$V\$ is contained in \$U\$ *and both are open*.
-* The intersection of two opens is again open, and it never makes either set larger.
+* **$\mathrm{Opens}(X_\tau)$ = \tau** is a way to take our topological space and get back $\tau$, or all chosen open subsets of $X$. Notice that we're making the "depends-on-the-chosen-topology" part explicit. $\tau$ (as we used it earlier) was a particular set of opens that came bundled with a fixed topological space $X_\tau$. So you can even think of $\mathrm{Opens}()$ like an operation that takes in a topological space and returns the set of open subsets.
+* **$V \subseteq_o U$** means: $V$ and $U$ are *both* in $\mathrm{Opens}(X_\tau)$ **and** $V\subseteq U$ as plain sets.
+* The intersection of two opens is again open, so intersecting never makes either set larger.
 
 These three bullets are the real cargo we need later when we define how to *restrict* data from one open set to another and, ultimately, how to glue local data into something global.
 {{< /mediabox >}}
 
-Up to now we’ve been talking about open sets inside a topological space, but they’ve lived implicitly within the definition of the space itself. At this stage, we pull them out into their own setting - without introducing any computational baggage.
+Up to now we’ve been talking about open sets inside a topological space, but they’ve lived implicitly within the definition of the space itself. At this stage, we want to completely pull them out into their own setting, while defining two new operations for clarity. This step may feel technical and perhaps unnecessary, and, indeed, it's more for technical convenience and is something you might want to do if you were, for example, working with a theorem prover.
 
-Concretely, if $X$ is our space, we bundle all of its open subsets into a new type, called $\mathrm{Opens}(X)$. Think of an element of $\mathrm{Opens}(X)$ as "just an open set," and nothing more. Under the hood, each "open" carries *two* pieces of data: the set itself, and a guarantee that it really is open in $X$. From there, we can treat it like an ordinary set when needed.
+Concretely, if $X$ is our space, we bundle all of the open subsets we want into a new "type", called $\mathrm{Opens}(X_\tau)$. Since $\mathrm{Opens}(X_\tau) = \tau$, think of an element of $\mathrm{Opens}(X_\tau)$ as "just an open set," and nothing more. Under the hood, each "open" should carry *two* pieces of data: the set itself, and a guarantee that it really is open in $X$. From there, we can treat it like an ordinary set when needed.
+
+Next, we want to specify two new operations. First, we formalise the "open–subset" relation.  For two elements $V,U\in\mathrm{Opens}(X_\tau)$ we **define**
+
+$$
+V \subseteq_o U
+\quad:\Longleftrightarrow\quad
+V\subseteq U\;\text{ as plain sets.}
+$$
+
+Because the typing $V,U\in\mathrm{Opens}(X_\tau)$ already certifies that both sets are open, the little circle is just a visual cue meaning: *"I’m comparing opens, not arbitrary subsets."*
+
+Equipped with this order $ \subseteq_o $ (finite meets given by $\mathrm{openInter}$ and arbitrary joins given by unions), $\mathrm{Opens}(X_\tau)$ is exactly the lattice / frame mentioned in
+Box 4—so any general lattice-theoretic law you remember applies here
+automatically.
 
 If you’ve ever fumbled the notation $V \subseteq_o U$, here’s the catch: it doesn’t mean just any subset relation. It means "$V$ and $U$ are both open, and every point of $V$ lies in $U$" but the little circle reminds you that you're only comparing open sets. Don’t lose sight of that.
 
-We also want to intersect two open sets and remain inside the world of opens. Definitionally, it’s no surprise that:
+We also want to intersect two open sets while guaranteeing that we will remain inside the world of opens. Definitionally, it’s no surprise that we want:
 
 $$
 \mathrm{openInter}(U, V) = U \cap V,
 $$
 
-and the topology axioms guarantee that $U \cap V$ is still open. These two facts give us two easy but crucial properties: when you intersect, you don’t accidentally "grow" your set. In plain terms:
+and the topology axioms guarantee that $U \cap V$ is still open. These two facts give us two easy but crucial properties: when you intersect, you always get something back that's still within the opens. In plain terms:
 
 * intersecting with $V$ can only shrink $U$, and
 * intersecting with $U$ can only shrink $V$.
