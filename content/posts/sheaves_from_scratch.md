@@ -175,6 +175,10 @@ Topologies are a way of talking about *closeness*, *continuity*, and *gluing*, b
 
 More precisely: a **topology** doesn’t tell you how far apart two points are; it just tells you, for every point, which surrounding regions count as "open neighborhoods" around it. These open sets let us define all the core ideas of calculus and geometry, like continuity, limits, or connectedness, purely in terms of set membership, without ever talking about distances.
 
+TODO: mug and donut example
+
+TODO: topology encodes information like "holes"
+
 This abstraction is what makes topology so powerful. The same basic ideas work whether your underlying set is a line, a surface, a space of functions, or a wild combinatorial structure. All you need is a system of open sets that satisfies three axioms.
 
 Union and intersection let us manufacture new sets; now we decide which of those sets count as *open* and thereby fix the structure of our universe. Formally, a topology on a set \$X\$ is a choice of collection \$\tau\$ satisfying the three axioms in the box. (FIXME: put the axioms here as well)
@@ -276,16 +280,16 @@ TODO: topologists abuse the term "closeness" but topology does not necessarily e
 
 TODO: the example provided has a finite power set, but power sets can be infinitely large
 
-## Opens as a Subtype and Two Basic Operations
+## Opens as a Subtype and Two More Basic Operations
 
 {{< mediabox type="note" title="Box 5 – What to memorize" align="right" id="box5">}}
 **Three notions to keep in your head:**
 
-* **$\mathrm{Opens}(X_\tau)$ = \tau** is a way to take our topological space and get back $\tau$, or all chosen open subsets of $X$. Notice that we're making the "depends-on-the-chosen-topology" part explicit. $\tau$ (as we used it earlier) was a particular set of opens that came bundled with a fixed topological space $X_\tau$. So you can even think of $\mathrm{Opens}()$ like an operation that takes in a topological space and returns the set of open subsets.
+* **$\mathrm{Opens}(X_\tau)$ = \tau** is a way to take our topological space and get back the topology or open sets $\tau$. So you can even think of $\mathrm{Opens}()$ like a mechanism that takes in a topological space and returns the set of open subsets.
 * **$V \subseteq_o U$** means: $V$ and $U$ are *both* in $\mathrm{Opens}(X_\tau)$ **and** $V\subseteq U$ as plain sets.
 * The intersection of two opens is again open, so intersecting never makes either set larger.
 
-These three bullets are the real cargo we need later when we define how to *restrict* data from one open set to another and, ultimately, how to glue local data into something global.
+These three bullets are the real cargo we use later when we define how to *restrict* data from one open set to another and, ultimately, how to glue local data into something global.
 {{< /mediabox >}}
 
 Up to now we’ve been talking about open sets inside a topological space, but they’ve lived implicitly within the definition of the space itself. At this stage, we want to completely pull them out into their own setting, while defining two new operations for clarity. This step may feel technical and perhaps unnecessary, and, indeed, it's more for technical convenience and is something you might want to do if you were, for example, working with a theorem prover.
@@ -322,7 +326,6 @@ and the topology axioms guarantee that $U \cap V$ is still open. These two facts
 Here’s a quick sanity check: imagine $X = \mathbb{R}$ with the usual topology, let $U = (0, 2)$ and $V = (1, 3)$. Then $\mathrm{openInter}(U, V)$ is just the interval $(1, 2)$. Everything behaves exactly as you’d expect from high school intuition.
 
 Behind the scenes, this construction simply takes the intersection of the underlying sets and verifies that the result is still open. The key point is that we've created a standalone type for open sets, complete with its own subset relation and intersection operation. These are the building blocks for restriction maps on presheaves and, eventually, the gluing conditions in a sheaf. Lose these details, and you’ll quickly get lost when we start talking about "compatible families" on overlaps.
-
 
 ## Presheaf and Sheaf of Sets
 
