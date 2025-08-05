@@ -360,7 +360,7 @@ A **presheaf of sets** on \$X\_\tau\$ consists of
 
 The two axioms in Box 6 ensure that repeated restriction behaves exactly like ordinary subset inclusion. Identity says nothing changes if you restrict to the same open. Composition says that restricting in one step or in two steps yields the same outcome.
 
-> Think of \$\mathcal F(U)\$ as the catalogue of observations you can make entirely inside \$U\$. Restriction discards any part of a section that lies outside \$V\$.
+Think of \$\mathcal F(U)\$ as the catalogue of observations you can make entirely inside \$U\$. Restriction discards any part of a section that lies outside \$V\$.
 
 #### Compatibility along a Cover
 
@@ -396,8 +396,7 @@ Presheaves let us store information locally but do not guarantee that local piec
 
 With presheaves and sheaves now precisely defined we have the machinery needed to discuss constructable sheaves, coder friendly translations, and ultimately the cohomological tools that make sheaves indispensable.
 
-
-## Constructable Sheaves
+## Constructable and Not-So-Constructable Sheaves
 
 ## Coder-friendly Restatement of Sheaves
 

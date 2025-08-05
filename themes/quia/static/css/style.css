@@ -501,11 +501,12 @@ h3 {
 }
 
 h4, h5, h6 {
+  display: flex;
   letter-spacing: 4px;
   padding-bottom: 3px;
   font-size: 18px;
   border-bottom: 1px solid var(--border);
-  width: 42.5rem;
+  max-width: 42.5rem;
   margin: 0.5rem 0rem 0.5rem 0.8rem;
   padding: 0.5rem;
   padding-bottom: 0.25rem;
