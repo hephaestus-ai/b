@@ -1011,6 +1011,7 @@ li.open > .toc-caret { color: var(--link); }
   line-height:100%;
   padding-top: 0.65em;
   padding-bottom: 0.1em;
+  padding-left: 0.25em;
 }
 .sidenav li, a::after {
   opacity: 1;

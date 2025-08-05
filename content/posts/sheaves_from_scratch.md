@@ -15,6 +15,7 @@ I may break this post up later. As you will see, we build many other things from
 
 ## TLDR
 
+TODO
 
 ## Why Sheaves are Important
 
@@ -64,7 +65,7 @@ The discipline is almost irrelevant. The recurring pattern is "information lives
 
 ## Primitive Set Theory
 
-{{< mediabox type="note" title="Box 1 – What to memorize" align="right" id="box1">}}
+{{< mediabox type="note" title="Box 1 - What to memorize" align="right" id="box1">}}
 **Three set theoretic notions to memorize:**
 
 * The symbol \$\in\$ reads "is an element of."
@@ -102,7 +103,7 @@ Take a moment to let these three notions settle. Once they feel second-nature yo
 
 ## Constructors Used by Topology
 
-{{< mediabox type="note" title="Box 2 – What to memorize" align="right" id="box2">}}
+{{< mediabox type="note" title="Box 2 - What to memorize" align="right" id="box2">}}
 **Four notions to memorize**
 
 * \$\displaystyle\bigcup S\$ is the union of *every* set sitting inside the collection \$S\$.
@@ -163,10 +164,10 @@ Now, with union and intersection in place we finally have enough raw material to
 
 ## Topological Space
 
-{{< mediabox type="note" title="Box 3 – What to memorize" align="right" id="box3">}}
+{{< mediabox type="note" title="Box 3 - What to memorize" align="right" id="box3">}}
 **Three topology notions to memorize:**
 
-* A **topological space** $X_\tau = (X,\tau)$ is a set $X$ "equipped" with a specified collection $\tau$ of subsets of $X$, which obey three axioms designed to capture the idea of continuity and locality. $\tau$ is called the *topology* or the *open sets* and a member of $\tau$ is an open set.
+* A **topological space** $X_\tau = (X,\tau)$ ($\tau$ is the greek lowercase tau) is a set $X$ "equipped" with a specified collection $\tau$ of subsets of $X$, which obey three axioms designed to capture the idea of continuity and locality. $\tau$ is called the *topology* or the *open sets* and a member of $\tau$ is an open set.
 * Axioms: (i) the whole space \$X\$ is open; (ii) any union \$\bigcup S\$ of open sets is open; (iii) the intersection \$U\cap V\$ of **two** open sets is open.
 * Infinite intersections are *not* guaranteed to stay open - the "two" in axiom (iii) is doing real work.
 {{< /mediabox >}}
@@ -175,7 +176,7 @@ Topologies are a way of talking about *closeness*, *continuity*, and *gluing*, b
 
 More precisely: a **topology** doesn’t tell you how far apart two points are; it just tells you, for every point, which surrounding regions count as "open neighborhoods" around it. These open sets let us define all the core ideas of calculus and geometry, like continuity, limits, or connectedness, purely in terms of set membership, without ever talking about distances.
 
-TODO: mug and donut example
+TODO: mug and donut example. core idea: topology encodes invariant information under specific types of operations such as stretching, twisting, and bending, but _not_ operations like tearing and gluing.
 
 TODO: topology encodes information like "holes"
 
@@ -197,7 +198,7 @@ With the concept of open sets pinned down we can finally talk about *local data*
 
 #### Topology from Power Sets
 
-{{< mediabox type="note" title="Box 4 – What to (optionally) memorize" align="right" id="box4">}}
+{{< mediabox type="note" title="Box 4 - What to (optionally) memorize" align="right" id="box4">}}
 **Two construction patterns worth memorizing**
 
 * **Pattern A - subsets of a power set.**
@@ -220,7 +221,7 @@ With the concept of open sets pinned down we can finally talk about *local data*
   * A **lattice** is any collection where you can always take  
     * the "smallest common **superset**" of two members (their union), and  
     * the "largest common **subset**" (their intersection).  
-    So as soon as you spot that your object is a lattice, every general lattice-theoretic law—De Morgan rules, distributivity tricks, order-by-inclusion reasoning—applies *automatically*.  
+    So as soon as you spot that your object is a lattice, every general lattice-theoretic law - De Morgan rules, distributivity tricks, order-by-inclusion reasoning - applies *automatically*.  
   * A **Heyting algebra** (or *frame*) is just a lattice with one extra operation that plays the role of logical "implication."  That viewpoint links topology to logic: opens behave like truth-values in intuitionistic logic.
 
 {{< /mediabox >}}
@@ -257,8 +258,8 @@ Now, thinking of $\tau$ as a subset of $\mathcal P(X)$ pays off for at least thr
 
 A quick illustration. On $\mathbb R$ the **usual topology** is the set of all unions of open intervals. That sits strictly between two extremes that also live inside $\mathcal P(\mathbb R)$:
 
-* The **discrete topology** is *all* of $\mathcal P(\mathbb R)$ – every subset is open.
-* The **trivial topology** is $\{\varnothing,\mathbb R\}$ – only the empty set and the whole line are open.
+* The **discrete topology** is *all* of $\mathcal P(\mathbb R)$ - every subset is open.
+* The **trivial topology** is $\{\varnothing,\mathbb R\}$ - only the empty set and the whole line are open.
 
 Both extreme examples obey the axioms, so they really are topologies; they just choose radically different subsets of $\mathcal P(\mathbb R)$.
 
@@ -270,19 +271,19 @@ A first-time snag: the axioms refer only to *operations already available in \$\
 
 With this subset-of-the-power-set picture in mind, the phrase *"open in \$X\$"* should read as: *belongs to the chosen \$\tau\subseteq\mathcal P(X)\$*. Keep that translation handy; the moment we attach data to opens the distinction between "all subsets" and "the ones in \$\tau\$" becomes critical.
 
-#### A Few Final Points of Confusion
+#### A Few Final Points of Clarification
 
-TODO: $\tau$ is the topology, $X_\tau$ is the *topological space* which is define as $X$ "equipped" with or "endowed" with a topology $\tau$, often written $X_\tau = (X, \tau)$
+TODO: the example provided has a finite power set, but power sets can be infinitely large. Most of topology is actually concerned with topologies that are not finite.
+
+TODO: $\tau$ is the *topology*, $X_\tau$ is the *topological space* which is define as $X$ "equipped" with or "endowed" with a topology $\tau$, often written $(X, \tau)$
 
 TODO: Openness is not an intrinsic propery to some of the subsets of $X$. Many subsets of $\mathcal P(X)$ are topologies. Selection is often arbitrary, or stems from additional axioms you want to place on the subset beyond the topological ones, meaning what is "open" in one context is not in another.
 
-TODO: topologists abuse the term "closeness" but topology does not necessarily entail metrics; confusingly sometimes a metric entails or _induces_ a topology, though.
-
-TODO: the example provided has a finite power set, but power sets can be infinitely large
+TODO: While most treatments of topology also focus on how you get topologies from shapes, topologies can be defined on any set, not just geometric objects. Topologists abuse the term "closeness" but topology does not necessarily entail metrics; confusingly sometimes a metric entails or _induces_ a topology, though.
 
 ## Opens as a Subtype and Two More Basic Operations
 
-{{< mediabox type="note" title="Box 5 – What to memorize" align="right" id="box5">}}
+{{< mediabox type="note" title="Box 5 - What to memorize" align="right" id="box5">}}
 **Three notions to keep in your head:**
 
 * **$\mathrm{Opens}(X_\tau)$ = \tau** is a way to take our topological space and get back the topology or open sets $\tau$. So you can even think of $\mathrm{Opens}()$ like a mechanism that takes in a topological space and returns the set of open subsets.
@@ -296,7 +297,7 @@ Up to now we’ve been talking about open sets inside a topological space, but t
 
 Concretely, if $X$ is our space, we bundle all of the open subsets we want into a new "type", called $\mathrm{Opens}(X_\tau)$. Since $\mathrm{Opens}(X_\tau) = \tau$, think of an element of $\mathrm{Opens}(X_\tau)$ as "just an open set," and nothing more. Under the hood, each "open" should carry *two* pieces of data: the set itself, and a guarantee that it really is open in $X$. From there, we can treat it like an ordinary set when needed.
 
-Next, we want to specify two new operations. First, we formalise the "open–subset" relation.  For two elements $V,U\in\mathrm{Opens}(X_\tau)$ we **define**
+Next, we want to specify two new operations. First, we formalise the "open-subset" relation.  For two elements $V,U\in\mathrm{Opens}(X_\tau)$ we **define**
 
 $$
 V \subseteq_o U
@@ -306,9 +307,7 @@ $$
 
 Because the typing $V,U\in\mathrm{Opens}(X_\tau)$ already certifies that both sets are open, the little circle is just a visual cue meaning: *"I’m comparing opens, not arbitrary subsets."*
 
-Equipped with this order $ \subseteq_o $ (finite meets given by $\mathrm{openInter}$ and arbitrary joins given by unions), $\mathrm{Opens}(X_\tau)$ is exactly the lattice / frame mentioned in
-Box 4—so any general lattice-theoretic law you remember applies here
-automatically.
+Equipped with this order $ \subseteq_o $ (finite meets given by $\mathrm{openInter}$ and arbitrary joins given by unions), $\mathrm{Opens}(X_\tau)$ is exactly the lattice / frame mentioned in Box 4 - so any general lattice-theoretic law you remember applies here automatically.
 
 If you’ve ever fumbled the notation $V \subseteq_o U$, here’s the catch: it doesn’t mean just any subset relation. It means "$V$ and $U$ are both open, and every point of $V$ lies in $U$" but the little circle reminds you that you're only comparing open sets. Don’t lose sight of that.
 
@@ -325,9 +324,78 @@ and the topology axioms guarantee that $U \cap V$ is still open. These two facts
 
 Here’s a quick sanity check: imagine $X = \mathbb{R}$ with the usual topology, let $U = (0, 2)$ and $V = (1, 3)$. Then $\mathrm{openInter}(U, V)$ is just the interval $(1, 2)$. Everything behaves exactly as you’d expect from high school intuition.
 
-Behind the scenes, this construction simply takes the intersection of the underlying sets and verifies that the result is still open. The key point is that we've created a standalone type for open sets, complete with its own subset relation and intersection operation. These are the building blocks for restriction maps on presheaves and, eventually, the gluing conditions in a sheaf. Lose these details, and you’ll quickly get lost when we start talking about "compatible families" on overlaps.
+Behind the scenes, this construction simply takes the intersection of the underlying sets and verifies that the result is still open. The key point is that we've created a standalone type for open sets, complete with its own subset relation and intersection operation. In a rigorous context (e.g. in Lean or another theorem prover), these become building blocks for restriction maps on presheaves and, eventually, the gluing conditions in a sheaf. Lose these details, and you're more likely to get lost when we start talking about "compatible families" on overlaps.
 
 ## Presheaf and Sheaf of Sets
+
+{{< mediabox type="note" title="Box 6 – What to memorize" align="right" id="box6">}}
+**Six notions to memorize**
+
+* A **presheaf** \$\mathcal F\$ on a topological space \$X\_\tau\$ assigns
+  \$\mathcal F(U)\$ (a set, called the *sections over* \$U\$) to every open \$U\subseteq X\$.
+* For each inclusion \$V\subseteq U\$ of opens there is a **restriction map**
+  \$\rho\_{U,V}\colon \mathcal F(U)\to\mathcal F(V)\$.
+* Two axioms govern these maps
+
+  1. *(Identity)* \$\rho\_{U,U}=\operatorname{id}\_{\mathcal F(U)}\$.
+  2. *(Composition)* If \$W\subseteq V\subseteq U\$ then
+     \$\rho\_{U,W}=\rho\_{V,W}\circ\rho\_{U,V}\$.
+* A **cover** of an open \$U\$ is a family \$(U\_i)\_{i\in I}\$ of opens with \$\bigcup\_i U\_i=U\$.
+* A presheaf is a **sheaf** when two extra rules hold for every cover \${U\_i}\$:
+
+  1. *(Locality)* Sections that agree after restriction to every overlap \$U\_i\cap U\_j\$ are equal on each \$U\_i\$.
+  2. *(Gluing)* A compatible family \$(s\_i\in\mathcal F(U\_i))\$ has a **unique** section \$s\in\mathcal F(U)\$ with \$\rho\_{U,U\_i}(s)=s\_i\$ for all \$i\$.
+     {{< /mediabox >}}
+
+Up to this point open sets were our only actors. A presheaf adds content by letting each open carry a collection of “allowable data” and by telling us how to compare that data when one open sits inside another.
+
+#### Definition of a Presheaf
+
+Fix a topological space \$X\_\tau\$.
+A **presheaf of sets** on \$X\_\tau\$ consists of
+
+1. A rule \$U\mapsto\mathcal F(U)\$ that assigns a set to every open \$U\subseteq X\$.
+2. For every inclusion of opens \$V\subseteq U\$ a function
+   \$\rho\_{U,V}\colon\mathcal F(U)\to\mathcal F(V)\$ called *restriction*.
+
+The two axioms in Box 6 ensure that repeated restriction behaves exactly like ordinary subset inclusion. Identity says nothing changes if you restrict to the same open. Composition says that restricting in one step or in two steps yields the same outcome.
+
+> Think of \$\mathcal F(U)\$ as the catalogue of observations you can make entirely inside \$U\$. Restriction discards any part of a section that lies outside \$V\$.
+
+#### Compatibility along a Cover
+
+Let \$U\$ be an open and let \$(U\_i)\_{i\in I}\$ be a cover of \$U\$. A family of sections \$(s\_i)\$ with each \$s\_i\in\mathcal F(U\_i)\$ is **compatible** when, for every pair \$(i,j)\$, the two restricted sections agree on the overlap:
+
+$$
+\rho_{U_i,U_i\cap U_j}(s_i)=\rho_{U_j,U_i\cap U_j}(s_j).
+$$
+
+Compatibility is the formal way to say that the local data \$(s\_i)\$ line up on intersections.
+
+#### Sheaf Condition
+
+A presheaf becomes a **sheaf** precisely when every compatible family can be *glued* and the gluing is unique. Concretely:
+
+* **Existence**: If \$(s\_i)\$ is compatible, there is a section \$s\in\mathcal F(U)\$ whose restriction to each \$U\_i\$ equals \$s\_i\$.
+
+  $$
+  \rho_{U,U_i}(s)=s_i\quad\forall i.
+  $$
+
+* **Uniqueness**: If both \$s\$ and \$t\$ restrict to the same \$s\_i\$ on every \$U\_i\$ then \$s=t\$.
+
+The locality clause in Box 6 is a convenient rephrasing of uniqueness: if two global sections look the same everywhere locally they are the same globally.
+
+#### Minimal Example
+
+Take \$X\_\tau\$ and define \$\mathcal F(U)={\text{all functions }U\to\mathbb R}\$. Restriction is ordinary function restriction. Every compatible family of real-valued functions on a cover has a unique union, hence this presheaf is a sheaf. In contrast, assigning to \$U\$ the *bounded* functions \$U\to\mathbb R\$ fails the gluing requirement; a locally bounded family can glue to an unbounded function.
+
+#### Take-Away
+
+Presheaves let us store information locally but do not guarantee that local pieces cohere. The sheaf condition identifies exactly those presheaves where coherence and reconstruction are possible. Almost every algebraic or analytic gadget you want to study in geometry or data science naturally forms a sheaf; when it does not, the obstruction is measured by sheaf cohomology.
+
+With presheaves and sheaves now precisely defined we have the machinery needed to discuss constructable sheaves, coder friendly translations, and ultimately the cohomological tools that make sheaves indispensable.
+
 
 ## Constructable Sheaves
 
