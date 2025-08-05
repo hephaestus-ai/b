@@ -451,6 +451,64 @@ For the sheaf of continuous real functions, the stalk at \$x\$ consists of equiv
 
 ## Constructable and Not-So-Constructable Sheaves
 
+Not all sheaves are friendly. As mentioned above, topologies can be finite or infinite. Ditto for sheaves. This has implications for how easy they are to handle in practice, and what you can do with them.
+
+This section looks at a pragmatic, computer-science-oriented classification of sheaves according to how completely their data can be encoded, manipulated, and decided by an ordinary digital computer (i.e. a finite machine working with finite words).
+
+#### Sheaves that can be fully modelled ("tractable")
+
+| Archetype                                                                                                                                                                               | Why it is fully representable                                                                                                                                       | Typical software / algorithms                                                                                                             |
+| --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------- |
+| **Cellular / combinatorial sheaves** on a **finite CW, simplicial, or cubical complex** with stalks that are *finite sets* or *finite-dimensional vector spaces* (often over 𝔽₂ or ℚ). | • Underlying "space" is a finite poset of cells.  <br>• Stalks are finite objects ⇒ can be stored bit-for-bit. <br>• Restriction maps are matrices of finite size. | Incidence-matrix routines, linear algebra kernels, libraries such as **PySheaf**, **Gudhi**, **Sheafhom**, **CelluarSheaves.jl**.         |
+| **Constructible sheaves** (constant on each stratum) over a *finite* stratification.                                                                                                    | Reduces to a cellular sheaf on the 1-skeleton of the stratification.                                                                                                | Same as above; algorithms to compute derived pushforwards, barcodes, etc.                                                                 |
+| **Coherent sheaves on affine or projective varieties defined by polynomials with rational (or finite-field) coefficients**.                                                             | Equivalent to a finitely presented graded module over a finitely generated ring. Gröbner-basis + homological algebra provide finite resolutions.                    | **Macaulay2**, **Singular**, **Sage**: syzygy, Hilbert function, cohomology, Ext, Tor. (Computation may be expensive, but it terminates.) |
+
+*Key point:* every piece of data (cells, basis elements, matrix entries) is finite, and all axioms of a sheaf reduce to finitely many equalities that a computer can check.
+
+#### Sheaves that can be partially modelled ("approximable")
+
+These sheaves have *infinite* or *uncountable* raw data, but large, computable *finite shadows*.  What you can and cannot capture is indicated.
+
+| Family of sheaves                                                                                         | What can be encoded                                                                                                                                                                                         | What *cannot* be made fully explicit                                                                                                |
+| --------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------- |
+| **Sheaf 𝒞⁰(M) of continuous (or smooth) real functions on a manifold M**                               | • Finite sample values, Taylor jets of bounded order, piecewise-polynomial approximations, or an algorithm producing arbitrary-precision evaluations.  <br>• Cohomology of M via simplicial or Čech covers. | • The exact infinite graph of each section. <br>• Deciding equality of two arbitrary real-valued sections (undecidable in general). |
+| **Étale / locally constant sheaves on a manifold**                                                        | • Their monodromy representation into a finite group (if the sheaf is finite).  <br>• Cohomology with finite coefficients.                                                                                  | • Full classification when the fiber is infinite or the fundamental group is not finitely presented.                                |
+| **Perverse or constructible sheaves with *infinite-dimensional* stalks (e.g.\ derived category objects)** | • Truncations (Postnikov towers up to degree n). <br>• Betti numbers, ranks of cohomology groups up to a fixed degree.                                                                                      | • The entire derived object or its exact ∞-categorical structure. <br>• Non-trivial higher extensions past the chosen truncation.   |
+| **Sheaves of holomorphic functions 𝒪\_X on complex analytic spaces**                                     | • Local power-series to any prescribed finite jet order.  <br>• Cohomology via Čech with Stein covers (each step finite).                                                                                   | • Convergence radius data, transcendental identities, and the full infinite Taylor series.                                          |
+| **Grothendieck topoi and higher-stack sheaves**                                                           | • Small sub-sites, finite test diagrams, truncated homotopy sheaves π\_≤n.                                                                                                                                  | • Full ∞-categorical data, all higher coherences.                                                                                   |
+
+#### Sheaves that are essentially incomputable
+
+| Example                                                                          | Obstruction                                                                                                                                                                          |
+| -------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| **Arbitrary sheaves of sets on an arbitrary (even countable) topological space** | The sheaf condition involves *all* open covers. Because deciding whether a family of sections on *all* covers admits gluing is Π²-complete, no general terminating algorithm exists. |
+| **Sheaves with stalks that are arbitrary subsets of ℝ or ℂ**                     | Each stalk is an uncountable set requiring non-recursive real numbers → cannot even **name** the elements finitely.                                                                  |
+| **Deciding isomorphism of two general sheaves on a non-finite space**            | Reduces to logical theories with known undecidable fragments (analogous to the word problem for groups).                                                                             |
+
+---
+
+#### How to read the table "partially modelled"
+
+For a partially modelled sheaf, the following *specific aspects* are usually still computable:
+
+1. **Finite-degree cohomology groups**
+   - Build a finite cover or cell structure, form a Čech or cellular chain complex, and compute homology up to dimension *k*.
+
+2. **Restriction maps on a finite nerve**
+   - Pick a finite basis of opens/cells; compute the induced restriction matrices.
+
+3. **Local algebraic data truncated at order *N***
+   - Taylor jets, Gröbner-basis segments, or spectral-sequence pages E₁…E\_N.
+
+4. **Numerical evaluation procedures**
+   - Provide an algorithm that, given rational input *x* and precision ε, returns an approximation of the section’s value; this is still a finite object (a program) even if the actual function is infinite.
+
+Everything outside those finite windows - e.g.\ infinite jets, convergence radii, global analytic identities, higher Ext groups - remains inaccessible without additional *oracle* information that a classical computer does not possess.
+
+#### Take-Away
+
+A sheaf is fully computer-tractable precisely when *both* its underlying indexing site **and** every stalk/restriction map can be described by *finite* data.  The moment either becomes infinite, you must settle for finite approximations like cohomology to bounded degree, truncated jets, finitely many covers, or you must live with outright undecidability.
+
 ## Coder-friendly Restatement of Sheaves
 
 ## Mnemonics
