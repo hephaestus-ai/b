@@ -90,7 +90,7 @@ $$
 A = B \quad\Longleftrightarrow\quad \forall x\,(x\in A\;\Leftrightarrow\;x\in B).
 $$
 
-TODO plain english reading of the expression...
+In plain english: Two sets are equal exactly when they have all the same elements; every x that’s in A is also in B, and vice versa. Or a closer reading of the expression: A equals B if and only if, for every x, x is in A if and only if x is in B.
 
 In practice the axiom does two jobs. First, it keeps us rigorous - if you want to prove two sets are equal, you must check every element. Second, it lets us *rename* a set once we know its elements, sparing us from carrying around duplicate symbols.
 
@@ -133,7 +133,7 @@ $$
 x\in\bigcup S \;\Longleftrightarrow\; \exists\,T\in S\;(x\in T).
 $$
 
-The plain english reading of this expression is basically: TODO
+The plain english reading of this expression is basically: x belongs to the big union of S exactly when it belongs to at least one of the sets inside S. Or a closer reading of the expression: x is in the union of S if and only if there exists a T in S such that x is in T.
 
 A point many people miss on first reading: \$\bigcup S\$ is a *one-step* operation. The whole family of sets is swallowed at once; there’s no hidden iteration. (why is this relevant?)
 
@@ -147,7 +147,7 @@ $$
 X\cap Y=\{x\mid x\in X\text{ and }x\in Y\}.
 $$
 
-TODO plain english reading of the expression...
+Plain english: The intersection of X and Y is the set of things that are in both X and Y. Or: X intersect Y equals the set of x such that x is in X and x is in Y.
 
 Nothing subtle here, but two elementary lemmas save headaches later:
 
