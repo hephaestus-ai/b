@@ -207,9 +207,9 @@ With the concept of open sets pinned down we can finally talk about *local data*
 
 * Requirements on $\mathcal O$:
   - $X\in\mathcal O$ (the whole space is open, i.e. the whole set $X$ must be a member of $\mathcal O$);
-  - **upward closedness:** $\bigcup S\in\mathcal O$ whenever every member of $S$ lies in $\mathcal O$;
-  - **downward closedness:** $U\cap V\in\mathcal O$ whenever $U,V\in\mathcal O$.
-* The properties of upward closedness and downward closedness _induce_ a lattice, connecting topology and order theory
+  - **closure under arbitrary unions:** $\bigcup S\in\mathcal O$ whenever every member of $S$ lies in $\mathcal O$;
+  - **closure under finite intersections:** $U\cap V\in\mathcal O$ whenever $U,V\in\mathcal O$.
+* The closure properties _induce_ an order, $\mathcal O$ is a **frame / complete Heyting algebra**: arbitrary joins (unions) and finite meets (intersections) exist, so in particular it is also a lattice.
 
 {{< /mediabox >}}
 
@@ -232,10 +232,11 @@ $$
  \mathcal O\;\subseteq\;\mathcal P(X)
 $$
 
-and demand that $\mathcal O$ satisfy the three axioms. Thinking of $\mathcal O$ as a subset of $\mathcal P(X)$ pays off for two reasons (beyond simply unifying a lot of seemingly different constructions):
+and demand that $\mathcal O$ satisfy the three axioms. Thinking of $\mathcal O$ as a subset of $\mathcal P(X)$ pays off for three reasons (beyond simply unifying a lot of seemingly different constructions):
 
 * **Visual bookkeeping.** It makes clear that "open" is just an extra property of ordinary subsets - no exotic new gadget needed. Every open set is still a plain member of $\mathcal P(X)$.
 * **Comparing topologies.** Given two collections $\mathcal O_1$ and $\mathcal O_2$ inside the same power set, inclusion $\mathcal O_1\subseteq\mathcal O_2$ translates directly into "$\mathcal O_2$ has at least as many open sets as $\mathcal O_1$." This lets you talk sensibly about one topology being *finer* or *coarser* than another.
+* **Identifying connections across different branches of math.** TODO
 
 A quick illustration. On $\mathbb R$ the **usual topology** is the set of all unions of open intervals. That sits strictly between two extremes that also live inside $\mathcal P(\mathbb R)$:
 
