@@ -451,6 +451,12 @@ For the sheaf of continuous real functions, the stalk at \$x\$ consists of equiv
 
 ## Constructable and Not-So-Constructable Sheaves
 
+TODO:
+ - fix <br>
+ - box for things to memorize?
+ - descriptions for each subsection
+ - double check everything
+
 Not all sheaves are friendly. As mentioned above, topologies can be finite or infinite. Ditto for sheaves. This has implications for how easy they are to handle in practice, and what you can do with them.
 
 This section looks at a pragmatic, computer-science-oriented classification of sheaves according to how completely their data can be encoded, manipulated, and decided by an ordinary digital computer (i.e. a finite machine working with finite words).
@@ -509,7 +515,112 @@ Everything outside those finite windows - e.g.\ infinite jets, convergence radii
 
 A sheaf is fully computer-tractable precisely when *both* its underlying indexing site **and** every stalk/restriction map can be described by *finite* data.  The moment either becomes infinite, you must settle for finite approximations like cohomology to bounded degree, truncated jets, finitely many covers, or you must live with outright undecidability.
 
-## Coder-friendly Restatement of Sheaves
+## Sheaves in (pseudo-)Lean
+
+In this section I'll restate everything up to sheaves (skipping stalks and germs) using a (pseudo) computer language (pseudo-Lean, in particular) in a somewhat "literate programming" style. If you're like me, and have more of a software-engineer's brain than a mathematician's brain, this kind of treatment feels a bit more approachable (however if you're not familiar with theorem provers this will still look like greek).
+
+```Lean
+/-! ## 0. Primitive set theory skeleton -/
+
+universe u
+
+axiom Set   : Type u
+axiom elem  : Set → Set → Prop
+infix:50 " ∈ " => elem                     -- membership
+
+/-- Subset of sets. -/
+def subset (U V : Set) : Prop := ∀ u, u ∈ U → u ∈ V
+infix:50 " ⊆ " => subset
+
+axiom set_ext {A B : Set} :
+  (∀ u : Set, u ∈ A ↔ u ∈ B) → A = B
+
+/-! ## 1. Basic constructors actually used by topology -/
+
+axiom union  : Set → Set                  -- ⋃₀ S
+axiom inter  : Set → Set → Set            -- X ∩ Y
+
+axiom mem_union_iff  {S u} :
+  u ∈ union S ↔ ∃ T, T ∈ S ∧ u ∈ T
+axiom mem_inter_iff  {X Y u} :
+  u ∈ inter X Y ↔ u ∈ X ∧ u ∈ Y
+
+infix:55 " ∩ " => inter
+
+lemma inter_subset_left  {X Y : Set} : X ∩ Y ⊆ X :=
+by intro u hu; exact (mem_inter_iff).1 hu |>.left
+lemma inter_subset_right {X Y : Set} : X ∩ Y ⊆ Y :=
+by intro u hu; exact (mem_inter_iff).1 hu |>.right
+
+/-! ## 2. Topological space -/
+
+structure TopologicalSpace where
+  carrier          : Set
+  is_open          : Set → Prop
+  is_open_univ     : is_open carrier
+  is_open_sUnion   : ∀ {S : Set},
+                      (∀ U, U ∈ S → is_open U) → is_open (union S)
+  is_open_inter    : ∀ {U V : Set},
+                      is_open U → is_open V → is_open (U ∩ V)
+
+/-! ## 3. Opens as a subtype and basic operations -/
+
+def Opens (X : TopologicalSpace) : Type :=
+  { U : Set // X.is_open U }
+
+instance (X) : Coe (Opens X) Set where
+  coe U := U.1
+
+/-- inclusion of opens -/
+def open_subset {X} (V U : Opens X) : Prop :=
+  (V : Set) ⊆ (U : Set)
+notation:50 V " ⊆ₒ " U => open_subset V U
+
+noncomputable def openInter {X} (U V : Opens X) : Opens X :=
+⟨ (U : Set) ∩ V, X.is_open_inter U.2 V.2 ⟩
+
+lemma openInter_subset_left  {X} (U V : Opens X) :
+  (openInter U V : Set) ⊆ U := inter_subset_left
+lemma openInter_subset_right {X} (U V : Opens X) :
+  (openInter U V : Set) ⊆ V := inter_subset_right
+
+/-! ## 4. Presheaf and Sheaf of **sets** -/
+
+universe v
+
+structure Presheaf (X : TopologicalSpace) where
+  F        : Opens X → Set
+  res      : ∀ {U V : Opens X}, (V ⊆ₒ U) → Function (F U) (F V)
+  res_id   : ∀ {U} (s : Set) (hs : s ∈ F U),
+               app (res (open_subset_refl U)) s hs = s
+  res_comp : ∀ {U V W} (h₁ : W ⊆ₒ V) (h₂ : V ⊆ₒ U)
+               (s : Set) (hs : s ∈ F U),
+             let rUV := res h₂; let rVW := res h₁;
+             let rUW := res (open_subset_trans h₁ h₂);
+             app rVW (app rUV s hs) (app_mem rUV s hs) =
+             app rUW s hs
+
+/-- A cover of an open set U. -/
+structure Cover (X : TopologicalSpace) (U : Opens X) where
+  ι      : Type v
+  Uis    : ι → Opens X
+  sub    : ∀ i, Uis i ⊆ₒ U
+  covers : ∀ x, x ∈ (U : Set) → ∃ i, x ∈ (Uis i : Set)
+
+/-- Sheaf condition (equaliser + unique gluing). -/
+structure Sheaf (X : TopologicalSpace) extends Presheaf X where
+  gluing :
+    ∀ (U : Opens X) (C : Cover X U)
+      (s  : ∀ i, {t // t ∈ F (C.Uis i)})
+      (compat :
+        ∀ i j,
+          let W := openInter (C.Uis i) (C.Uis j)
+          let r_i := res (C.sub i ▸ openInter_subset_left  _ _)
+          let r_j := res (C.sub j ▸ openInter_subset_right _ _)
+          app r_i (s i).1 (s i).2 = app r_j (s j).1 (s j).2),
+    ∃! (t : Set), t ∈ F U ∧
+      ∀ i, app (res (C.sub i)) t ‹t ∈ F U› = (s i).1
+```
 
 ## Mnemonics
 
