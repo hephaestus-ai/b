@@ -1,4 +1,6 @@
 ---
+draft: true
+Title: "Object-Oriented Programming Design Hints"
 ---
 
 ## Object-Oriented Programming Design Hints
@@ -8,6 +10,7 @@ SOLID, GRASP, Outerhout, etc.
 adapted from old notes. less relevant now, but still relevant...
 Add these to a prompt. The age of generative AI
 
+Principles (timeless), Practices (language‑/ecosystem‑specific), and Patterns (named solutions). Will state which is what, but I let them mingle according to which quality attribute they hit.
 
 ## Volatility Management
 
@@ -23,23 +26,31 @@ Add these to a prompt. The age of generative AI
 
 Design and document with inheritance in mind, otherwise prohibit it.
 
-### How to Increase Cost of Changeability
+The problem with trees: minimally connected graph privileges one type of relationship.
+
+Empirically, deep nesting degrades understandability and increases probability of bugs
+
+### When to Increase Cost of Changeability
 
 #### Eliminate Ambiguity Ruthlessly
 
+#### Define Tests
+
+#### TDD
+
 ### Testability
 
-Tests both reduce and increase costs of change in different locations.
+Tests both reduce and increase costs of change in different locations. Of course they hit reliability issues, too. But reliability can be seen as part of managing change and volatility.
 
 #### Dependency Inversion Principle
 
 ## Intelligibility
 
-least astonishment
+least astonishment unifies a bunch of these items
 
-### Conform to Convention
+### Conform to Conventions
 
-### Familiarity and the Principle of Correspondence
+### Familiarity and the 'Principle of Correspondence'
 
 ### Conform to A Mathematical Object
 
@@ -73,9 +84,13 @@ Make your architecture out of small, composable units that could function as lib
 
 ### SRP and DOTADIW
 
-### How Many Ways to Use It?
+#### List Your Responsibilities
+
+### How Many Uses of your Object?
 
 #### Layer Highly Opinionated Upon Unopinionated
+
+### How to do Polymorphism
 
 ### Nouns Over Verbs (Usually)
 
@@ -101,7 +116,7 @@ Avoid return values that require special processing or a special check.
 
 ### Specify your 'Failure Regime'
 
-### Plug All Leaks
+### Plug All Abstraction Leaks
 
 ### Prefer Statelessness
 
@@ -116,11 +131,17 @@ Give useful information when there’s an error or exception. (C++ compiling err
 
 ## Security
 
-## How to Construct your Object
+## Performance and Concurrency
+
+## Constructing, Destructing, Managing 'Context' Lifecycles
+
+### How to Construct your Object
 
 #### Flowchart
 
-## How to Destruct your Object
+### How to Destruct your Object
+
+## Distributed Systems Stuff
 
 ## Anti-patterns
 
