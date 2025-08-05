@@ -449,9 +449,17 @@ blockquote > blockquote > p:after {
 }
 
 .content ul, .content ol {
-   margin-left: 4.25rem;
-   max-width: 38.5rem;
+   margin-left: 2.25rem;
+   max-width: 40.5rem;
+   padding: 0.5rem;
 }
+
+.content li>ul, .content li>ol {
+  margin-left: 1.75rem;
+  max-width: 41.5rem;
+  padding: 0;
+}
+
 
 
 
