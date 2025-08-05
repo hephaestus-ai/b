@@ -396,6 +396,59 @@ Presheaves let us store information locally but do not guarantee that local piec
 
 With presheaves and sheaves now precisely defined we have the machinery needed to discuss constructable sheaves, coder friendly translations, and ultimately the cohomological tools that make sheaves indispensable.
 
+## Stalks and Germs
+
+{{< mediabox type="note" title="Box 7 – What to memorize" align="right" id="box7">}}
+**Four notions to memorize**
+
+* The **stalk** of a sheaf \$\mathcal F\$ at a point \$x\in X\$ is the direct limit
+
+  $$
+  \mathcal F_x=\varinjlim_{x\in U}\,\mathcal F(U)
+  $$
+
+  taken over all opens containing \$x\$.
+* An element of \$\mathcal F\_x\$ is a **germ**, denoted $\[s]\_x\$, of a section \$s\in\mathcal F(U)\$ defined on some neighborhood of \$x\$.
+* Two sections \$s\in\mathcal F(U)\$ and \$t\in\mathcal F(V)\$ define the same germ at \$x\$ precisely when there is some open \$W\ni x\$, \$W\subseteq U\cap V\$, with
+
+  $$
+  \rho_{U,W}(s)=\rho_{V,W}(t).
+  $$
+* Stalks encode all possible local behaviors of a sheaf at a single point.{{< /mediabox >}}
+
+Here I'll present two more important concepts that you encounter when dealing with sheaves. This section is non-essential on a first read through.
+
+While sections live on opens, stalks concentrate that data at a point. Instead of carrying an entire neighborhood, a germ records just the *local behavior* of a section near the point.
+
+#### Construction of the Stalk
+
+Fix \$x\in X\$. Consider the directed system of all opens \$U\subseteq X\$ containing \$x\$, ordered by inclusion. Applying the sheaf \$\mathcal F\$ yields a diagram of restriction maps
+
+$$
+\mathcal F(U_1)\xrightarrow{\rho_{U_1,U_2}}\mathcal F(U_2)\xrightarrow{\rho_{U_2,U_3}}\cdots
+$$
+
+whenever \$U\_3\subseteq U\_2\subseteq U\_1\$. The **stalk** at \$x\$ is the colimit of this system:
+
+$$
+\mathcal F_x=\varinjlim_{x\in U}\,\mathcal F(U).
+$$
+
+Concretely an element of \$\mathcal F\_x\$ is an equivalence class $\[s]\_x\$, called a germ, of a section \$s\in\mathcal F(U)\$, where two pairs \$(U,s)\$ and \$(V,t)\$ represent the same germ if they agree on some smaller neighborhood of \$x\$.
+
+#### Usage of Germs and Stalks
+
+Stalks detect local properties of sheaves. For instance:
+
+* A morphism of sheaves is an isomorphism if and only if it induces isomorphisms on all stalks.
+* Exactness of sequences of sheaves can be tested on stalks: a sequence is exact if and only if it is exact after passing to each stalk.
+
+Thus stalks translate global questions into pointwise checks.
+
+#### Example
+
+For the sheaf of continuous real functions, the stalk at \$x\$ consists of equivalence classes of functions defined near \$x\$, where two functions are equivalent if they agree on some neighborhood of \$x\$. This recovers the familiar notion of the "germ of a function" in analysis.
+
 ## Constructable and Not-So-Constructable Sheaves
 
 ## Coder-friendly Restatement of Sheaves
