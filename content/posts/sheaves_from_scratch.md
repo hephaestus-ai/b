@@ -347,7 +347,7 @@ Behind the scenes, this construction simply takes the intersection of the underl
   2. *(Gluing)* A compatible family \$(s\_i\in\mathcal F(U\_i))\$ has a **unique** section \$s\in\mathcal F(U)\$ with \$\rho\_{U,U\_i}(s)=s\_i\$ for all \$i\$.
      {{< /mediabox >}}
 
-Up to this point open sets were our only actors. A presheaf adds content by letting each open carry a collection of “allowable data” and by telling us how to compare that data when one open sits inside another.
+Up to this point open sets were our only actors. A presheaf adds content by letting each open carry a collection of "allowable data" and by telling us how to compare that data when one open sits inside another.
 
 #### Definition of a Presheaf
 
@@ -517,110 +517,219 @@ A sheaf is fully computer-tractable precisely when *both* its underlying indexin
 
 ## Sheaves in (pseudo-)Lean
 
-In this section I'll restate everything up to sheaves (skipping stalks and germs) using a (pseudo) computer language (pseudo-Lean, in particular) in a somewhat "literate programming" style. If you're like me, and have more of a software-engineer's brain than a mathematician's brain, this kind of treatment feels a bit more approachable (however if you're not familiar with theorem provers this will still look like greek).
+In this section I'll restate everything up to sheaves (skipping stalks and germs) using a (pseudo) computer language (pseudo-Lean, in particular) in a somewhat "literate programming" style. If you're like me, and have more of a software-engineer's brain than a mathematician's brain, this kind of treatment feels a bit more approachable (however if you're not familiar with theorem provers this may still look like greek).
 
-```Lean
-/-! ## 0. Primitive set theory skeleton -/
+#### 0. Building a bare-bones "Set" theory
 
-universe u
+First, we should give ourselves a universe of sets, a way to talk about membership, and the usual subset notation.
 
-axiom Set   : Type u
-axiom elem  : Set → Set → Prop
-infix:50 " ∈ " => elem                     -- membership
+```lean
+/-!
+  We introduce a type `Set` living in some universe `u`.
+  Then we postulate a binary relation `elem : Set → Set → Prop`
+  which we will write infix as `x ∈ y`.  Finally, we define
+  `U ⊆ V` by "every element of `U` is also in `V`."
+-/
+universe u                          -- we’ll work in arbitrary universe `u`
+axiom Set : Type u                  -- a type whose elements we think of as "sets"
+axiom elem : Set → Set → Prop       -- membership relation
+infix:50 " ∈ " => elem              -- allow us to write `x ∈ U`
 
-/-- Subset of sets. -/
-def subset (U V : Set) : Prop := ∀ u, u ∈ U → u ∈ V
+/-- `U ⊆ V` means everything in `U` is also in `V`. -/
+def subset (U V : Set) : Prop := 
+  ∀ u, u ∈ U → u ∈ V
 infix:50 " ⊆ " => subset
 
+/-- Extensionality: two sets are equal if they have the same members. -/
 axiom set_ext {A B : Set} :
-  (∀ u : Set, u ∈ A ↔ u ∈ B) → A = B
+  (∀ u, u ∈ A ↔ u ∈ B) → A = B
+```
 
-/-! ## 1. Basic constructors actually used by topology -/
+Even if you’ve never used a theorem prover, you probably knew that sets are determined by their elements; `set_ext` is that familiar principle.  The `subset` definition and `infix` lines just give us the usual notation / syntax sugar.
 
-axiom union  : Set → Set                  -- ⋃₀ S
-axiom inter  : Set → Set → Set            -- X ∩ Y
+#### 1. Unions and intersections
 
-axiom mem_union_iff  {S u} :
-  u ∈ union S ↔ ∃ T, T ∈ S ∧ u ∈ T
-axiom mem_inter_iff  {X Y u} :
-  u ∈ inter X Y ↔ u ∈ X ∧ u ∈ Y
+Next we define arbitrary union and pairwise intersection, plus the usual membership lemmas.
 
-infix:55 " ∩ " => inter
+```lean
+/-!
+  We postulate a way to form the union of a *collection* `S : Set`.
+  We also postulate binary intersection `X ∩ Y`.
+-/
+axiom union : Set → Set            -- ⋃₀ S
+axiom inter : Set → Set → Set      -- X ∩ Y
+infix:55 " ∩ " => inter             -- notation
 
-lemma inter_subset_left  {X Y : Set} : X ∩ Y ⊆ X :=
-by intro u hu; exact (mem_inter_iff).1 hu |>.left
-lemma inter_subset_right {X Y : Set} : X ∩ Y ⊆ Y :=
-by intro u hu; exact (mem_inter_iff).1 hu |>.right
+/-- Membership in a union ↔ it lies in some piece. -/
+axiom mem_union_iff {S u} :
+  u ∈ union S ↔ ∃ T, T ∈ S ∧ u ∈ T
 
-/-! ## 2. Topological space -/
+/-- Membership in an intersection ↔ it’s in both. -/
+axiom mem_inter_iff {X Y u} :
+  u ∈ inter X Y ↔ (u ∈ X ∧ u ∈ Y)
 
+/-- From `u ∈ X ∩ Y` we get `u ∈ X`. -/
+lemma inter_subset_left {X Y : Set} :
+  X ∩ Y ⊆ X := 
+by
+  intro u h
+  show u ∈ X
+  exact (mem_inter_iff.1 h).1
+
+/-- And similarly for the right factor. -/
+lemma inter_subset_right {X Y : Set} :
+  X ∩ Y ⊆ Y := 
+by
+  intro u h
+  exact (mem_inter_iff.1 h).2
+```
+
+So the key ideas here are:
+
+* `union S` means "all points lying in *some* member of `S`."
+* `inter X Y` is the familiar pairwise intersection.
+* The two `lemmas` simply project out the left or right part of `u ∈ X ∧ u ∈ Y`.
+
+#### 2. Encoding a Topological space
+
+Next we want to pack up a carrier set plus an "open-set" predicate, closed under unions and finite intersections.
+
+```lean
+/-- A topological space `X` consists of:
+   1. a carrier set `carrier`;
+   2. a predicate `is_open : Set → Prop`;
+   3. proofs that `carrier` is open;
+   4. that arbitrary unions of opens are open;
+   5. that finite intersections of opens are open.
+-/
 structure TopologicalSpace where
-  carrier          : Set
-  is_open          : Set → Prop
-  is_open_univ     : is_open carrier
-  is_open_sUnion   : ∀ {S : Set},
-                      (∀ U, U ∈ S → is_open U) → is_open (union S)
-  is_open_inter    : ∀ {U V : Set},
-                      is_open U → is_open V → is_open (U ∩ V)
+  carrier        : Set
+  is_open        : Set → Prop
+  is_open_univ   : is_open carrier
+  is_open_sUnion : ∀ {S : Set}, (∀ U, U ∈ S → is_open U) → is_open (union S)
+  is_open_inter  : ∀ {U V : Set}, is_open U → is_open V → is_open (U ∩ V)
+```
 
-/-! ## 3. Opens as a subtype and basic operations -/
+Notice that this is Lisp-like, and you might think of `TopologicalSpace` as a little record or struct holding exactly the shape of the usual axioms.
 
+#### 3. Packaging "open" sets as a subtype
+
+Now we want to make it convenient to refer *only* to open sets, so that downstream definitions (presheaf, etc.) never accidentally leak non-opens.
+
+```lean
+/-- The type of opens of `X`.  An element is a pair `(U, h)`
+    where `U : Set` and `h : X.is_open U`. -/
 def Opens (X : TopologicalSpace) : Type :=
-  { U : Set // X.is_open U }
+  { U : Set // X.is_open U }
 
-instance (X) : Coe (Opens X) Set where
-  coe U := U.1
+/-- We can automatically coerce an `Opens X` back to its underlying `Set`. -/
+instance (X : TopologicalSpace) : Coe (Opens X) Set where
+  coe U := U.1
 
-/-- inclusion of opens -/
+/-- We write `V ⊆ₒ U` if, as underlying sets, `V ⊆ U`. -/
 def open_subset {X} (V U : Opens X) : Prop :=
-  (V : Set) ⊆ (U : Set)
+  (V : Set) ⊆ (U : Set)
+
 notation:50 V " ⊆ₒ " U => open_subset V U
 
-noncomputable def openInter {X} (U V : Opens X) : Opens X :=
-⟨ (U : Set) ∩ V, X.is_open_inter U.2 V.2 ⟩
+/-- Intersection of two opens gives another open. -/
+noncomputable def openInter {X}
+  (U V : Opens X) : Opens X :=
+⟨ (U : Set) ∩ (V : Set),
+  X.is_open_inter U.2 V.2 ⟩
 
-lemma openInter_subset_left  {X} (U V : Opens X) :
-  (openInter U V : Set) ⊆ U := inter_subset_left
-lemma openInter_subset_right {X} (U V : Opens X) :
-  (openInter U V : Set) ⊆ V := inter_subset_right
+-- And the fact that this intersection sits inside each factor:
+lemma openInter_subset_left {X} (U V : Opens X) : 
+  (openInter U V : Set) ⊆ (U : Set) :=
+inter_subset_left
 
-/-! ## 4. Presheaf and Sheaf of **sets** -/
+lemma openInter_subset_right {X} (U V : Opens X) : 
+  (openInter U V : Set) ⊆ (V : Set) :=
+inter_subset_right
+```
 
+**Note:**  The `.1` and `.2` projections pull out the "raw set" and the proof of openness, respectively.
+
+#### 4. Defining presheaves and sheaves of sets
+
+We’re finally ready to say what a **presheaf** is: it assigns to each open $U$ a set $F(U)$, and to each inclusion $V ⊆ₒ U$ a restriction map $F(U) → F(V)$, subject to the usual identity and composition laws.
+
+```lean
 universe v
 
+/-- A presheaf on `X` assigns:
+   1. `F U : Type` for each open `U`;
+   2. a map `res` that, given `V ⊆ₒ U`, restricts `F U → F V`;
+   3. the identity‐law for `res`;
+   4. the composition‐law for chaining two restrictions.
+-/
 structure Presheaf (X : TopologicalSpace) where
-  F        : Opens X → Set
-  res      : ∀ {U V : Opens X}, (V ⊆ₒ U) → Function (F U) (F V)
-  res_id   : ∀ {U} (s : Set) (hs : s ∈ F U),
-               app (res (open_subset_refl U)) s hs = s
-  res_comp : ∀ {U V W} (h₁ : W ⊆ₒ V) (h₂ : V ⊆ₒ U)
-               (s : Set) (hs : s ∈ F U),
-             let rUV := res h₂; let rVW := res h₁;
-             let rUW := res (open_subset_trans h₁ h₂);
-             app rVW (app rUV s hs) (app_mem rUV s hs) =
-             app rUW s hs
-
-/-- A cover of an open set U. -/
-structure Cover (X : TopologicalSpace) (U : Opens X) where
-  ι      : Type v
-  Uis    : ι → Opens X
-  sub    : ∀ i, Uis i ⊆ₒ U
-  covers : ∀ x, x ∈ (U : Set) → ∃ i, x ∈ (Uis i : Set)
-
-/-- Sheaf condition (equaliser + unique gluing). -/
-structure Sheaf (X : TopologicalSpace) extends Presheaf X where
-  gluing :
-    ∀ (U : Opens X) (C : Cover X U)
-      (s  : ∀ i, {t // t ∈ F (C.Uis i)})
-      (compat :
-        ∀ i j,
-          let W := openInter (C.Uis i) (C.Uis j)
-          let r_i := res (C.sub i ▸ openInter_subset_left  _ _)
-          let r_j := res (C.sub j ▸ openInter_subset_right _ _)
-          app r_i (s i).1 (s i).2 = app r_j (s j).1 (s j).2),
-    ∃! (t : Set), t ∈ F U ∧
-      ∀ i, app (res (C.sub i)) t ‹t ∈ F U› = (s i).1
+  F        : Opens X → Set
+  res      : ∀ {U V : Opens X}, (V ⊆ₒ U) → (F U → F V)
+  res_id   : ∀ {U} (s : F U), 
+               res (by simp) s = s
+  res_comp : ∀ {U V W} (h₁ : W ⊆ₒ V) (h₂ : V ⊆ₒ U)
+                  (s : F U),
+               let rUV := res h₂
+               let rVW := res h₁
+               let rUW := res (by simp [h₁, h₂])
+               rVW (rUV s) = rUW s
 ```
+
+In plain terms:
+
+* `F U` is the "sections over U."
+* `res` is "pullback along inclusion."
+* `res_id` says pulling back along the trivial inclusion $U ⊆ₒ U$ does nothing.
+* `res_comp` says that doing two pulls in a row is the same as pulling once along the composite inclusion.
+
+#### 4.1. Covers
+
+We need the notion of an *indexed cover* of an open set $U$.  That is, a family $\{U_i\}_{i∈𝕀}$ of opens that jointly cover $U$.
+
+```lean
+/-- A cover of `U` consists of:
+   • an index type `ι`,
+   • a function `Uis : ι → Opens X`,
+   • proofs each `Uis i ⊆ₒ U`,
+   • and coverage: every point of `U` lies in some `Uis i`.
+-/
+structure Cover (X : TopologicalSpace) (U : Opens X) where
+  ι      : Type v
+  Uis    : ι → Opens X
+  sub    : ∀ i, Uis i ⊆ₒ U
+  covers : ∀ x, x ∈ (U : Set) → ∃ i, x ∈ (Uis i : Set)
+```
+
+#### 4.2. Sheaf condition
+
+Finally, a **sheaf** is a presheaf where sections over a cover can be *uniquely glued* if they agree on all overlaps.
+
+```lean
+/-- A sheaf is a presheaf satisfying the usual gluing axiom:
+   Given a cover `C` of `U` and a choice of sections
+   `s i : F (C.Uis i)` that agree on each overlap,
+   there exists a unique `t : F U` restricting to each `s i`.
+-/
+structure Sheaf (X : TopologicalSpace) extends Presheaf X where
+  gluing :
+    ∀ {U : Opens X} (C : Cover X U)
+      (s : ∀ i, F (C.Uis i))
+      (compat : ∀ i j,
+         let W := openInter (C.Uis i) (C.Uis j)
+         let r_i := res (C.sub i ▸ openInter_subset_left  _ _)
+         let r_j := res (C.sub j ▸ openInter_subset_right _ _)
+         r_i (s i) = r_j (s j)),
+    ∃! t, t ∈ F U ∧
+      ∀ i, res (C.sub i) t = s i
+```
+
+What’s going on here?:
+
+1. You pick an open `U` and a cover `C` of it.
+2. You have local sections `s i : F(Uᵢ)`.
+3. You demand they "match" on each overlap.
+4. Then there’s a *unique* global `t : F(U)` restricting to each `s i`.
 
 ## Mnemonics
 
