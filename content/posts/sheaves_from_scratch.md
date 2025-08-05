@@ -192,42 +192,55 @@ With the concept of open sets pinned down we can finally talk about *local data*
 {{< mediabox type="note" title="Box 4 – What to (optionally) memorize" align="right" id="box4">}}
 **Three more topological notions:**
 
-* A *topology* on a set \$X\$ is a distinguished collection \$\mathcal O\subseteq\mathcal P(X)\$ of subsets of \$X\$.
-* Requirements on \$\mathcal O\$:
+* A *topology* on a set $X$ is a distinguished collection $\mathcal O\subseteq\mathcal P(X)$ of subsets of $X$.
+* Requirements on $\mathcal O$:
 
- 1. \$X\in\mathcal O\$ (the whole space is open);
- 2. \$\bigcup S\in\mathcal O\$ whenever every member of \$S\$ lies in \$\mathcal O\$;
- 3. \$U\cap V\in\mathcal O\$ whenever \$U,V\in\mathcal O\$.
-* The "\$\subseteq\mathcal P(X)\$" part matters: \$\mathcal O\$ *lives inside* the power set, it doesn’t replace it.
+ 1. $X\in\mathcal O$ (the whole space is open);
+ 2. $\bigcup S\in\mathcal O$ whenever every member of $S$ lies in $\mathcal O$;
+ 3. $U\cap V\in\mathcal O$ whenever $U,V\in\mathcal O$.
+* The "$\subseteq\mathcal P(X)$" part matters: $\mathcal O$ *lives inside* the power set - it doesn’t replace it.
 
-TODO: items for memorizing the two patterns
+**Two construction patterns worth memorizing**
+
+* **Pattern A - subsets of a power set.**
+ Start with a set $X$, take its power set $\mathcal P(X)$, then single out some subcollection.
+ *Typical examples*: topologies, $\sigma$-algebras (measure theory), abstract simplicial complexes (algebraic topology).
+* **Pattern B - subsets of a Cartesian product.**
+ Start with two sets $X, Y$, form their product $X\times Y$, then pick a subset of that product.
+ *Typical examples*: graphs of functions, general binary relations, edge-sets of (directed) graphs.
 
 {{< /mediabox >}}
 
-I like to present the subset-of-the-power-set perspective, despite the fact that it's not necessary here and utilizes operations that were not defined in the [primitive set theory](#primitive-set-theory) section,  because it's _**extremely useful**_ to understand that many "larger" objects you encounter in mathematics just boil down to two main patterns:
+I like to present the subset-of-the-power-set perspective, despite the fact that it’s not strictly necessary here and relies on operations not introduced in the [primitive set theory](#primitive-set-theory) section, because it’s **extremely useful** to notice that many "larger" mathematical objects reduce to two main patterns:
 
-* take a [power set](https://en.wikipedia.org/wiki/Power_set) over some base set, and then take some kind of subset of the power set
-* take a [cartesian product](https://en.wikipedia.org/wiki/Cartesian_product) between two sets, and then take some kind of subset of that cartesian product
+* take a [power set](https://en.wikipedia.org/wiki/Power_set) over some base set, then choose a subset of that power set;
+* take a [Cartesian product](https://en.wikipedia.org/wiki/Cartesian_product) of two sets, then choose a subset of that product.
 
-Topological spaces (TODO mention two or three other examples) match the first pattern, while objects like functions follow the second one. Some objects (such as measures) actually use both.
+Topological spaces, $\sigma$-algebras, and abstract simplicial complexes match the first pattern, while objects like functions, relations, and graph edge-sets follow the second. Some objects (such as measures) actually employ both.
 
-Take any set \$X\$. Its **power set** \$\mathcal P(X)\$ is the gigantic set containing *every* possible subset of \$X\$. (TODO example of a powerset). Choosing a topology means marking some plates on that buffet with the label **open** and leaving the rest un-labeled. Formally, you pick a subset
+What is a power set? Take any set $X$. Then its **power set** $\mathcal P(X)$ is the gigantic set containing *every* possible subset of $X$, including the empty set $\varnothing$. For example, if $X=\{a,b,c\}$ then:
 
 $$
-\mathcal O\;\subseteq\;\mathcal P(X)
+ \mathcal P(X)=\{\varnothing, \{a\}, \{b\}, \{c\}, \{a,b\}, \{a,c\}, \{b,c\}, \{a,b,c\}\}.
 $$
 
-and demand that \$\mathcal O\$ satisfy the three axioms in the box. Thinking of \$\mathcal O\$ as a subset of \$\mathcal P(X)\$ is useful for two reasons (beyond just being a generally good/unifying way to think about a whole slew of things):
+To define a topology on $X$ formally, you pick a subset:
 
-* **Visual bookkeeping.** It tells you at a glance that "open" is a *property* of ordinary subsets, not some exotic new gadget. Every open set is still just a member of \$\mathcal P(X)\$ - there’s no secret structure glued on.
-* **Compare topologies.** If you have two collections \$\mathcal O\_1\$ and \$\mathcal O\_2\$ inside the same power set, inclusion \$\mathcal O\_1\subseteq\mathcal O\_2\$ translates directly into "\$\mathcal O\_2\$ has at least as many open sets as \$\mathcal O\_1\$." This lets you speak sensibly about one topology being finer or coarser than another.
+$$
+ \mathcal O\;\subseteq\;\mathcal P(X)
+$$
 
-A quick illustration. On \$\mathbb R\$ the **usual topology** is the set of all unions of open intervals. That sits strictly between two extremes that also live inside \$\mathcal P(\mathbb R)\$:
+and demand that $\mathcal O$ satisfy the three axioms. Thinking of $\mathcal O$ as a subset of $\mathcal P(X)$ pays off for two reasons (beyond simply unifying a lot of seemingly different constructions):
 
-* The **discrete topology** is *all* of \$\mathcal P(\mathbb R)\$ - every subset is open.
-* The **trivial topology** is \${\varnothing,\mathbb R}\$ - nothing but the empty set and the whole line.
+* **Visual bookkeeping.** It makes clear that "open" is just an extra property of ordinary subsets - no exotic new gadget needed. Every open set is still a plain member of $\mathcal P(X)$.
+* **Comparing topologies.** Given two collections $\mathcal O_1$ and $\mathcal O_2$ inside the same power set, inclusion $\mathcal O_1\subseteq\mathcal O_2$ translates directly into "$\mathcal O_2$ has at least as many open sets as $\mathcal O_1$." This lets you talk sensibly about one topology being *finer* or *coarser* than another.
 
-Both extremes obey the axioms, so they really are topologies; they just choose radically different subsets of \$\mathcal P(\mathbb R)\$.
+A quick illustration. On $\mathbb R$ the **usual topology** is the set of all unions of open intervals. That sits strictly between two extremes that also live inside $\mathcal P(\mathbb R)$:
+
+* The **discrete topology** is *all* of $\mathcal P(\mathbb R)$ – every subset is open.
+* The **trivial topology** is $\{\varnothing,\mathbb R\}$ – only the empty set and the whole line are open.
+
+Both extreme examples obey the axioms, so they really are topologies; they just choose radically different subsets of $\mathcal P(\mathbb R)$.
 
 #### Why the axioms use union and (binary) intersection
 
@@ -240,6 +253,8 @@ With this subset-of-the-power-set picture in mind, the phrase *"open in \$X\$"* 
 #### A Few Final Points of Confusion
 
 TODO: topologists abuse the term "closeness" but topology does not necessarily entail metrics; confusingly sometimes a metric entails or _induces_ a topology, though.
+
+TODO: power sets can be infinitely large
 
 ## Opens as a Subtype and Basic Operations
 
