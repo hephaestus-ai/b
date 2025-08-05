@@ -211,7 +211,14 @@ With the concept of open sets pinned down we can finally talk about *local data*
   - $X\in\mathcal O$ (the whole space is open, i.e. the whole set $X$ must be a member of $\mathcal O$);
   - **closure under arbitrary unions:** $\bigcup S\in\mathcal O$ whenever every member of $S$ lies in $\mathcal O$;
   - **closure under finite intersections:** $U\cap V\in\mathcal O$ whenever $U,V\in\mathcal O$.
-* The closure properties _induce_ an order, $\mathcal O$ is a **frame / complete Heyting algebra**: arbitrary joins (unions) and finite meets (intersections) exist, so in particular $\mathcal O$ is also a lattice.
+* An example of a cross discipline connection:
+  * Because inclusion $\subseteq$ already orders the opens, these closure axioms make $\mathcal O$ a frame (a complete Heyting algebra): every family of opens has a join given by its union, and every finite family has a meet given by its intersection. More abstractly, $\mathcal O$ is a lattice.
+  * A **lattice** is any collection where you can always take  
+    * the "smallest common **superset**" of two members (their union), and  
+    * the "largest common **subset**" (their intersection).  
+    So as soon as you spot that your object is a lattice, every general lattice-theoretic law—De Morgan rules, distributivity tricks, order-by-inclusion reasoning—applies *automatically*.  
+  * A **Heyting algebra** (or *frame*) is just a lattice with one extra operation that plays the role of logical "implication."  That viewpoint links topology to logic: opens behave like truth-values in intuitionistic logic. 
+  Memorising these names pays off because any theorem that starts "In a lattice..." or "In every Heyting algebra..." becomes an instant theorem about open sets (and about σ-algebras, Boolean algebras, simplicial complexes, ...).  In other words, you get a big toolbox of ready-made results **for free** once you recognise the pattern.
 
 {{< /mediabox >}}
 
@@ -236,7 +243,12 @@ $$
 
 and demand that $\mathcal O$ satisfy the three axioms. Thinking of $\mathcal O$ as a subset of $\mathcal P(X)$ pays off for three reasons:
 
-* **Identifying connections across different branches of math.** TODO
+* **Spotting family resemblances (and getting theorems "for free").**  
+  Once you notice that many gadgets are literally "just special subsets" of a power set (or product set), you can reuse ideas instead of re-proving them.  
+  * Open sets (topology) and measurable sets (measure theory) both form collections closed under unions ∧ intersections, so any lattice-theoretic fact you show in one world (e.g. De Morgan’s laws, distributivity tricks) automatically holds in the other.  
+  * A σ-algebra is just a topology with complements and countable unions thrown in, so every theorem about topologies that doesn’t mention complements still applies.  
+  * The graph of a function $f\colon X\to Y$ is a special kind of relation-just a subset of $X\times Y$ with at most one $Y$-partner per $X$-so facts about relations (domain, range, composition) instantly specialise to functions.
+  Recognising these "same-shape" constructions turns big theorems into plug-and-play modules and shows how different areas of math quietly talk to each other.
 * **Visual bookkeeping.** It makes clear that "open" is just an extra property of ordinary subsets - no exotic new gadget needed. Every open set is still a plain member of $\mathcal P(X)$.
 * **Comparing topologies.** Given two collections $\mathcal O_1$ and $\mathcal O_2$ inside the same power set, inclusion $\mathcal O_1\subseteq\mathcal O_2$ translates directly into "$\mathcal O_2$ has at least as many open sets as $\mathcal O_1$." This lets you talk sensibly about one topology being *finer* or *coarser* than another.
 
