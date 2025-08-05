@@ -164,9 +164,9 @@ Now, with union and intersection in place we finally have enough raw material to
 ## Topological Space
 
 {{< mediabox type="note" title="Box 3 – What to memorize" align="right" id="box3">}}
-**Four topology notions to memorize:**
+**Three topology notions to memorize:**
 
-* A **topological space** is a set $X$ together with a specified collection $\mathcal O$ of subsets of the power set $\mathcal P(X)$ which obey three axioms designed to capture the idea of continuity and locality. $\mathcal O$ is called the *open sets* and a member of $\mathcal O$ is an open set.
+* A **topological space** $(X,\mathcal O)$ is a set $X$ "equipped" with a specified collection $\mathcal O$ of subsets of $X$, which obey three axioms designed to capture the idea of continuity and locality. $\mathcal O$ is called the *open sets* and a member of $\mathcal O$ is an open set.
 * Axioms: (i) the whole space \$X\$ is open; (ii) any union \$\bigcup S\$ of open sets is open; (iii) the intersection \$U\cap V\$ of **two** open sets is open.
 * Infinite intersections are *not* guaranteed to stay open - the "two" in axiom (iii) is doing real work.
 {{< /mediabox >}}
@@ -203,8 +203,10 @@ With the concept of open sets pinned down we can finally talk about *local data*
  Start with two sets $X, Y$, form their product $X\times Y$, then pick a subset of that product.
  *Typical examples*: graphs of functions, general binary relations, edge-sets of (directed) graphs.
 
-**Two more notions:**
+**Four more notions:**
 
+* $\mathcal O$ can also be constructed by selecting specific _members_ from the power set $\mathcal P(X)$, each of which correspond to _subsets_ of $X$.
+* The entire $\mathcal O$ corresponds to _one subset_ of $\mathcal P(X)$
 * Requirements on $\mathcal O$:
   - $X\in\mathcal O$ (the whole space is open, i.e. the whole set $X$ must be a member of $\mathcal O$);
   - **closure under arbitrary unions:** $\bigcup S\in\mathcal O$ whenever every member of $S$ lies in $\mathcal O$;
