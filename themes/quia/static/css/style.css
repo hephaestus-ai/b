@@ -537,7 +537,7 @@ th, td {
 th {
   font-variant: small-caps;
   letter-spacing: 1px;
-  color: var(--fg);
+  color: var(--fg-muted);
   border-bottom: 2px solid var(--border);
 }
 
