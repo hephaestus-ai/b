@@ -730,4 +730,16 @@ What’s going on here?:
 
 ## Mnemonics
 
+TODO
+
 ## Wrapping Up
+
+So there it is. We’ve climbed a long ladder from the bare bones of set theory up through topological spaces, opens as their own type, presheaves, and finally the sheaf axioms themselves. Hopefully it wasn't too painful.
+
+You might be wondering: What’s Next?:
+
+* **Schemes and manifolds.**  Having demystified sheaves, you’re well-positioned to see how they underpin algebraic geometry (via structure sheaves on schemes) and differential geometry (via sheaves of smooth functions and forms).
+* **Sheaf cohomology.**  We’ve hinted at cohomology as “measuring the failure to glue.”  A future post will build the Čech complex, define higher cohomology groups, and explore examples from topology and physics.
+* **Stacks and higher sheaves.**  Two-tier data, monodromy, and descent naturally lead to stacks (2-sheaves) and higher categorical generalizations—essential for modern moduli problems and homotopical algebra.
+
+Anyway, thanks for sticking with this “from scratch” expedition.  With sheaves now in your toolkit, you’re closer to unlocking the unifying perspectives that underlie on geometry, analysis, computation, and even logic.
