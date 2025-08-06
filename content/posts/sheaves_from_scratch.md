@@ -187,7 +187,11 @@ This abstraction is what makes topology so powerful. The same basic ideas work w
 
 Union and intersection let us manufacture new sets; now we decide which of those sets count as *open* and thereby fix the structure of our universe. Formally, a topology on a set \$X\$ is a choice of collection \$\tau\$ satisfying the three axioms in the box.
 
-**Axiom 4.1, Axiom 4.2, & Axiom 4.3** (FIXME: put the axioms here as well)
+**Axiom 4.1 (Openness of the whole space).**  To state that $X$ must belong to the topology $\tau$ we write: \$X \in \tau\$.
+
+**Axiom 4.2 (Stability under arbitrary unions).**  If $ \{U_i\}_{i\in I}\subseteq\tau $ then $ \bigcup_{i\in I} U_i \in \tau $.
+
+**Axiom 4.3 (Stability under finite intersections).**  If \$U,V\in\tau\$ then \$U\cap V \in \tau\$. By induction this extends to any finite family \$U_1,\dots,U_n\$.
 
 **Intuition 4.5.** Why these axioms and no others? The short answer is that they capture the way neighborhoods behave in ordinary spaces like \$\mathbb R\$.
 
