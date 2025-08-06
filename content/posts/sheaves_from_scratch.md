@@ -62,7 +62,7 @@ The discipline is almost irrelevant. The recurring pattern is "information lives
 ## Primitive Set Theory
 
 {{< mediabox type="note" title="Box 1 - What to memorize" align="right" id="box1">}}
-**Three set theoretic notions to memorize.**
+**Three set theoretic concepts to memorize.**
 
 * The symbol \$\in\$ reads "is an element of."
 * The relation \$\subseteq\$ reads "is a subset of"; every point of \$A\$ lies in \$B\$.
@@ -81,7 +81,7 @@ Start with one *universe* of discourse, which we’ll simply call **Set**. (If y
  We write \$A \subseteq B\$ when *every* element of \$A\$ is also an element of \$B\$.
  It’s worth pausing here: newbies often blur \$\in\$ and \$\subseteq\$ because both talk about "being inside" something. Remember - one compares a *set to a set*, the other compares a *set to its members*.
 
-**Definition 2.3:** Everything else we need flows from a single guiding principle called the **axiom of extensionality**, written:
+**Axiom 2.1:** Everything else we need flows from a single guiding principle called the **axiom of extensionality**, written:
 
 $$
 A = B \quad\Longleftrightarrow\quad \forall x\,(x\in A\;\Leftrightarrow\;x\in B).
@@ -118,7 +118,7 @@ The bare-bones set theory from the last section gives us a basic language to tal
 
 #### Union
 
-Take any collection of sets, call it \$S\$. We write
+**Definition 3.1.** Take any collection of sets, call it \$S\$. We write
 
 $$
 \bigcup S
@@ -132,13 +132,13 @@ $$
 
 The plain english reading of this expression is basically: x belongs to the big union of S exactly when it belongs to at least one of the sets inside S. Or a closer reading of the expression: x is in the union of S if and only if there exists a T in S such that x is in T.
 
-A point many people miss on first reading: \$\bigcup S\$ is a *one-step* operation. The whole family of sets is swallowed at once; there’s no hidden iteration. (why is this relevant?)
+**Nuance 3.1.** Mostly as an aside, but a point many people miss without some explanation: \$\bigcup S\$ is a *one-step* operation. The whole family of sets is swallowed at once; there’s no hidden iteration. Why is this relevant? A huge reason is that, being able to do these big operations in "O(1) complexity" is necessary for making "infinite leaps" later on.
 
-If \$S={(0,1),, (1,2)}\$ inside \$\mathbb R\$, then \$\bigcup S=(0,2)\$. Exactly the points that appear somewhere in the two intervals - no more, no less.
+**Example 3.1.** If \$S={(0,1),, (1,2)}\$ inside \$\mathbb R\$, then \$\bigcup S=(0,2)\$. Exactly the points that appear somewhere in the two intervals - no more, no less. FIXME broken latex
 
 #### Intersection
 
-For intersection we only need the binary case for sheaves. Given two sets \$X\$ and \$Y\$ we define
+**Definition 3.2.** For intersection we only need the binary case for sheaves. Given two sets \$X\$ and \$Y\$ we define
 
 $$
 X\cap Y=\{x\mid x\in X\text{ and }x\in Y\}.
@@ -146,7 +146,7 @@ $$
 
 Plain english: The intersection of X and Y is the set of things that are in both X and Y. Or: X intersect Y equals the set of x such that x is in X and x is in Y.
 
-Nothing subtle here, but two elementary lemmas save headaches later:
+**Lemma 3.1 & Lemma 3.2.** Nothing subtle here, but two elementary lemmas save headaches later:
 
 $$
 X\cap Y\subseteq X,\quad X\cap Y\subseteq Y.
@@ -154,7 +154,7 @@ $$
 
 They look obvious; still, they are worth a spot in your memory. When we start restricting data on open sets, these inclusions justify every "of course this lands where it should" step.
 
-With \$X=(0,2)\$ and \$Y=(1,3)\$ in \$\mathbb R\$ we get \$X\cap Y=(1,2)\$, strictly smaller than either parent. No surprises, and that’s the point - the constructor behaves exactly the way everyday intuition says it should.
+**Example 3.2.** With \$X=(0,2)\$ and \$Y=(1,3)\$ in \$\mathbb R\$ we get \$X\cap Y=(1,2)\$, strictly smaller than either parent. No surprises, and that’s the point - the constructor behaves exactly the way everyday intuition says it should.
 
 Now, with union and intersection in place we finally have enough raw material to describe a topology: a family of subsets closed under union (the first operation) and stable under intersection (the second operation).
 
