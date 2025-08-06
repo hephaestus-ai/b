@@ -446,7 +446,13 @@ Here I'll present two more important concepts that you encounter when dealing wi
 
 **Intuition 7.2.**  Think of all opens containing \(x\) as a *directed graph*: every pair \(U,V\) has a smaller neighbourhood \(W=U\cap V\) lying below it.  The arrows point “downwards’’ along these inclusions.  A *directed system* is just any collection of objects (here, the sets \(\mathcal F(U)\)) connected by arrows that always let you move further down.
 
-**Intuition 7.3.** TODO: limit and colimit
+**Intuition 7.3.**  The symbol  
+$$
+\varinjlim
+$$
+is read “direct limit” or “colimit.”  You meet it any time you have data that keeps getting **pushed forward** along bigger and bigger objects.  In stalks the objects are opens that shrink toward the point \(x\).  Each restriction map sends data from a larger open to a smaller one.  The direct limit remembers only the values that eventually stabilise under all those maps.
+
+**Warning 7.1.** Sometimes students will think a direct limit is a plain union. Not always. You first *identify* elements that match under the restriction maps, then take the union of those equivalence classes.  Forgetting the identification step gives wrong answers.
 
 **Construction 7.1.** Fix \$x\in X\$. Consider the directed system of all opens \$U\subseteq X\$ containing \$x\$, ordered by inclusion. Applying the sheaf \$\mathcal F\$ yields a diagram of restriction maps
 
