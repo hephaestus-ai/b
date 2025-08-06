@@ -408,7 +408,7 @@ With presheaves and sheaves now precisely defined we have the machinery needed t
   $$
 
   taken over all opens containing \$x\$.
-* An element of \$\mathcal F\_x\$ is a **germ**, denoted $\[s]\_x\$, of a section \$s\in\mathcal F(U)\$ defined on some neighborhood of \$x\$.
+* An element of \$\mathcal F\_x\$ is a **germ**, denoted \$\[s]\_x\$, of a section \$s\in\mathcal F(U)\$ defined on some neighborhood of \$x\$.
 * Two sections \$s\in\mathcal F(U)\$ and \$t\in\mathcal F(V)\$ define the same germ at \$x\$ precisely when there is some open \$W\ni x\$, \$W\subseteq U\cap V\$, with
 
   $$
@@ -434,7 +434,7 @@ $$
 \mathcal F_x=\varinjlim_{x\in U}\,\mathcal F(U).
 $$
 
-**Definition 7.1.** Concretely an element of \$\mathcal F\_x\$ is an equivalence class $\[s]\_x\$, called a germ, of a section \$s\in\mathcal F(U)\$, where two pairs \$(U,s)\$ and \$(V,t)\$ represent the same germ if they agree on some smaller neighborhood of \$x\$.
+**Definition 7.1.** Concretely, an element of \$\mathcal{F}\_x\$ is an equivalence class \$\[s]\_x\$, called a **germ**, of a section \$s \in \mathcal{F}(U)\$, where two pairs \$(U, s)\$ and \$(V, t)\$ represent the same germ if they agree on some smaller neighborhood of \$x\$.
 
 #### Usage of Germs and Stalks
 
@@ -457,7 +457,7 @@ TODO:
  - descriptions for each subsection
  - double check everything
 
-Not all sheaves are friendly. As mentioned above, topologies can be finite or infinite. Ditto for sheaves. This has implications for how easy they are to handle in practice, and what you can do with them.
+**Intuition 8.1.** Not all sheaves are friendly. As mentioned above, topologies can be finite or infinite. Ditto for sheaves. This has implications for how easy they are to handle in practice, and what you can do with them.
 
 This section looks at a pragmatic, computer-science-oriented classification of sheaves according to how completely their data can be encoded, manipulated, and decided by an ordinary digital computer (i.e. a finite machine working with finite words).
 
