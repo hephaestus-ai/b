@@ -231,7 +231,9 @@ With the concept of open sets pinned down we can finally talk about *local data*
 
 Topological spaces, $\sigma$-algebras, and abstract simplicial complexes match the first pattern, while objects like functions, relations, and graph edge-sets follow the second. Some objects (such as measures) actually employ both.
 
-**Definition 4.1.** What is a power set? Take any set $X$. Then its **power set** $\mathcal P(X)$ is the gigantic set containing *every* possible subset of $X$, including the empty set $\varnothing$. For example, if $X=\{a,b,c\}$ then:
+**Definition 4.1.** What is a power set? Take any set $X$. Then its **power set** $\mathcal P(X)$ is the gigantic set containing *every* possible subset of $X$, including the empty set $\varnothing$.
+
+**Example 4.1.** For example, if $X=\{a,b,c\}$ then:
 
 $$
  \mathcal P(X)=\{\varnothing, \{a\}, \{b\}, \{c\}, \{a,b\}, \{a,c\}, \{b,c\}, \{a,b,c\}\}.
@@ -254,7 +256,7 @@ and demand that $\tau$ satisfy the three axioms.
 * **Visual bookkeeping.** It makes clear that "open" is just an extra property of ordinary subsets - no exotic new gadget needed. Every open set is still a plain member of $\mathcal P(X)$.
 * **Comparing topologies.** Given two collections $\tau_1$ and $\tau_2$ inside the same power set, inclusion $\tau_1\subseteq\tau_2$ translates directly into "$\tau_2$ has at least as many open sets as $\tau_1$." This lets you talk sensibly about one topology being *finer* or *coarser* than another.
 
-**Example 4.1.** A quick illustration. On $\mathbb R$ the **usual topology** is the set of all unions of open intervals. That sits strictly between two extremes that also live inside $\mathcal P(\mathbb R)$:
+**Example 4.2.** A quick illustration. On $\mathbb R$ the **usual topology** is the set of all unions of open intervals. That sits strictly between two extremes that also live inside $\mathcal P(\mathbb R)$:
 
 * The **discrete topology** is *all* of $\mathcal P(\mathbb R)$ - every subset is open.
 * The **trivial topology** is $\{\varnothing,\mathbb R\}$ - only the empty set and the whole line are open.
@@ -355,8 +357,9 @@ Behind the scenes, this construction simply takes the intersection of the underl
 A **presheaf of sets** on \$X\_\tau\$ consists of
 
 1. A rule \$U\mapsto\mathcal F(U)\$ that assigns a set to every open \$U\subseteq X\$.
-2. For every inclusion of opens \$V\subseteq U\$ a function
-   \$\rho\_{U,V}\colon\mathcal F(U)\to\mathcal F(V)\$ called *restriction*.
+2. For every inclusion of opens \$V\subseteq U\$ a function \$\rho\_{U,V}\colon\mathcal F(U)\to\mathcal F(V)\$ called *restriction*. (\$\rho\$ is the greek lowercase rho)
+
+TODO: in plain english these expressions read as...
 
 **Intuition 6.2.** The two axioms in Box 6 ensure that repeated restriction behaves exactly like ordinary subset inclusion. Identity says nothing changes if you restrict to the same open. Composition says that restricting in one step or in two steps yields the same outcome.
 
@@ -369,6 +372,8 @@ A **presheaf of sets** on \$X\_\tau\$ consists of
 $$
 \rho_{U_i,U_i\cap U_j}(s_i)=\rho_{U_j,U_i\cap U_j}(s_j).
 $$
+
+TODO: definition in plain english
 
 **Intuition 6.4.** Compatibility is the formal way to say that the local data \$(s\_i)\$ line up on intersections.
 
@@ -392,9 +397,9 @@ $$
 
 #### Take-Away
 
-Presheaves let us store information locally but do not guarantee that local pieces cohere. The sheaf condition identifies exactly those presheaves where coherence and reconstruction are possible. Almost every algebraic or analytic gadget you want to study in geometry or data science naturally forms a sheaf; when it does not, the obstruction is measured by sheaf cohomology.
+Presheaves let us store information locally but do not guarantee that local pieces cohere. The sheaf condition will identify exactly those presheaves where coherence and reconstruction are possible. Almost every algebraic or analytic gadget you want to study in geometry or data science naturally forms a sheaf; when it does not, the obstruction is measured by sheaf cohomology.
 
-With presheaves and sheaves now precisely defined we have the machinery needed to discuss constructable sheaves, coder friendly translations, and ultimately the cohomological tools that make sheaves indispensable.
+With presheaves and sheaves now precisely defined we have the machinery needed to discuss more advanced topics, from stalks and germs, to cohomology, schemes, manifolds, etc. (not discussed here).
 
 ## Stalks and Germs
 
@@ -422,6 +427,10 @@ Here I'll present two more important concepts that you encounter when dealing wi
 
 #### Construction of the Stalk
 
+**Intuition 7.2.** TODO: directed system
+
+**Intuition 7.3.** TODO: limit and colimit
+
 **Construction 7.1.** Fix \$x\in X\$. Consider the directed system of all opens \$U\subseteq X\$ containing \$x\$, ordered by inclusion. Applying the sheaf \$\mathcal F\$ yields a diagram of restriction maps
 
 $$
@@ -434,6 +443,8 @@ $$
 \mathcal F_x=\varinjlim_{x\in U}\,\mathcal F(U).
 $$
 
+**Intuition 7.4.** TODO: Equivalence class
+
 **Definition 7.1.** Concretely, an element of \$\mathcal{F}\_x\$ is an equivalence class \$\[s]\_x\$, called a **germ**, of a section \$s \in \mathcal{F}(U)\$, where two pairs \$(U, s)\$ and \$(V, t)\$ represent the same germ if they agree on some smaller neighborhood of \$x\$.
 
 #### Usage of Germs and Stalks
@@ -443,7 +454,7 @@ $$
 * A morphism of sheaves is an isomorphism if and only if it induces isomorphisms on all stalks.
 * Exactness of sequences of sheaves can be tested on stalks: a sequence is exact if and only if it is exact after passing to each stalk.
 
-Thus stalks translate global questions into pointwise checks.
+**Intuition 7.5.** Thus stalks translate global questions into pointwise checks. TODO expand on intuition
 
 #### Example
 
