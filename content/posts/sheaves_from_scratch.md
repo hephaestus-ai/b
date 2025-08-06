@@ -15,45 +15,45 @@ I may break this post up later. As you will see, we build many other things from
 
 ## Why Sheaves are Important
 
-**Intuition 1.1** In short, a sheaf is a machine for turning local, overlapping pieces of information into a consistent global picture - and for telling you precisely when that fails. While reading through this section is *optional*, before we start laying out details it might help to know what we are building toward. "Sheaf" can sound forbiddingly abstract, yet the idea is less exotic than the name, and once you start thinking in sheaves you’ll see them everywhere. The understanding of sheaves, like many fundamental mathematical concepts, confers a super-power that helps you organize and understand problems more quickly. Looking at some examples can help illustrate; however, _if you're not already familiar with some of the basic concepts, then you will need to return to these later to fully understand them_.
+**Intuition 1.1.** In short, a sheaf is a machine for turning local, overlapping pieces of information into a consistent global picture - and for telling you precisely when that fails. While reading through this section is *optional*, before we start laying out details it might help to know what we are building toward. "Sheaf" can sound forbiddingly abstract, yet the idea is less exotic than the name, and once you start thinking in sheaves you’ll see them everywhere. The understanding of sheaves, like many fundamental mathematical concepts, confers a super-power that helps you organize and understand problems more quickly. Looking at some examples can help illustrate; however, _if you're not already familiar with some of the basic concepts, then you will need to return to these later to fully understand them_.
 
 #### The Engineer’s View
 
-**Application 1.1** If you want to describe a global sensor grid monitoring temperature over a large facility you might eventually discover that you’re just dealing with a sheaf. Each sensor reports only for the room it occupies; adjacent rooms overlap in their coverage because data packets sometimes drop. You want a single, up-to-date heat-map of the whole building, but you will only trust a reading if every overlapping sensor agrees on the shared region. A sheaf formalises exactly that: it assigns a *set of possible data states* to every room (open set) and tells you whether those states are compatible on their overlaps. If they are, the sheaf produces one coherent building-wide state; if not, it pinpoints the conflict. From a systems perspective, this is a recipe for robust data-fusion and graceful degradation.
+**Application 1.1.** If you want to describe a global sensor grid monitoring temperature over a large facility you might eventually discover that you’re just dealing with a sheaf. Each sensor reports only for the room it occupies; adjacent rooms overlap in their coverage because data packets sometimes drop. You want a single, up-to-date heat-map of the whole building, but you will only trust a reading if every overlapping sensor agrees on the shared region. A sheaf formalises exactly that: it assigns a *set of possible data states* to every room (open set) and tells you whether those states are compatible on their overlaps. If they are, the sheaf produces one coherent building-wide state; if not, it pinpoints the conflict. From a systems perspective, this is a recipe for robust data-fusion and graceful degradation.
 
-**Application 1.2** A rules- or exception-handling engine behaves similarly. Each rule (or exception handler) fires under a specific set of conditions. Those condition-sets overlap, and the engine must decide what happens when two rules both apply. Model the *active rules* over any given condition-set as a section of a sheaf. Compatibility on an overlap demands that the lists of still-relevant rules agree; failure isolates the minimal contradictory slice and therefore the bug. Debugging a snarled permission matrix is literally computing 0-th cohomology.
+**Application 1.2.** A rules- or exception-handling engine behaves similarly. Each rule (or exception handler) fires under a specific set of conditions. Those condition-sets overlap, and the engine must decide what happens when two rules both apply. Model the *active rules* over any given condition-set as a section of a sheaf. Compatibility on an overlap demands that the lists of still-relevant rules agree; failure isolates the minimal contradictory slice and therefore the bug. Debugging a snarled permission matrix is literally computing 0-th cohomology.
 
-**Application 1.3** In robotics, coverage problems for cooperating drones translate into sheaves over time-indexed configuration spaces. In even more complex distributed systems, with half-trusting agents, each node might keep its own list of "normal" rules and "exceptions that override those rules." The overrides form a second layer: you must know whose exception beats whose when two agents disagree. That two-tier structure is exactly what a 2-sheaf (a sheaf of sheaves, or a *stack*) captures. A section over one agent might be a pair *(rule-set, exception-set)*; compatibility on an overlap checks that the exception hierarchy lines up, and gluing succeeds only when every clash can be resolved into a single, well-scoped override leaving no silent contradictions.
+**Application 1.3.** In robotics, coverage problems for cooperating drones translate into sheaves over time-indexed configuration spaces. In even more complex distributed systems, with half-trusting agents, each node might keep its own list of "normal" rules and "exceptions that override those rules." The overrides form a second layer: you must know whose exception beats whose when two agents disagree. That two-tier structure is exactly what a 2-sheaf (a sheaf of sheaves, or a *stack*) captures. A section over one agent might be a pair *(rule-set, exception-set)*; compatibility on an overlap checks that the exception hierarchy lines up, and gluing succeeds only when every clash can be resolved into a single, well-scoped override leaving no silent contradictions.
 
-**Application 1.4** Type-theoretic semantics often interpret a program fragment *in a context* and then extend that interpretation when more variables become visible. Contexts overlap when sub-routines share free variables. A *presheaf* on the lattice of contexts captures how meanings restrict; requiring it to be a *sheaf* adds the principled uniqueness condition that parallels referential transparency. Categorical models of dependent type theory exploit exactly this sheaf condition to guarantee that substitution behaves predictably.
+**Application 1.4.** Type-theoretic semantics often interpret a program fragment *in a context* and then extend that interpretation when more variables become visible. Contexts overlap when sub-routines share free variables. A *presheaf* on the lattice of contexts captures how meanings restrict; requiring it to be a *sheaf* adds the principled uniqueness condition that parallels referential transparency. Categorical models of dependent type theory exploit exactly this sheaf condition to guarantee that substitution behaves predictably.
 
-**Application 1.5** In another post I plan on writing, I show how domain-driven design (DDD) can be viewed as a 2-sheaf. Here's a handy hint: whenever two domains think about the same underlying reality in different ontologies, the comparison functor is usually secretly a stack.
+**Application 1.5.** In another post I plan on writing, I show how domain-driven design (DDD) can be viewed as a 2-sheaf. Here's a handy hint: whenever two domains think about the same underlying reality in different ontologies, the comparison functor is usually secretly a stack.
 
 #### The Scientist’s View
 
-**Application 1.6** Experimental physicists treat many quantities - temperature, pressure, electromagnetic potential, etc. - as *fields*: functions defined on space-time that you usually measure only in patches. You integrate those patches into a global field by enforcing that neighbouring patches agree where they meet. Classical analysis handles smoothness or continuity; a sheaf pushes the idea further, handling not just numbers but any algebraic or logical structure you care to measure. The associated cohomology then quantifies the *obstruction* to globalising your field, detecting, for instance, magnetic monopoles or defects in a crystal lattice.
+**Application 1.6.** Experimental physicists treat many quantities - temperature, pressure, electromagnetic potential, etc. - as *fields*: functions defined on space-time that you usually measure only in patches. You integrate those patches into a global field by enforcing that neighbouring patches agree where they meet. Classical analysis handles smoothness or continuity; a sheaf pushes the idea further, handling not just numbers but any algebraic or logical structure you care to measure. The associated cohomology then quantifies the *obstruction* to globalising your field, detecting, for instance, magnetic monopoles or defects in a crystal lattice.
 
-**Application 1.7** A particularly vivid illustration comes from *cobordism*. Think of two time-slices of a physical system as the boundaries of a higher-dimensional manifold. A field that propagates from the "incoming" slice to the "outgoing" one is precisely a section of a sheaf on that cobordism. Cohomological obstructions along the interior tell you whether the two boundary data can be glued into a single history; in condensed-matter language this is how topological phases get classified. (FIXME: make this example more comprehensible or just delete it)
+**Application 1.7.** A particularly vivid illustration comes from *cobordism*. Think of two time-slices of a physical system as the boundaries of a higher-dimensional manifold. A field that propagates from the "incoming" slice to the "outgoing" one is precisely a section of a sheaf on that cobordism. Cohomological obstructions along the interior tell you whether the two boundary data can be glued into a single history; in condensed-matter language this is how topological phases get classified. (FIXME: make this example more comprehensible or just delete it)
 
-**Application 1.8** In topological data analysis, persistent cohomology detects shape in point-clouds. The raw algorithm feeds a simplicial-complex sheaf into a cohomology engine; the resulting bar-codes visualize when local clusters knit together. Newer techniques replace simplices with *cosheaves* to encode *directed* influence, useful in network flow and contagion models.
+**Application 1.8.** In topological data analysis, persistent cohomology detects shape in point-clouds. The raw algorithm feeds a simplicial-complex sheaf into a cohomology engine; the resulting bar-codes visualize when local clusters knit together. Newer techniques replace simplices with *cosheaves* to encode *directed* influence, useful in network flow and contagion models.
 
-**Application 1.9** Computational neuroscience offers an instructive case: local measurements of neural activity (say, micro-electrode arrays in mouse visual cortex) identify *receptive fields* that overlap spatially and temporally. A sheaf whose sections are firing-rate distributions over electrode patches tracks which local patterns are compatible. Cohomology then reveals global motifs such as orientation maps or grid-cell lattices - features that may not be obvious from any single electrode but emerge when the patches glue coherently. (TODO: might want a citation for this in particular)
+**Application 1.9.** Computational neuroscience offers an instructive case: local measurements of neural activity (say, micro-electrode arrays in mouse visual cortex) identify *receptive fields* that overlap spatially and temporally. A sheaf whose sections are firing-rate distributions over electrode patches tracks which local patterns are compatible. Cohomology then reveals global motifs such as orientation maps or grid-cell lattices - features that may not be obvious from any single electrode but emerge when the patches glue coherently. (TODO: might want a citation for this in particular)
 
 #### The Mathematician’s View
 
-**Application 1.10** Modern geometry, from Riemann surfaces to schemes in algebraic geometry, lives on the mantra "build globally by gluing locally." Charts of a manifold, affine pieces of a variety, even basic coordinate systems are local patches that must be stitched together on overlaps. Sheaves abstract that glueing process so cleanly that entire subjects - étale cohomology, Hodge theory, perverse sheaves - follow just by feeding different kinds of algebraic gadgets into the same framework. The slogan *"cohomology is the derived functor of global sections"* packages decades of theory into one line; without sheaves the slogan is meaningless.
+**Application 1.10.** Modern geometry, from Riemann surfaces to schemes in algebraic geometry, lives on the mantra "build globally by gluing locally." Charts of a manifold, affine pieces of a variety, even basic coordinate systems are local patches that must be stitched together on overlaps. Sheaves abstract that glueing process so cleanly that entire subjects - étale cohomology, Hodge theory, perverse sheaves - follow just by feeding different kinds of algebraic gadgets into the same framework. The slogan *"cohomology is the derived functor of global sections"* packages decades of theory into one line; without sheaves the slogan is meaningless.
 
-**Application 1.11** The same local-to-global principle drives classification of vector bundles, patching solutions to partial differential equations, and even the existence of Spin structures. In each case, cohomology measures "how far" we are from extending compatible local data; its vanishing grants you the global object you hoped for.
+**Application 1.11.** The same local-to-global principle drives classification of vector bundles, patching solutions to partial differential equations, and even the existence of Spin structures. In each case, cohomology measures "how far" we are from extending compatible local data; its vanishing grants you the global object you hoped for.
 
 #### Less-Conventional Examples: LLMs, Narrative, Etc.
 
-**Application 1.12** LLMs as sheaves: take any finite set of token bigrams - pairs \$(w\_i, w\_{i+1})\$. Call that set your *open context*. A section over it is a probability distribution for the *next* token conditioned on those bigrams. Overlaps are smaller contexts that two bigger ones share; compatibility means the two distributions agree after marginalising to the overlap. Gluing all compatible local distributions is what a large-language-model learns during training: a single global rule that extends every fragment. Failures to glue show up as places where the model assigns inconsistent probabilities to the same substring seen through two different neighbourhoods.
+**Application 1.12.** LLMs as sheaves: take any finite set of token bigrams - pairs \$(w\_i, w\_{i+1})\$. Call that set your *open context*. A section over it is a probability distribution for the *next* token conditioned on those bigrams. Overlaps are smaller contexts that two bigger ones share; compatibility means the two distributions agree after marginalising to the overlap. Gluing all compatible local distributions is what a large-language-model learns during training: a single global rule that extends every fragment. Failures to glue show up as places where the model assigns inconsistent probabilities to the same substring seen through two different neighbourhoods.
 
-**Application 1.13** Distributed ledgers can be phrased in sheaf language: each block covers a slice of global state; overlaps check for double-spends; the sheaf condition enforces ledger consistency without central control.
+**Application 1.13.** Distributed ledgers can be phrased in sheaf language: each block covers a slice of global state; overlaps check for double-spends; the sheaf condition enforces ledger consistency without central control.
 
-**Application 1.14** Chains of reasoning in *defeasible logic* also glue. Each argument fragment covers a subset of premises; overlaps share common sub-arguments. A sheaf whose sections are ordered lists of defeaters ensures that, on overlaps, defeat priorities line up. Cohomological obstructions correspond to cycles of mutually defeating arguments - a rigorous way to diagnose paradoxes like the pre-emption problem.
+**Application 1.14.** Chains of reasoning in *defeasible logic* also glue. Each argument fragment covers a subset of premises; overlaps share common sub-arguments. A sheaf whose sections are ordered lists of defeaters ensures that, on overlaps, defeat priorities line up. Cohomological obstructions correspond to cycles of mutually defeating arguments - a rigorous way to diagnose paradoxes like the pre-emption problem.
 
-**Application 1.15** Narrative theory can even exploit sheaf-like structures: events live on local graph- or DAG-based time-lines (chapters, scenes, character arcs); compatibility on overlaps enforces causal and thematic consistency; global sections are coherent plots. Surprise, in this language, is the failure of a tentative extension to glue, forming a "surprise presheaf".
+**Application 1.15.** Narrative theory can even exploit sheaf-like structures: events live on local graph- or DAG-based time-lines (chapters, scenes, character arcs); compatibility on overlaps enforces causal and thematic consistency; global sections are coherent plots. Surprise, in this language, is the failure of a tentative extension to glue, forming a "surprise presheaf".
 
 #### Take-away
 
@@ -62,26 +62,26 @@ The discipline is almost irrelevant. The recurring pattern is "information lives
 ## Primitive Set Theory
 
 {{< mediabox type="note" title="Box 1 - What to memorize" align="right" id="box1">}}
-**Three set theoretic notions to memorize:**
+**Three set theoretic notions to memorize.**
 
 * The symbol \$\in\$ reads "is an element of."
 * The relation \$\subseteq\$ reads "is a subset of"; every point of \$A\$ lies in \$B\$.
-* **Extensionality:** two sets are equal exactly when they have the same elements.
+* **Extensionality.** two sets are equal exactly when they have the same elements.
 {{< /mediabox >}}
 
 Before we build anything sophisticated we need a place to stand. That place is a surprisingly small fragment of set theory - small enough to write on an index card, but rich enough to support everything that follows.
 
 Start with one *universe* of discourse, which we’ll simply call **Set**. (If you're confused by the phrase "universe of discourse", it just means the set of all objects that are under consideration in a specific context or discussion; you don't need to understand this term fully). Think of it as the object containing every set we will ever talk about. Inside that object we highlight two relations between subobjects:
 
-1. **Membership** \$\boldsymbol{\in}\$
+1. **Definition 2.1:** **Membership** \$\boldsymbol{\in}\$
  Saying \$a \in A\$ means *"the set \$a\$ sits inside the set \$A\$ as a single member."*
  A classic point of confusion: \$a\subseteq A\$ is generally **false** if \$a\$ itself is an element - you can’t be both an element and a subset at the same time.
 
-2. **Subset** \$\boldsymbol{\subseteq}\$
+2. **Definition 2.2:** **Subset** \$\boldsymbol{\subseteq}\$
  We write \$A \subseteq B\$ when *every* element of \$A\$ is also an element of \$B\$.
  It’s worth pausing here: newbies often blur \$\in\$ and \$\subseteq\$ because both talk about "being inside" something. Remember - one compares a *set to a set*, the other compares a *set to its members*.
 
-Everything else we need flows from a single guiding principle called the **axiom of extensionality**, written:
+**Definition 2.3:** Everything else we need flows from a single guiding principle called the **axiom of extensionality**, written:
 
 $$
 A = B \quad\Longleftrightarrow\quad \forall x\,(x\in A\;\Leftrightarrow\;x\in B).
@@ -89,11 +89,11 @@ $$
 
 In plain english: Two sets are equal exactly when they have all the same elements; every x that’s in A is also in B, and vice versa. Or a closer reading of the expression: A equals B if and only if, for every x, x is in A if and only if x is in B.
 
-In practice the axiom does two jobs. First, it keeps us rigorous - if you want to prove two sets are equal, you must check every element. Second, it lets us *rename* a set once we know its elements, sparing us from carrying around duplicate symbols.
+**Intuition 2.1.** In practice the axiom does two jobs. First, it keeps us rigorous - if you want to prove two sets are equal, you must check every element. Second, it lets us *rename* a set once we know its elements, sparing us from carrying around duplicate symbols.
 
-That’s the entire skeleton. No power sets, no choice, not even unions yet - those arrive in the next section. For now, resist the urge to import heavier machinery; this lean framework (pun not intended) is enough to scaffold topology, presheaves, and ultimately sheaves.
+That’s the entire skeleton. No power sets, no choice, not even unions yet - those arrive in the next sections. For now, resist the urge to import heavier machinery; this lean framework (pun not intended) is enough to scaffold topology, presheaves, and ultimately sheaves.
 
-A common stumble at this stage: treating \$\subseteq\$ as though it were symmetric. It isn’t. Saying \$A\subseteq B\$ puts a directional arrow from \$A\$ into \$B\$; going the other way requires its own proof. Forgetting that directionality later - when we restrict data or glue it - tends to snowball into bigger mistakes.
+**Warning 2.1.** A common stumble at this stage: treating \$\subseteq\$ as though it were symmetric. It isn’t. Saying \$A\subseteq B\$ puts a directional arrow from \$A\$ into \$B\$; going the other way requires its own proof. Forgetting that directionality later - when we restrict data or glue it - tends to snowball into bigger mistakes.
 
 Take a moment to let these three notions settle. Once they feel second-nature you’ll be able to parse every definition that follows without stopping to untangle basic set theory ideas.
 
@@ -161,7 +161,7 @@ Now, with union and intersection in place we finally have enough raw material to
 ## Topological Space
 
 {{< mediabox type="note" title="Box 3 - What to memorize" align="right" id="box3">}}
-**Three topology notions to memorize:**
+**Three topology notions to memorize.**
 
 * A **topological space** $X_\tau = (X,\tau)$ ($\tau$ is the greek lowercase tau) is a set $X$ "equipped" with a specified collection $\tau$ of subsets of $X$, which obey three axioms designed to capture the idea of continuity and locality. $\tau$ is called the *topology* or the *open sets* and a member of $\tau$ is an open set.
 * Axioms: (i) the whole space \$X\$ is open; (ii) any union \$\bigcup S\$ of open sets is open; (iii) the intersection \$U\cap V\$ of **two** open sets is open.
@@ -204,14 +204,14 @@ With the concept of open sets pinned down we can finally talk about *local data*
  Start with two sets $X, Y$, form their product $X\times Y$, then pick a subset of that product.
  *Typical examples*: graphs of functions, general binary relations, edge-sets of (directed) graphs.
 
-**Four more notions:**
+**Four more notions.**
 
 * $\tau$ can also be constructed by selecting specific _members_ from the power set $\mathcal P(X)$, each of which correspond to _subsets_ of $X$.
 * The entire $\tau$ corresponds to _one subset_ of $\mathcal P(X)$
 * Requirements on $\tau$:
   - $X\in\tau$ (the whole space is open, i.e. the whole set $X$ must be a member of $\tau$);
-  - **closure under arbitrary unions:** $\bigcup S\in\tau$ whenever every member of $S$ lies in $\tau$;
-  - **closure under finite intersections:** $U\cap V\in\tau$ whenever $U,V\in\tau$.
+  - **closure under arbitrary unions.** $\bigcup S\in\tau$ whenever every member of $S$ lies in $\tau$;
+  - **closure under finite intersections.** $U\cap V\in\tau$ whenever $U,V\in\tau$.
 * An example of a cross discipline connection:
   * Because inclusion $\subseteq$ already orders the opens, these closure axioms make $\tau$ a frame (a complete Heyting algebra): every family of opens has a join given by its union, and every finite family has a meet given by its intersection. More abstractly, $\tau$ is a lattice.
   * A **lattice** is any collection where you can always take  
@@ -280,7 +280,7 @@ TODO: While most treatments of topology also focus on how you get topologies fro
 ## Opens as a Subtype and Two More Basic Operations
 
 {{< mediabox type="note" title="Box 5 - What to memorize" align="right" id="box5">}}
-**Three notions to keep in your head:**
+**Three notions to keep in your head.**
 
 * **$\mathrm{Opens}(X_\tau)$ = \tau** is a way to take our topological space and get back the topology or open sets $\tau$. So you can even think of $\mathrm{Opens}()$ like a mechanism that takes in a topological space and returns the set of open subsets.
 * **$V \subseteq_o U$** means: $V$ and $U$ are *both* in $\mathrm{Opens}(X_\tau)$ **and** $V\subseteq U$ as plain sets.
@@ -645,7 +645,7 @@ lemma openInter_subset_right {X} (U V : Opens X) :
 inter_subset_right
 ```
 
-**Note:**  The `.1` and `.2` projections pull out the "raw set" and the proof of openness, respectively.
+**Note.**  The `.1` and `.2` projections pull out the "raw set" and the proof of openness, respectively.
 
 #### 4. Defining presheaves and sheaves of sets
 
