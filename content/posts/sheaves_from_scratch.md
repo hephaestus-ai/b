@@ -647,9 +647,99 @@ structure TopologicalSpace where
   is_open_inter  : ∀ {U V : Set}, is_open U → is_open V → is_open (U ∩ V)
 ```
 
-Notice that this is Lisp-like, and you might think of `TopologicalSpace` as a little record or struct holding exactly the shape of the usual axioms.
+Notice that this is{{< hovercard text="Lisp-like" maxW="300px" >}}
+This hovercard expands on this observation as a matter of interest.
 
-TODO: expand on this comment because it might be mildly interesting to a programmer
+In Common Lisp, you might model a topological space with a `defstruct`:
+
+```lisp
+(defstruct topo-space
+  carrier           ;; a set
+  is-open           ;; predicate: set → boolean
+  is-open-univ      ;; proof object (or just a boolean flag)
+  is-open-sunion
+  is-open-inter)
+```
+
+Lean’s
+
+```lean
+structure TopologicalSpace where
+  carrier        : Set
+  is_open        : Set → Prop
+  is_open_univ   : is_open carrier
+  …
+```
+
+is basically the same thing:
+
+* **Field names** become *accessors* (`X.carrier`, `X.is_open`, …).
+* **The whole bundle** is just a first-class value you can pass around, store in arrays, stick in other structures, etc.
+
+In other words, *data + contracts live together in one map‐like object*, exactly the way a Lisp struct collects slots.
+
+A dynamic-language dev often tacks extra keys onto a plist/hashmap to record invariants or metadata.
+Here, Lean makes that completely explicit:
+
+* `is_open_univ` is *not* a Boolean—it’s a **proof term** inhabiting the proposition `is_open carrier`.
+* The other two slots are *higher-order fields*: they *produce* proofs when you feed them arguments.
+
+So the `structure` literally contains *functions that certify its own correctness*.
+This mirrors how a seasoned Lisper might attach assertion functions or guard predicates right inside an object.
+
+Both Lisp structs and Lean structures are built by a single constructor that simply “fills the slots”:
+
+```lean
+let mySpace : TopologicalSpace :=
+{ carrier        := mySet,
+  is_open        := myPredicate,
+  is_open_univ   := proof1,
+  is_open_sUnion := proof2,
+  is_open_inter  := proof3 }
+```
+
+That feels like writing:
+
+```lisp
+(make-topo-space
+  :carrier my-set
+  :is-open #'my-predicate
+  :is-open-univ proof1
+  :is-open-sunion proof2
+  :is-open-inter proof3)
+```
+
+No fancy coercions, no SQL-constructor factory—just pass the pieces.
+
+Lean’s projection syntax (`X.carrier`) is reminiscent of `slot-value` or CLOS accessor functions.
+But Lean also gives you **pattern matching** on structures, which is essentially Lisp’s `destructuring-bind`:
+
+```lean
+match X with
+| ⟨carrier, isOpen, univProof, _, _⟩ => …
+```
+
+That’s the same vibe as
+
+```lisp
+(destructuring-bind (carrier is-open univ-proof _ _)
+    X
+  …)
+```
+
+Because a `structure` is just a first-class term, you can nest them:
+
+```lean
+structure RingSpace where
+  topo : TopologicalSpace
+  ring : Ring topo.carrier
+```
+
+In Lisp, you would embed one struct inside another or include it via inheritance—again the same idiom.
+
+So, *Lean’s `structure` ≈ Lisp’s `defstruct`*: an uncomplicated record of labelled fields that you pass around like any other value.
+What makes Lean feel a bit alien is that some fields *are proofs*, but that’s just Lean’s type system enforcing invariants you might hand-wave in a dynamically typed Lisp program.
+{{< /hovercard >}}, and you might think of `TopologicalSpace` as a little record or struct holding exactly the shape of the usual axioms.
 
 #### 3. Packaging "open" sets as a subtype
 
