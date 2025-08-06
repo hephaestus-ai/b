@@ -290,13 +290,19 @@ Both extreme examples obey the axioms, so they really are topologies; they just 
 
 #### A Few Final Points of Clarification
 
-**Warning 4.5.** TODO: the example provided has a finite power set, but power sets can be infinitely large. Most of topology is actually concerned with topologies that are not finite.
+**Warning 4.5.**  The toy example above uses a *finite* power set only because it fits on the page.  In reality, whenever \(X\) is infinite the power set \(\mathcal P(X)\) is **vastly larger** (e.g.\ \(|\mathcal P(\mathbf R)| = 2^{\aleph_0}\)).  Listing its elements is impossible except in the tiniest cases.
 
-**Warning 4.6.** TODO: $\tau$ is the *topology*, $X_\tau$ is the *topological space* which is define as $X$ "equipped" with or "endowed" with a topology $\tau$, often written $(X, \tau)$
+**Warning 4.6.**  If you care about precision, you should remember the distinction:  
+* \(\tau\) **is** the topology (the list of opens).  
+* \((X,\tau)\) or \(X_\tau\) is the **topological space** (a set *equipped* with that list).
 
-**Warning 4.7.** TODO: Openness is not an intrinsic propery to some of the subsets of $X$. Many subsets of $\mathcal P(X)$ are topologies. Selection is often arbitrary, or stems from additional axioms you want to place on the subset beyond the topological ones, meaning what is "open" in one context is not in another.
+**Warning 4.7.**  "Open" is **relative** or even slightly "arbitrary" for a given set. There are many possible subsets of \(P(X)\) that satisfy the topology axioms, meaning that "openness" is not an intrinsic property to the subsets of \(X\). For example, the interval \((0,1)\) is open in the standard topology on \(\mathbf R\), but it is *not* open if you switch to the trivial topology \(\{\varnothing,\mathbf R\}\). Always state - or at least know - which \(\tau\) you are using.
 
-**Warning 4.8.** TODO: While most treatments of topology also focus on how you get topologies from shapes, topologies can be defined on any set, not just geometric objects. Topologists abuse the term "closeness" but topology does not necessarily entail metrics; confusingly sometimes a metric entails or _induces_ a topology, though.
+**Warning 4.8.**  Topologies aren’t just for geometric shapes.  *Any* set can carry:  
+* the **discrete** topology (every subset open),  
+* the **trivial** topology (only \(\varnothing\) and the whole set), or  
+* countless others tailored to algebra, logic, or combinatorics.  
+So "topological" means "structured by opens," not necessarily "spatial."
 
 ## Opens as a Subtype and Two More Basic Operations
 
@@ -450,7 +456,7 @@ Here I'll present two more important concepts that you encounter when dealing wi
 $$
 \varinjlim
 $$
-is read “direct limit” or “colimit.”  You meet it any time you have data that keeps getting **pushed forward** along bigger and bigger objects.  In stalks the objects are opens that shrink toward the point \(x\).  Each restriction map sends data from a larger open to a smaller one.  The direct limit remembers only the values that eventually stabilise under all those maps.
+is read "direct limit" or "colimit."  You meet it any time you have data that keeps getting **pushed forward** along bigger and bigger objects.  In stalks the objects are opens that shrink toward the point \(x\).  Each restriction map sends data from a larger open to a smaller one.  The direct limit remembers only the values that eventually stabilise under all those maps.
 
 **Warning 7.1.** Sometimes students will think a direct limit is a plain union. Not always. You first *identify* elements that match under the restriction maps, then take the union of those equivalence classes.  Forgetting the identification step gives wrong answers.
 
@@ -778,7 +784,7 @@ So there it is. We’ve climbed a long ladder from the bare bones of set theory 
 You might be wondering: What’s Next?:
 
 * **Schemes and manifolds.**  Having demystified sheaves, you’re well-positioned to see how they underpin algebraic geometry (via structure sheaves on schemes) and differential geometry (via sheaves of smooth functions and forms). I plan to create posts for both of these.
-* **Sheaf cohomology.**  We’ve hinted at cohomology as “measuring the failure to glue.”  A future post will build the Čech complex, define higher cohomology groups, and explore examples from topology and physics.
+* **Sheaf cohomology.**  We’ve hinted at cohomology as "measuring the failure to glue."  A future post will build the Čech complex, define higher cohomology groups, and explore examples from topology and physics.
 * **Stacks and higher sheaves.**  Two-tier data, monodromy, and descent naturally lead to stacks (2-sheaves) and higher categorical generalizations which are essential for modern moduli problems, homotopical algebra, and which can be found all over the place in the real world if you go looking.
 
 Anyway, thanks for sticking with this "from scratch" expedition.  With sheaves now in your toolkit, you’re closer to unlocking the unifying perspectives that underlie on geometry, analysis, computation, and even logic.
