@@ -444,7 +444,7 @@ Here I'll present two more important concepts that you encounter when dealing wi
 
 #### Construction of the Stalk
 
-**Intuition 7.2.**  Think of all opens containing \(x\) as a *directed graph*: every pair \(U,V\) has a smaller neighbourhood \(W=U\cap V\) lying below it.  The arrows point “downwards’’ along these inclusions.  A *directed system* is just any collection of objects (here, the sets \(\mathcal F(U)\)) connected by arrows that always let you move further down.
+**Intuition 7.2.**  Think of all opens containing \(x\) as a *directed graph*: every pair \(U,V\) has a smaller neighbourhood \(W=U\cap V\) lying below it.  The arrows point "downwards" along these inclusions.  A *directed system* is just any collection of objects (here, the sets \(\mathcal F(U)\)) connected by arrows that always let you move further down.
 
 **Intuition 7.3.**  The symbol  
 $$
@@ -466,7 +466,7 @@ $$
 \mathcal F_x=\varinjlim_{x\in U}\,\mathcal F(U).
 $$
 
-**Intuition 7.4.** TODO: Equivalence class
+**Intuition 7.4.**  Concretely, two pairs \((U,s)\) and \((V,t)\) represent the *same* germ at \(x\) when you can shrink both domains to some \(W\ni x\) on which the sections literally coincide.  Germs are therefore "what the section looks like infinitesimally at \(x\)," independent of which open you first wrote it on.
 
 **Definition 7.1.** Concretely, an element of \$\mathcal{F}\_x\$ is an equivalence class \$\[s]\_x\$, called a **germ**, of a section \$s \in \mathcal{F}(U)\$, where two pairs \$(U, s)\$ and \$(V, t)\$ represent the same germ if they agree on some smaller neighborhood of \$x\$.
 
