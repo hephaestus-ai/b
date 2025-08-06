@@ -180,7 +180,7 @@ This abstraction is what makes topology so powerful. The same basic ideas work w
 
 Union and intersection let us manufacture new sets; now we decide which of those sets count as *open* and thereby fix the structure of our universe. Formally, a topology on a set \$X\$ is a choice of collection \$\tau\$ satisfying the three axioms in the box.
 
-**Axiom 4.1, Axiom 4.2 & Axiom 4.3** (FIXME: put the axioms here as well)
+**Axiom 4.1, Axiom 4.2, & Axiom 4.3** (FIXME: put the axioms here as well)
 
 **Intuition 4.5.** Why these axioms and no others? The short answer is that they capture the way neighborhoods behave in ordinary spaces like \$\mathbb R\$.
 
@@ -309,7 +309,7 @@ Because the typing $V,U\in\mathrm{Opens}(X_\tau)$ already certifies that both se
 
 **Warning 5.1.** If you’ve ever fumbled the notation $V \subseteq_o U$, here’s the catch: it doesn’t mean just any subset relation. It means "$V$ and $U$ are both open, and every point of $V$ lies in $U$" but the little circle reminds you that you're only comparing open sets. Don’t lose sight of that.
 
-**Definition 5.4.** We also want to intersect two open sets while guaranteeing that we will remain inside the world of opens. Definitionally, it’s no surprise that we want:
+**Lemma 5.1.** We also want to intersect two open sets while guaranteeing that we will remain inside the world of opens. Definitionally, it’s no surprise that we want:
 
 $$
 \mathrm{openInter}(U, V) = U \cap V,
@@ -347,34 +347,34 @@ Behind the scenes, this construction simply takes the intersection of the underl
   2. *(Gluing)* A compatible family \$(s\_i\in\mathcal F(U\_i))\$ has a **unique** section \$s\in\mathcal F(U)\$ with \$\rho\_{U,U\_i}(s)=s\_i\$ for all \$i\$.
      {{< /mediabox >}}
 
-Up to this point open sets were our only actors. A presheaf adds content by letting each open carry a collection of "allowable data" and by telling us how to compare that data when one open sits inside another.
+**Intuition 6.1.** Up to this point open sets were our only actors. A presheaf adds content by letting each open carry a collection of "allowable data" and by telling us how to compare that data when one open sits inside another.
 
 #### Definition of a Presheaf
 
-Fix a topological space \$X\_\tau\$.
+**Definition 6.1.** Fix a topological space \$X\_\tau\$.
 A **presheaf of sets** on \$X\_\tau\$ consists of
 
 1. A rule \$U\mapsto\mathcal F(U)\$ that assigns a set to every open \$U\subseteq X\$.
 2. For every inclusion of opens \$V\subseteq U\$ a function
    \$\rho\_{U,V}\colon\mathcal F(U)\to\mathcal F(V)\$ called *restriction*.
 
-The two axioms in Box 6 ensure that repeated restriction behaves exactly like ordinary subset inclusion. Identity says nothing changes if you restrict to the same open. Composition says that restricting in one step or in two steps yields the same outcome.
+**Intuition 6.2.** The two axioms in Box 6 ensure that repeated restriction behaves exactly like ordinary subset inclusion. Identity says nothing changes if you restrict to the same open. Composition says that restricting in one step or in two steps yields the same outcome.
 
-Think of \$\mathcal F(U)\$ as the catalogue of observations you can make entirely inside \$U\$. Restriction discards any part of a section that lies outside \$V\$.
+**Intuition 6.3.** Think of \$\mathcal F(U)\$ as the catalogue of observations you can make entirely inside \$U\$. Restriction discards any part of a section that lies outside \$V\$.
 
 #### Compatibility along a Cover
 
-Let \$U\$ be an open and let \$(U\_i)\_{i\in I}\$ be a cover of \$U\$. A family of sections \$(s\_i)\$ with each \$s\_i\in\mathcal F(U\_i)\$ is **compatible** when, for every pair \$(i,j)\$, the two restricted sections agree on the overlap:
+**Definition 6.2.** Let \$U\$ be an open and let \$(U\_i)\_{i\in I}\$ be a cover of \$U\$. A family of sections \$(s\_i)\$ with each \$s\_i\in\mathcal F(U\_i)\$ is **compatible** when, for every pair \$(i,j)\$, the two restricted sections agree on the overlap:
 
 $$
 \rho_{U_i,U_i\cap U_j}(s_i)=\rho_{U_j,U_i\cap U_j}(s_j).
 $$
 
-Compatibility is the formal way to say that the local data \$(s\_i)\$ line up on intersections.
+**Intuition 6.4.** Compatibility is the formal way to say that the local data \$(s\_i)\$ line up on intersections.
 
 #### Sheaf Condition
 
-A presheaf becomes a **sheaf** precisely when every compatible family can be *glued* and the gluing is unique. Concretely:
+**Definition 6.3 (Sheaf Condition).** A presheaf becomes a **sheaf** precisely when every compatible family can be *glued* and the gluing is unique. Concretely:
 
 * **Existence**: If \$(s\_i)\$ is compatible, there is a section \$s\in\mathcal F(U)\$ whose restriction to each \$U\_i\$ equals \$s\_i\$.
 
@@ -384,11 +384,11 @@ A presheaf becomes a **sheaf** precisely when every compatible family can be *gl
 
 * **Uniqueness**: If both \$s\$ and \$t\$ restrict to the same \$s\_i\$ on every \$U\_i\$ then \$s=t\$.
 
-The locality clause in Box 6 is a convenient rephrasing of uniqueness: if two global sections look the same everywhere locally they are the same globally.
+**Intuition 6.5.** The locality clause in Box 6 is a convenient rephrasing of uniqueness: if two global sections look the same everywhere locally they are the same globally.
 
 #### Minimal Example
 
-Take \$X\_\tau\$ and define \$\mathcal F(U)={\text{all functions }U\to\mathbb R}\$. Restriction is ordinary function restriction. Every compatible family of real-valued functions on a cover has a unique union, hence this presheaf is a sheaf. In contrast, assigning to \$U\$ the *bounded* functions \$U\to\mathbb R\$ fails the gluing requirement; a locally bounded family can glue to an unbounded function.
+**Example 6.1.** Take \$X\_\tau\$ and define \$\mathcal F(U)={\text{all functions }U\to\mathbb R}\$. Restriction is ordinary function restriction. Every compatible family of real-valued functions on a cover has a unique union, hence this presheaf is a sheaf. In contrast, assigning to \$U\$ the *bounded* functions \$U\to\mathbb R\$ fails the gluing requirement; a locally bounded family can glue to an unbounded function.
 
 #### Take-Away
 
