@@ -302,6 +302,7 @@ Both extreme examples obey the axioms, so they really are topologies; they just 
 * the **discrete** topology (every subset open),  
 * the **trivial** topology (only \(\varnothing\) and the whole set), or  
 * countless others tailored to algebra, logic, or combinatorics.  
+
 So "topological" means "structured by opens," not necessarily "spatial."
 
 ## Opens as a Subtype and Two More Basic Operations
@@ -382,7 +383,7 @@ A **presheaf of sets** on \$X\_\tau\$ consists of
 1. A rule \$U\mapsto\mathcal F(U)\$ that assigns a set to every open \$U\subseteq X\$.
 2. For every inclusion of opens \$V\subseteq U\$ a function \$\rho\_{U,V}\colon\mathcal F(U)\to\mathcal F(V)\$ called *restriction*. (\$\rho\$ is the greek lowercase rho)
 
-TODO: in plain english these expressions read as...
+Plain-English reading: a presheaf \(\mathcal F\) gives you a bunch of data \(\mathcal F(U)\) on every open patch \(U\). Whenever you zoom from a big patch \(U\) down to a smaller one \(V\subseteq U\), the restriction map \(\rho_{U,V}\) tells you how to prune the data so it now lives on \(V\).  "Identity" says pruning by zero amount changes nothing; "composition" says pruning in one step or in several baby steps is the same operation.
 
 **Intuition 6.2.** The two axioms in Box 6 ensure that repeated restriction behaves exactly like ordinary subset inclusion. Identity says nothing changes if you restrict to the same open. Composition says that restricting in one step or in two steps yields the same outcome.
 
@@ -396,7 +397,8 @@ $$
 \rho_{U_i,U_i\cap U_j}(s_i)=\rho_{U_j,U_i\cap U_j}(s_j).
 $$
 
-TODO: definition in plain english
+Plain-English reading: a family of local sections \((s_i)\) is compatible when every pair that overlaps agrees on the zone they share.  Picture puzzle pieces whose edges line up perfectly without gaps or overlaps.
+
 
 **Intuition 6.4.** Compatibility is the formal way to say that the local data \$(s\_i)\$ line up on intersections.
 
