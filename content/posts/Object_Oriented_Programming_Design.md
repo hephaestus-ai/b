@@ -54,6 +54,8 @@ least astonishment unifies a bunch of these items
 
 ### Conform to A Mathematical Object
 
+Math is a scaling hack
+
 ### Conform to a 'Model'
 
 ### Self-Documentation
