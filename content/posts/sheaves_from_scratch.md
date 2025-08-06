@@ -79,15 +79,15 @@ Before we build anything sophisticated we need a place to stand. That place is a
 
 Start with one *universe* of discourse, which we’ll simply call **Set**. (If you're confused by the phrase "universe of discourse", it just means the set of all objects that are under consideration in a specific context or discussion; you don't need to understand this term fully). Think of it as the object containing every set we will ever talk about. Inside that object we highlight two relations between subobjects:
 
-1. **Definition 2.1:** **Membership** \$\boldsymbol{\in}\$
+1. **Definition 2.1 (Membership Relation)** \$\boldsymbol{\in}\$
  Saying \$a \in A\$ means *"the set \$a\$ sits inside the set \$A\$ as a single member."*
  A classic point of confusion: \$a\subseteq A\$ is generally **false** if \$a\$ itself is an element - you can’t be both an element and a subset at the same time.
 
-2. **Definition 2.2:** **Subset** \$\boldsymbol{\subseteq}\$
+2. **Definition 2.2 (Subset Relation)** \$\boldsymbol{\subseteq}\$
  We write \$A \subseteq B\$ when *every* element of \$A\$ is also an element of \$B\$.
  It’s worth pausing here: newbies often blur \$\in\$ and \$\subseteq\$ because both talk about "being inside" something. Remember - one compares a *set to a set*, the other compares a *set to its members*.
 
-**Axiom 2.1:** Everything else we need flows from a single guiding principle called the **axiom of extensionality**, written:
+**Axiom 2.1 (Axiom of Extensionality).** Everything else we need flows from a single guiding principle called the **axiom of extensionality**, written:
 
 $$
 A = B \quad\Longleftrightarrow\quad \forall x\,(x\in A\;\Leftrightarrow\;x\in B).
@@ -124,7 +124,7 @@ The bare-bones set theory from the last section gives us a basic language to tal
 
 #### Union
 
-**Definition 3.1.** Take any collection of sets, call it \$S\$. We write
+**Definition 3.1 (Arbitrary Union).** Take any collection of sets, call it \$S\$. We write
 
 $$
 \bigcup S
@@ -151,7 +151,7 @@ Exactly the points that lie in at least one of the two intervals – no more, no
 
 #### Intersection
 
-**Definition 3.2.** For intersection we only need the binary case for sheaves. Given two sets \$X\$ and \$Y\$ we define
+**Definition 3.2 (Binary Intersection).** For intersection we only need the binary case for sheaves. Given two sets \$X\$ and \$Y\$ we define
 
 $$
 X\cap Y=\{x\mid x\in X\text{ and }x\in Y\}.
@@ -159,7 +159,7 @@ $$
 
 Plain english: The intersection of X and Y is the set of things that are in both X and Y. Or: X intersect Y equals the set of x such that x is in X and x is in Y.
 
-**Lemma 3.1 & Lemma 3.2.** Nothing subtle here, but two elementary lemmas save headaches later:
+**Lemma 3.1 & Lemma 3.2 (Intersection-Subset Lemmas).** Nothing subtle here, but two elementary lemmas save headaches later:
 
 $$
 X\cap Y\subseteq X,\quad X\cap Y\subseteq Y.
@@ -248,7 +248,7 @@ With the concept of open sets pinned down we can finally talk about *local data*
 
 Topological spaces, $\sigma$-algebras, and abstract simplicial complexes match the first pattern, while objects like functions, relations, and graph edge-sets follow the second. Some objects (such as measures) actually employ both.
 
-**Definition 4.1.** What is a power set? Take any set $X$. Then its **power set** $\mathcal P(X)$ is the gigantic set containing *every* possible subset of $X$, including the empty set $\varnothing$.
+**Definition 4.1 (Power Sets).** What is a power set? Take any set $X$. Then its **power set** $\mathcal P(X)$ is the gigantic set containing *every* possible subset of $X$, including the empty set $\varnothing$.
 
 **Example 4.1.** For example, if $X=\{a,b,c\}$ then:
 
@@ -319,7 +319,7 @@ These three bullets are the real cargo we use later when we define how to *restr
 
 Up to now we’ve been talking about open sets inside a topological space, but they’ve lived implicitly within the definition of the space itself. At this stage, we want to completely pull them out into their own setting, while defining two new operations for clarity. This step may feel technical and perhaps unnecessary, and, indeed, it's more for technical convenience and is something you might want to do if you were, for example, working with a theorem prover.
 
-**Definition 5.1.** Concretely, if $X$ is our space, we bundle all of the open subsets we want into a new "type", called $\mathrm{Opens}(X_\tau)$. Since $\mathrm{Opens}(X_\tau) = \tau$, think of an element of $\mathrm{Opens}(X_\tau)$ as "just an open set," and nothing more. Under the hood, each "open" should carry *two* pieces of data: the set itself, and a guarantee that it really is open in $X$. From there, we can treat it like an ordinary set when needed.
+**Definition 5.1 (Opens Type).** Concretely, if $X$ is our space, we bundle all of the open subsets we want into a new "type", called $\mathrm{Opens}(X_\tau)$. Since $\mathrm{Opens}(X_\tau) = \tau$, think of an element of $\mathrm{Opens}(X_\tau)$ as "just an open set," and nothing more. Under the hood, each "open" should carry *two* pieces of data: the set itself, and a guarantee that it really is open in $X$. From there, we can treat it like an ordinary set when needed.
 
 **Definition 5.2 & Definition 5.3.** Next, we want to specify two new operations. First, we formalise the "open-subset" relation.  For two elements $V,U\in\mathrm{Opens}(X_\tau)$ we **define**
 
@@ -377,7 +377,7 @@ Behind the scenes, this construction simply takes the intersection of the underl
 
 #### Definition of a Presheaf
 
-**Definition 6.1.** Fix a topological space \$X\_\tau\$.
+**Definition 6.1 (Presheaf of Sets).** Fix a topological space \$X\_\tau\$.
 A **presheaf of sets** on \$X\_\tau\$ consists of
 
 1. A rule \$U\mapsto\mathcal F(U)\$ that assigns a set to every open \$U\subseteq X\$.
@@ -391,7 +391,7 @@ Plain-English reading: a presheaf \(\mathcal F\) gives you a bunch of data \(\ma
 
 #### Compatibility along a Cover
 
-**Definition 6.2.** Let \$U\$ be an open and let \$(U\_i)\_{i\in I}\$ be a cover of \$U\$. A family of sections \$(s\_i)\$ with each \$s\_i\in\mathcal F(U\_i)\$ is **compatible** when, for every pair \$(i,j)\$, the two restricted sections agree on the overlap:
+**Definition 6.2 (Compatible Family).** Let \$U\$ be an open and let \$(U\_i)\_{i\in I}\$ be a cover of \$U\$. A family of sections \$(s\_i)\$ with each \$s\_i\in\mathcal F(U\_i)\$ is **compatible** when, for every pair \$(i,j)\$, the two restricted sections agree on the overlap:
 
 $$
 \rho_{U_i,U_i\cap U_j}(s_i)=\rho_{U_j,U_i\cap U_j}(s_j).
@@ -476,7 +476,7 @@ $$
 
 **Intuition 7.4.**  Concretely, two pairs \((U,s)\) and \((V,t)\) represent the *same* germ at \(x\) when you can shrink both domains to some \(W\ni x\) on which the sections literally coincide.  Germs are therefore "what the section looks like infinitesimally at \(x\)," independent of which open you first wrote it on.
 
-**Definition 7.1.** Concretely, an element of \$\mathcal{F}\_x\$ is an equivalence class \$\[s]\_x\$, called a **germ**, of a section \$s \in \mathcal{F}(U)\$, where two pairs \$(U, s)\$ and \$(V, t)\$ represent the same germ if they agree on some smaller neighborhood of \$x\$.
+**Definition 7.1 (Germ Equivalence at a Point).** Concretely, an element of \$\mathcal{F}\_x\$ is an equivalence class \$\[s]\_x\$, called a **germ**, of a section \$s \in \mathcal{F}(U)\$, where two pairs \$(U, s)\$ and \$(V, t)\$ represent the same germ if they agree on some smaller neighborhood of \$x\$.
 
 #### Usage of Germs and Stalks
 
