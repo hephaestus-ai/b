@@ -477,7 +477,7 @@ $$
 * A morphism of sheaves is an isomorphism if and only if it induces isomorphisms on all stalks.
 * Exactness of sequences of sheaves can be tested on stalks: a sequence is exact if and only if it is exact after passing to each stalk.
 
-**Intuition 7.5.** Thus stalks translate global questions into pointwise checks. TODO expand on intuition
+**Intuition 7.5.**  Passing to stalks is like putting every definition under a microscope: proving global properties of sheaves often reduce to point-by-point checks, which are practical to perform in the real world. For example, a morphism \(\varphi:\mathcal F\to\mathcal G\) is an isomorphism **iff** each microscopic map \(\varphi_x:\mathcal F_x\to\mathcal G_x\) is bijective. That localisation principle is the engine behind many "soft" arguments in geometry and analysis. In short, stalks give us some tools that allow us to just sample things locally and make conclusions about global properties.
 
 #### Example
 
