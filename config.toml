@@ -49,4 +49,4 @@ gzip = true
         enable = true
         [markup.goldmark.extensions.passthrough.delimiters]
           block = [['$$', '$$'], ['\\[', '\\]']]
-          inline = [['$', '$'], ['\\(', '\\)']] # Ensure '$' is here
+          inline = [['$', '$'], ['\\(', '\\)'], ['\(', '\)']] # Ensure '$' is here

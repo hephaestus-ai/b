@@ -438,7 +438,7 @@ Here I'll present two more important concepts that you encounter when dealing wi
 
 #### Construction of the Stalk
 
-**Intuition 7.2.** TODO: directed system
+**Intuition 7.2.**  Think of all opens containing \(x\) as a *directed graph*: every pair \(U,V\) has a smaller neighbourhood \(W=U\cap V\) lying below it.  The arrows point “downwards’’ along these inclusions.  A *directed system* is just any collection of objects (here, the sets \(\mathcal F(U)\)) connected by arrows that always let you move further down.
 
 **Intuition 7.3.** TODO: limit and colimit
 
