@@ -418,11 +418,11 @@ With presheaves and sheaves now precisely defined we have the machinery needed t
 
 Here I'll present two more important concepts that you encounter when dealing with sheaves. This section is non-essential on a first read through.
 
-While sections live on opens, stalks concentrate that data at a point. Instead of carrying an entire neighborhood, a germ records just the *local behavior* of a section near the point.
+**Intuition 7.1.** While sections live on opens, stalks concentrate that data at a point. Instead of carrying an entire neighborhood, a germ records just the *local behavior* of a section near the point.
 
 #### Construction of the Stalk
 
-Fix \$x\in X\$. Consider the directed system of all opens \$U\subseteq X\$ containing \$x\$, ordered by inclusion. Applying the sheaf \$\mathcal F\$ yields a diagram of restriction maps
+**Construction 7.1.** Fix \$x\in X\$. Consider the directed system of all opens \$U\subseteq X\$ containing \$x\$, ordered by inclusion. Applying the sheaf \$\mathcal F\$ yields a diagram of restriction maps
 
 $$
 \mathcal F(U_1)\xrightarrow{\rho_{U_1,U_2}}\mathcal F(U_2)\xrightarrow{\rho_{U_2,U_3}}\cdots
@@ -434,11 +434,11 @@ $$
 \mathcal F_x=\varinjlim_{x\in U}\,\mathcal F(U).
 $$
 
-Concretely an element of \$\mathcal F\_x\$ is an equivalence class $\[s]\_x\$, called a germ, of a section \$s\in\mathcal F(U)\$, where two pairs \$(U,s)\$ and \$(V,t)\$ represent the same germ if they agree on some smaller neighborhood of \$x\$.
+**Definition 7.1.** Concretely an element of \$\mathcal F\_x\$ is an equivalence class $\[s]\_x\$, called a germ, of a section \$s\in\mathcal F(U)\$, where two pairs \$(U,s)\$ and \$(V,t)\$ represent the same germ if they agree on some smaller neighborhood of \$x\$.
 
 #### Usage of Germs and Stalks
 
-Stalks detect local properties of sheaves. For instance:
+**Application 7.1.** Stalks detect local properties of sheaves. For instance:
 
 * A morphism of sheaves is an isomorphism if and only if it induces isomorphisms on all stalks.
 * Exactness of sequences of sheaves can be tested on stalks: a sequence is exact if and only if it is exact after passing to each stalk.
@@ -447,7 +447,8 @@ Thus stalks translate global questions into pointwise checks.
 
 #### Example
 
-For the sheaf of continuous real functions, the stalk at \$x\$ consists of equivalence classes of functions defined near \$x\$, where two functions are equivalent if they agree on some neighborhood of \$x\$. This recovers the familiar notion of the "germ of a function" in analysis.
+**Example 7.1.** For the sheaf of continuous real functions, the stalk at \$x\$ consists of equivalence classes of functions defined near \$x\$, where two functions are equivalent if they agree on some neighborhood of \$x\$. This recovers the familiar notion of the "germ of a function" in analysis.
+
 
 ## Constructable and Not-So-Constructable Sheaves
 
