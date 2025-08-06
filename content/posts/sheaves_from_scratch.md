@@ -43,7 +43,7 @@ This kind of reasoning appears in condensed matter physics, where failures to gl
 
 **Application 1.8.** In topological data analysis, persistent cohomology detects shape in point-clouds. The raw algorithm feeds a simplicial-complex sheaf into a cohomology engine; the resulting bar-codes visualize when local clusters knit together. Newer techniques replace simplices with *cosheaves* to encode *directed* influence, useful in network flow and contagion models.
 
-**Application 1.9.** Computational neuroscience offers an instructive case: local measurements of neural activity (say, micro-electrode arrays in mouse visual cortex) identify *receptive fields* that overlap spatially and temporally. A sheaf whose sections are firing-rate distributions over electrode patches tracks which local patterns are compatible. Cohomology then reveals global motifs such as orientation maps or grid-cell lattices - features that may not be obvious from any single electrode but emerge when the patches glue coherently. (TODO: might want a citation for this in particular)
+**Application 1.9.** Computational neuroscience offers an instructive case: local measurements of neural activity (say, micro-electrode arrays in mouse visual cortex) identify *receptive fields* that overlap spatially and temporally. A sheaf whose sections are firing-rate distributions over electrode patches tracks which local patterns are compatible. Cohomology then reveals global motifs such as orientation maps or grid-cell lattices - features that may not be obvious from any single electrode but emerge when the patches glue coherently.
 
 #### The Mathematician’s View
 
@@ -492,12 +492,7 @@ $$
 **Example 7.1.** For the sheaf of continuous real functions, the stalk at \$x\$ consists of equivalence classes of functions defined near \$x\$, where two functions are equivalent if they agree on some neighborhood of \$x\$. This recovers the familiar notion of the "germ of a function" in analysis.
 
 
-## Constructable and Not-So-Constructable Sheaves
-
-TODO:
- - box for things to memorize?
- - descriptions for each subsection
- - double check everything
+## Constructible and Not-So-Constructible Sheaves
 
 **Intuition 8.1.** Not all sheaves are friendly. As mentioned above, topologies can be finite or infinite. Ditto for sheaves. This has implications for how easy they are to handle in practice, and what you can do with them.
 
