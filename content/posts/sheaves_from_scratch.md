@@ -134,7 +134,14 @@ The plain english reading of this expression is basically: x belongs to the big 
 
 **Nuance 3.1.** Mostly as an aside, but a point many people miss without some explanation: \$\bigcup S\$ is a *one-step* operation. The whole family of sets is swallowed at once; there’s no hidden iteration. Why is this relevant? A huge reason is that, being able to do these big operations in "O(1) complexity" is necessary for making "infinite leaps" later on.
 
-**Example 3.1.** If \$S={(0,1),, (1,2)}\$ inside \$\mathbb R\$, then \$\bigcup S=(0,2)\$. Exactly the points that appear somewhere in the two intervals - no more, no less. FIXME broken latex
+**Example 3.1.**  If \$S=\{(0,1),\,(1,2)\}\subseteq\mathbf R\$ then  
+
+$$
+\bigcup S \;=\; (0,2).
+$$
+
+Exactly the points that lie in at least one of the two intervals – no more, no less.
+
 
 #### Intersection
 
