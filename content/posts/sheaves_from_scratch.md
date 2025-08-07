@@ -1,6 +1,10 @@
 ---
-draft: true
+draft: false
 title: "Sheaves from Scratch"
+todo:
+  - item: "complexity for computable sheaves. rm the term tractable since it's kinda wrong"
+  - item: "wiki links"
+  - item: "see note at end of intro"
 ---
 
 ## Sheaves from Scratch
@@ -10,6 +14,8 @@ In this post I build sheaves from "scratch", at least from the point of view of 
 This information was put together in response to a question in a Discord private conversation. I haven't seen a "from scratch" definition of sheaves anywhere, so I thought this might be useful. I often call these sorts of maximalist definitions "groundworks." I’d already laid most of it out across notes and messages, so assembling it all wasn’t too much work, despite the length.
 
 I may break this post up later. As you will see, we build many other things from scratch as we work our way up to sheaves. Future posts may address schemes, manifolds, and other objects, since, once you understand sheaves, you're already much of the way to understanding how a large number of other complex objects are constructed. Future posts may also touch on various collections of interesting implications one can derive from these definitions.
+
+This post is still a WIP. Some of the more technical parts still have "mathsplaining" vibes, I want to add mnemonics, and I want to add more nuance and intuitions to certain parts, as well as perhaps a few thorough examples of applications.
 
 {{< table_of_contents >}}
 
@@ -290,7 +296,7 @@ Both extreme examples obey the axioms, so they really are topologies; they just 
 
 #### A Few Final Points of Clarification
 
-**Warning 4.5.**  The toy example above uses a *finite* power set only because it fits on the page.  In reality, whenever \(X\) is infinite the power set \(\mathcal P(X)\) is **vastly larger** (e.g.\ \(|\mathcal P(\mathbf R)| = 2^{\aleph_0}\)).  Listing its elements is impossible except in the tiniest cases.
+**Warning 4.5.**  The toy example above uses a *finite* power set only because it fits on the page.  In reality, whenever \(X\) is infinite the power set \(\mathcal P(X)\) is **vastly larger** (e.g. \(|\mathcal P(\mathbf R)| = 2^{\aleph_0}\)).  Listing its elements is impossible except in the tiniest cases.
 
 **Warning 4.6.**  If you care about precision, you should remember the distinction:  
 * \(\tau\) **is** the topology (the list of opens).  
@@ -498,7 +504,7 @@ $$
 
 This section looks at a pragmatic, computer-science-oriented classification of sheaves according to how completely their data can be encoded, manipulated, and decided by an ordinary digital computer (i.e. a finite machine working with finite words).
 
-#### Sheaves that can be fully modelled ("tractable")
+#### Sheaves that can be fully modelled
 
 | Archetype                                                                                                                                                                               | Why it is fully representable                                                                                                                                       | Typical software / algorithms                                                                                                             |
 | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------- |
@@ -507,6 +513,8 @@ This section looks at a pragmatic, computer-science-oriented classification of s
 | **Coherent sheaves on affine or projective varieties defined by polynomials with rational (or finite-field) coefficients**.                                                             | Equivalent to a finitely presented graded module over a finitely generated ring. Gröbner-basis + homological algebra provide finite resolutions.                    | **Macaulay2**, **Singular**, **Sage**: syzygy, Hilbert function, cohomology, Ext, Tor. (Computation may be expensive, but it terminates.) |
 
 *Key point:* every piece of data (cells, basis elements, matrix entries) is finite, and all axioms of a sheaf reduce to finitely many equalities that a computer can check.
+
+TODO: time complexity comments would be nice
 
 #### Sheaves that can be partially modelled ("approximable")
 
